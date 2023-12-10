@@ -14,7 +14,7 @@ public class ProfileRepository {
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT * FROM profile WHERE login = ?")) {
-            preparedStatement.setString(1, "login");
+            preparedStatement.setString(1, login);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return true;
@@ -33,7 +33,7 @@ public class ProfileRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT id, name, surname, login, password, phone, profile_status, profile_role, created_date " +
                              "FROM profile WHERE login = ?")) {
-            preparedStatement.setString(1, "login");
+            preparedStatement.setString(1, login);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Profile profile = new Profile(

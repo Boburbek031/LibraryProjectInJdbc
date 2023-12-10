@@ -17,8 +17,7 @@ public class InitService {
         // login: adminboy, password: adminboy_0661
         boolean profileExists = profileRepository.isProfileExists("adminboy");
         if (!profileExists) {
-            Profile admin = new Profile("admin", "adminov", "adminboy",
-                    MD5Util.generateMD5("adminboy_0661"), "998993960661", ProfileStatus.ACTIVE,
+            Profile admin = new Profile("admin", "adminov", "adminboy",MD5Util.encode("adminboy_0661"), "998993960661", ProfileStatus.ACTIVE,
                     ProfileRole.ADMIN, LocalDateTime.now());
             profileRepository.createProfile(admin);
         }

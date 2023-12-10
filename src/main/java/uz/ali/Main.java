@@ -11,7 +11,7 @@ public class Main {
         System.out.println("Program is stopped!");
 
        /* String input = "Hello, MD5!";
-        String md5Hash = generateMD5(input);
+        String md5Hash = encode(input);
         System.out.println("MD5 hash of '" + input + "': " + md5Hash);*/
 
 

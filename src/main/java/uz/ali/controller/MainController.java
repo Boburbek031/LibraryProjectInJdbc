@@ -2,18 +2,20 @@ package uz.ali.controller;
 
 import uz.ali.db.DatabaseUtil;
 import uz.ali.repository.TableRepository;
+import uz.ali.service.AuthService;
 import uz.ali.service.InitService;
 
 import java.util.Scanner;
 
 public class MainController {
 
+    TableRepository tableRepository = new TableRepository();
+    InitService initService = new InitService();
+    AuthService authService = new AuthService();
     private Scanner scannerNum = new Scanner(System.in);
     private Scanner scannerStr = new Scanner(System.in);
 
     public void start() {
-        TableRepository tableRepository = new TableRepository();
-        InitService initService = new InitService();
 
         tableRepository.createTable();
         initService.initAdmin();
@@ -32,7 +34,7 @@ public class MainController {
 
                     break;
                 case 4:
-
+                    login();
                     break;
                 case 0:
                     System.out.println("Exit");
@@ -45,8 +47,19 @@ public class MainController {
 
     }
 
+    private void login() {
+        System.out.print("Enter login: ");
+        String login = scannerStr.next();
+        System.out.print("Enter password: ");
+        String password = scannerStr.next();
 
-    public void showMenu() {
+        authService.login(login, password);
+
+
+    }
+
+
+    private void showMenu() {
         System.out.println("\n\t\t **************** Main menu ****************");
         System.out.println("1. Book List");
         System.out.println("2. Search");
