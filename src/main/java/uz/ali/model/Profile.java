@@ -3,6 +3,7 @@ package uz.ali.model;
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Profile {
@@ -22,6 +23,17 @@ public class Profile {
     public Profile() {
     }
 
+    public Profile(String name, String surname, String login, String password, String phone, ProfileStatus profileStatus, ProfileRole profileRole, LocalDateTime createdDate) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.phone = phone;
+        this.profileStatus = profileStatus;
+        this.profileRole = profileRole;
+        this.createdDate = createdDate;
+    }
+
     public Profile(Integer id, String name, String surname, String login, String password, String phone, LocalDateTime createdDate, ProfileStatus profileStatus, ProfileRole profileRole) {
         this.id = id;
         this.name = name;
@@ -32,6 +44,16 @@ public class Profile {
         this.createdDate = createdDate;
         this.profileStatus = profileStatus;
         this.profileRole = profileRole;
+    }
+
+    public Profile(Integer id, String name, String surname, String login, String password, String phone, LocalDateTime createdDate) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.phone = phone;
+        this.createdDate = createdDate;
     }
 
     public Integer getId() {
