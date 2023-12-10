@@ -31,7 +31,7 @@ public class ProfileRepository {
     public Profile getProfileByLogin(String login) {
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT id, name, surname, login, password, phone, profileStatus, profileRole, createdDate " +
+                     "SELECT id, name, surname, login, password, phone, profile_status, profile_role, created_date " +
                              "FROM profile WHERE login = ?")) {
             preparedStatement.setString(1, "login");
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -43,9 +43,9 @@ public class ProfileRepository {
                             resultSet.getString("login"),
                             resultSet.getString("password"),
                             resultSet.getString("phone"),
-                            resultSet.getTimestamp("createdDate").toLocalDateTime());
-                    profile.setProfileStatus(ProfileStatus.valueOf(resultSet.getString("profileStatus")));
-                    profile.setProfileRole(ProfileRole.valueOf(resultSet.getString("profileRole")));
+                            resultSet.getTimestamp("created_date").toLocalDateTime());
+                    profile.setProfileStatus(ProfileStatus.valueOf(resultSet.getString("profile_status")));
+                    profile.setProfileRole(ProfileRole.valueOf(resultSet.getString("profile_role")));
                     return profile;
                 }
             }
@@ -57,21 +57,20 @@ public class ProfileRepository {
     }
 
     public int createProfile(Profile profile) {
-        String insertQuery = "INSERT INTO profile(id, name, surname, login, password, phone, profileStatus, profileRole, createdDate) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO profile(name, surname, login, password, phone, profile_status, profile_role, created_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
-            preparedStatement.setInt(1, profile.getId());
-            preparedStatement.setString(2, profile.getName());
-            preparedStatement.setString(3, profile.getSurname());
-            preparedStatement.setString(4, profile.getLogin());
-            preparedStatement.setString(5, profile.getPassword());
-            preparedStatement.setString(6, profile.getPhone());
-            preparedStatement.setString(7, profile.getProfileStatus().name());
-            preparedStatement.setString(8, profile.getProfileRole().name());
-            preparedStatement.setTimestamp(9, Timestamp.valueOf(profile.getCreatedDate()));
+            preparedStatement.setString(1, profile.getName());
+            preparedStatement.setString(2, profile.getSurname());
+            preparedStatement.setString(3, profile.getLogin());
+            preparedStatement.setString(4, profile.getPassword());
+            preparedStatement.setString(5, profile.getPhone());
+            preparedStatement.setString(6, profile.getProfileStatus().name());
+            preparedStatement.setString(7, profile.getProfileRole().name());
+            preparedStatement.setTimestamp(8, Timestamp.valueOf(profile.getCreatedDate()));
             System.out.println("Profile inserted successfully.");
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {

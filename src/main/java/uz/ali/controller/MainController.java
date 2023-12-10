@@ -2,6 +2,7 @@ package uz.ali.controller;
 
 import uz.ali.db.DatabaseUtil;
 import uz.ali.repository.TableRepository;
+import uz.ali.service.InitService;
 
 import java.util.Scanner;
 
@@ -12,7 +13,10 @@ public class MainController {
 
     public void start() {
         TableRepository tableRepository = new TableRepository();
+        InitService initService = new InitService();
+
         tableRepository.createTable();
+        initService.initAdmin();
 
         boolean startLoop = true;
         while (startLoop) {
