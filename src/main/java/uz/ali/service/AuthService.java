@@ -1,5 +1,8 @@
 package uz.ali.service;
 
+import uz.ali.controller.AdminController;
+import uz.ali.controller.StaffController;
+import uz.ali.controller.StudentController;
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
 import uz.ali.model.Profile;
@@ -9,6 +12,10 @@ import uz.ali.util.MD5Util;
 public class AuthService {
 
     ProfileRepository profileRepository = new ProfileRepository();
+    AdminController adminController = new AdminController();
+    StudentController studentController = new StudentController();
+    StaffController staffController = new StaffController();
+
 
     public void login(String login, String password) {
         Profile profile = profileRepository.getProfileByLogin(login);
@@ -29,11 +36,11 @@ public class AuthService {
         System.out.println("\n\t\t********** Welcome to Library Project **********");
         // Redirect
         if (profile.getProfileRole().equals(ProfileRole.STUDENT)) {
-            // StudentController....
+            studentController.start();
         } else if (profile.getProfileRole().equals(ProfileRole.STAFF)) {
-            // StaffController....
+            staffController.start();
         } else if (profile.getProfileRole().equals(ProfileRole.ADMIN)) {
-            // AdminController....
+            adminController.start();
         }
 
     }

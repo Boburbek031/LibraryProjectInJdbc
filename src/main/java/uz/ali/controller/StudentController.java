@@ -1,25 +1,13 @@
 package uz.ali.controller;
 
-import uz.ali.repository.TableRepository;
-import uz.ali.service.AuthService;
-import uz.ali.service.InitService;
-
 import java.util.Scanner;
 
-public class MainController {
+public class StudentController {
 
-    TableRepository tableRepository = new TableRepository();
-    InitService initService = new InitService();
-    AuthService authService = new AuthService();
     private Scanner scannerNum = new Scanner(System.in);
     private Scanner scannerStr = new Scanner(System.in);
 
     public void start() {
-
-        tableRepository.createTable();
-        initService.initAdmin();
-        initService.initStudent();
-
         boolean startLoop = true;
         while (startLoop) {
             showMenu();
@@ -34,10 +22,13 @@ public class MainController {
 
                     break;
                 case 4:
-                    login();
+
                     break;
                 case 5:
-                    registration();
+
+                    break;
+                case 6:
+
                     break;
                 case 0:
                     System.out.println("Exit");
@@ -49,40 +40,18 @@ public class MainController {
         }
     }
 
-    private void registration() {
-        System.out.print("Enter name: ");
-        String name = scannerStr.nextLine();
-        System.out.print("Enter surname: ");
-        String surname = scannerStr.nextLine();
-        System.out.print("Enter phone: ");
-        String phone = scannerStr.nextLine();
-        System.out.print("Enter login: ");
-        String login = scannerStr.next();
-        System.out.print("Enter password: ");
-        String password = scannerStr.next();
-    }
-
-    private void login() {
-        System.out.print("Enter login: ");
-        String login = scannerStr.next();
-        System.out.print("Enter password: ");
-        String password = scannerStr.next();
-
-        authService.login(login, password);
-
-
-    }
-
 
     private void showMenu() {
-        System.out.println("\n\t\t **************** Main Menu ****************");
+        System.out.println("\n\t\t **************** Student Menu ****************");
         System.out.println("1. Book List");
         System.out.println("2. Search");
-        System.out.println("3. Categories");
-        System.out.println("4. Login");
-        System.out.println("5. Registration");
+        System.out.println("3. Take book");
+        System.out.println("4. Return book");
+        System.out.println("5. Books on hand");
+        System.out.println("6. Get history of books");
         System.out.println("0. Exit");
     }
+
 
     public int getAction() {
         while (true) {
@@ -106,4 +75,6 @@ public class MainController {
             return false; // If an exception occurs, it's not a number
         }
     }
+
+
 }
