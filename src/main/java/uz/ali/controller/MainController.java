@@ -27,7 +27,7 @@ public class MainController {
     public void start() {
 
 
-        tableRepository.createTable();
+        tableRepository.createTables();
         initService.initAdmin();
         initService.initStudent();
 

@@ -1,31 +1,28 @@
 package uz.ali.controller;
 
-import uz.ali.util.MenuOptions;
+import uz.ali.model.Category;
 
-import static uz.ali.container.CompoundContainer.categoryController;
-import static uz.ali.container.CompoundContainer.scannerStr;
+import java.util.Scanner;
 
-public class AdminController {
+import static uz.ali.container.CompoundContainer.*;
+
+public class CategoryController {
 
     public void start() {
         boolean startLoop = true;
         while (startLoop) {
             showMenu();
             switch (getAction()) {
-                case MenuOptions.BOOK_LIST:
-                    System.out.println("BookList");
-                    // Perform actions for Book List
+                case 1:
                     break;
-                case MenuOptions.STUDENT:
+                case 2:
+                    addCategory();
                     break;
-                case MenuOptions.CATEGORIES:
-                    categoryController.start();
+                case 3:
                     break;
-                case MenuOptions.PROFILE:
-                    System.out.println("Profile");
-                    // Perform actions for Profile
+                case 4:
                     break;
-                case MenuOptions.EXIT:
+                case 0:
                     System.out.println("Exit");
                     startLoop = false;
                     break;
@@ -35,13 +32,26 @@ public class AdminController {
         }
     }
 
+    private void addCategory() {
+        categoryService.createCategory(new Category(getNonEmptyInput("Enter category name: ")));
+    }
+
+    public String getNonEmptyInput(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim();
+        } while (input.length() < 3 || input.isBlank());
+        return input;
+    }
 
     private void showMenu() {
-        System.out.println("\n\t\t **************** Admin Menu ****************");
-        System.out.println("1. Book List");
-        System.out.println("2. Student");
-        System.out.println("3. Categories");
-        System.out.println("4. Profile");
+        System.out.println("\n\t\t **************** Category Menu ****************");
+        System.out.println("1. Category List");
+        System.out.println("2. Add category");
+        System.out.println("3. Delete category");
+        System.out.println("4. Update category ");
         System.out.println("0. Exit");
     }
 
@@ -67,5 +77,6 @@ public class AdminController {
             return false;
         }
     }
+
 
 }
