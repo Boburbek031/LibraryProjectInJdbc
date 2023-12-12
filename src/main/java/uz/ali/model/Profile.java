@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 public class Profile {
 
-
     private Integer id;
     private String name;
     private String surname;
@@ -16,7 +15,6 @@ public class Profile {
     private String password;
     private String phone;
     private ProfileStatus profileStatus;
-
     private ProfileRole profileRole;
     private LocalDateTime createdDate;
 

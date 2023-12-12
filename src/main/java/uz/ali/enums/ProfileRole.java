@@ -4,5 +4,4 @@ public enum ProfileRole {
 
     STUDENT, STAFF, ADMIN
 
-
 }
