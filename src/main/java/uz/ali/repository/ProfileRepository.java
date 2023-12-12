@@ -34,21 +34,10 @@ public class ProfileRepository {
             preparedStatement.setString(1, login);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    Profile profile = new Profile(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("surname"),
-                            resultSet.getString("login"),
-                            resultSet.getString("password"),
-                            resultSet.getString("phone"),
-                            resultSet.getTimestamp("created_date").toLocalDateTime());
-                    profile.setProfileStatus(ProfileStatus.valueOf(resultSet.getString("profile_status")));
-                    profile.setProfileRole(ProfileRole.valueOf(resultSet.getString("profile_role")));
-                    return profile;
+                    return mapProfileFromResultSet(resultSet);
                 }
             }
         } catch (SQLException e) {
-            // Consider logging the exception or throwing a custom exception for better error handling
             e.printStackTrace();
         }
         return null;
@@ -78,5 +67,18 @@ public class ProfileRepository {
         return 0;
     }
 
+    private Profile mapProfileFromResultSet(ResultSet resultSet) throws SQLException {
+        return new Profile(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("surname"),
+                resultSet.getString("login"),
+                resultSet.getString("password"),
+                resultSet.getString("phone"),
+                resultSet.getTimestamp("created_date").toLocalDateTime(),
+                ProfileStatus.valueOf(resultSet.getString("profile_status")),
+                ProfileRole.valueOf(resultSet.getString("profile_role"))
+        );
+    }
 
 }
