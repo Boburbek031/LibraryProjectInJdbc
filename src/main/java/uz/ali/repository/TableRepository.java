@@ -1,6 +1,7 @@
 package uz.ali.repository;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -19,12 +20,12 @@ public class TableRepository {
                 "created_date timestamp default now()" +
                 ");";
         try (Connection connection = ConnectionRepository.getConnection();
-             Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sqlCreateTableQuery);
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlCreateTableQuery)) {
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error creating table: " + e.getMessage(), e);
         }
     }
-
 
 }

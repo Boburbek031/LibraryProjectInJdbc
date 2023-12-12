@@ -44,11 +44,10 @@ public class ProfileRepository {
     }
 
     public int createProfile(Profile profile) {
-        String insertQuery = "INSERT INTO profile(name, surname, login, password, phone, profile_status, profile_role, created_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
         try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO profile(name, surname, login, password, phone, profile_status, profile_role, created_date) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
 
             preparedStatement.setString(1, profile.getName());
             preparedStatement.setString(2, profile.getSurname());
@@ -58,9 +57,7 @@ public class ProfileRepository {
             preparedStatement.setString(6, profile.getProfileStatus().name());
             preparedStatement.setString(7, profile.getProfileRole().name());
             preparedStatement.setTimestamp(8, Timestamp.valueOf(profile.getCreatedDate()));
-            int affectedRows = preparedStatement.executeUpdate();
-            System.out.println(affectedRows);
-            return affectedRows;
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
