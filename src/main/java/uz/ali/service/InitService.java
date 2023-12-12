@@ -14,17 +14,15 @@ public class InitService {
     // Bu method, o'zi bu class bazada admin bormi yoki yoqmi shun tekshiradi agar bo'lsa bor deydi, bo'masa yaratadi
     public void initAdmin() {
         // login: adminboy, password: adminboy_0661
-        boolean profileExists = profileRepository.isProfileExists("adminboy");
-        if (!profileExists) {
+        if (!profileRepository.isProfileExists("adminboy")) {
             Profile admin = new Profile("admin", "adminov", "adminboy", MD5Util.encode("adminboy_0661"), "998993960661", ProfileStatus.ACTIVE, ProfileRole.ADMIN, LocalDateTime.now());
             profileRepository.createProfile(admin);
         }
     }
 
     public void initStudent() {
-        boolean profileExists = profileRepository.isProfileExists("student00");
-        if (!profileExists) {
-            Profile student = new Profile("Student", "Studentov", "student00 ", MD5Util.encode("0000"), "998339060661", ProfileStatus.ACTIVE, ProfileRole.STUDENT, LocalDateTime.now());
+        if (!profileRepository.isProfileExists("test")) {
+            Profile student = new Profile("TEST", "TEST", "test ", MD5Util.encode("test"), "998339060661", ProfileStatus.ACTIVE, ProfileRole.STUDENT, LocalDateTime.now());
             profileRepository.createProfile(student);
         }
     }
