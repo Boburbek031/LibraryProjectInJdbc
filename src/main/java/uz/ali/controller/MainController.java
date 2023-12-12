@@ -1,25 +1,18 @@
 package uz.ali.controller;
 
 import uz.ali.model.Profile;
-import uz.ali.repository.TableRepository;
-import uz.ali.service.AuthService;
-import uz.ali.service.InitService;
 import uz.ali.util.MD5Util;
+
+import static uz.ali.container.CompoundContainer.*;
 
 import java.util.Scanner;
 
 public class MainController {
 
-    TableRepository tableRepository = new TableRepository();
-    InitService initService = new InitService();
-    AuthService authService = new AuthService();
-    private Scanner scannerNum = new Scanner(System.in);
-    private Scanner scannerStr = new Scanner(System.in);
-
     public static boolean isValidPhoneNumber(String phoneNumber) {
         // Basic validation: Check if the phone number is not null and not empty
         if (phoneNumber == null || phoneNumber.isEmpty()) {
-            return false;
+            return true;
         }
 
         // Remove non-digit characters from the phone number
@@ -27,7 +20,7 @@ public class MainController {
         String trimPhoneNumber = numericPhoneNumber.trim();
 
         // Check if the phone number starts with the country code 998 and has a length of 12
-        return trimPhoneNumber.startsWith("998") && trimPhoneNumber.length() == 12;
+        return !trimPhoneNumber.startsWith("998") || trimPhoneNumber.length() != 12;
     }
 
     public void start() {
@@ -109,10 +102,10 @@ public class MainController {
         do {
             System.out.print("Enter phone number: ");
             phone_number = scannerStr.nextLine();
-            if (!isValidPhoneNumber(phone_number)) {
+            if (isValidPhoneNumber(phone_number)) {
                 System.out.println("Please enter a valid phone number!");
             }
-        } while (!isValidPhoneNumber(phone_number));
+        } while (isValidPhoneNumber(phone_number));
         return phone_number;
     }
 

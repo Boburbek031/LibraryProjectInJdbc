@@ -3,14 +3,13 @@ package uz.ali.service;
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
 import uz.ali.model.Profile;
-import uz.ali.repository.ProfileRepository;
 import uz.ali.util.MD5Util;
 
 import java.time.LocalDateTime;
 
-public class InitService {
+import static uz.ali.container.CompoundContainer.profileRepository;
 
-    ProfileRepository profileRepository = new ProfileRepository();
+public class InitService {
 
     // Bu method, o'zi bu class bazada admin bormi yoki yoqmi shun tekshiradi agar bo'lsa bor deydi, bo'masa yaratadi
     public void initAdmin() {

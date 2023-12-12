@@ -2,12 +2,11 @@ package uz.ali.controller;
 
 import java.util.Scanner;
 
+import static uz.ali.container.CompoundContainer.scannerStr;
+
 public class StudentController {
     // password: 0203
     // login: alish
-
-    private Scanner scannerNum = new Scanner(System.in);
-    private Scanner scannerStr = new Scanner(System.in);
 
     public void start() {
         boolean startLoop = true;

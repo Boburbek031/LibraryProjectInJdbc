@@ -1,22 +1,15 @@
 package uz.ali.service;
 
-import uz.ali.controller.AdminController;
-import uz.ali.controller.StaffController;
-import uz.ali.controller.StudentController;
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
 import uz.ali.model.Profile;
-import uz.ali.repository.ProfileRepository;
 import uz.ali.util.MD5Util;
 
 import java.time.LocalDateTime;
 
-public class AuthService {
+import static uz.ali.container.CompoundContainer.*;
 
-    ProfileRepository profileRepository = new ProfileRepository();
-    AdminController adminController = new AdminController();
-    StudentController studentController = new StudentController();
-    StaffController staffController = new StaffController();
+public class AuthService {
 
 
     public void login(String login, String password) {

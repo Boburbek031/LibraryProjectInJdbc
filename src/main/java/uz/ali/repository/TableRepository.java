@@ -1,13 +1,10 @@
 package uz.ali.repository;
 
-import uz.ali.db.DatabaseUtil;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TableRepository {
-
 
     public void createTable() {
         String sqlCreateTableQuery = "create table if not exists profile (" +
@@ -21,7 +18,7 @@ public class TableRepository {
                 "profile_role varchar (15) not null," +
                 "created_date timestamp default now()" +
                 ");";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = ConnectionRepository.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sqlCreateTableQuery);
         } catch (SQLException e) {

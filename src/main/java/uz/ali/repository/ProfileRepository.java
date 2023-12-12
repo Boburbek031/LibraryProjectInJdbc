@@ -1,6 +1,5 @@
 package uz.ali.repository;
 
-import uz.ali.db.DatabaseUtil;
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
 import uz.ali.model.Profile;
@@ -11,7 +10,7 @@ public class ProfileRepository {
 
 
     public boolean isProfileExists(String login) {
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT * FROM profile WHERE login = ?")) {
             preparedStatement.setString(1, login);
@@ -29,7 +28,7 @@ public class ProfileRepository {
 
 
     public Profile getProfileByLogin(String login) {
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT id, name, surname, login, password, phone, profile_status, profile_role, created_date " +
                              "FROM profile WHERE login = ?")) {
@@ -60,7 +59,7 @@ public class ProfileRepository {
         String insertQuery = "INSERT INTO profile(name, surname, login, password, phone, profile_status, profile_role, created_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, profile.getName());
