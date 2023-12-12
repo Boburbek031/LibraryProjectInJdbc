@@ -6,38 +6,53 @@ import uz.ali.model.Profile;
 import uz.ali.util.MD5Util;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static uz.ali.container.CompoundContainer.*;
 
 public class AuthService {
 
-
     public void login(String login, String password) {
         Profile profile = profileRepository.getProfileByLogin(login);
-        if (profile == null) {
+
+        if (profile == null || !isLoginValid(profile, password)) {
             System.out.println("Login or Password is wrong!");
             return;
         }
-        String encodedPassword = MD5Util.encode(password);
-        if (!encodedPassword.equals(profile.getPassword())) {
-            System.out.println("Login or Password is wrong!");
-            return;
-        }
-        if (!profile.getProfileStatus().equals(ProfileStatus.ACTIVE)) {
+
+        if (!isProfileActive(profile)) {
             System.out.println("Status is wrong!");
             return;
         }
 
         System.out.println("\n\t\t********** Welcome to Library Project **********");
         // Redirect
-        if (profile.getProfileRole().equals(ProfileRole.STUDENT)) {
-            studentController.start();
-        } else if (profile.getProfileRole().equals(ProfileRole.STAFF)) {
-            staffController.start();
-        } else if (profile.getProfileRole().equals(ProfileRole.ADMIN)) {
-            adminController.start();
-        }
+        redirectToRole(profile);
+    }
 
+    private void redirectToRole(Profile profile) {
+        switch (profile.getProfileRole()) {
+            case STUDENT:
+                studentController.start();
+                break;
+            case STAFF:
+                staffController.start();
+                break;
+            case ADMIN:
+                adminController.start();
+                break;
+            default:
+                System.out.println("Unknown role!");
+                break;
+        }
+    }
+
+    private boolean isLoginValid(Profile profile, String password) {
+        return Objects.equals(MD5Util.encode(password), profile.getPassword());
+    }
+
+    private boolean isProfileActive(Profile profile) {
+        return profile.getProfileStatus().equals(ProfileStatus.ACTIVE);
     }
 
 
