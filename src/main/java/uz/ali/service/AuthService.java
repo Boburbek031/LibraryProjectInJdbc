@@ -30,7 +30,7 @@ public class AuthService {
         redirectToRole(profile);
     }
 
-    private void redirectToRole(Profile profile) {
+    public void redirectToRole(Profile profile) {
         switch (profile.getProfileRole()) {
             case STUDENT:
                 studentController.start();
@@ -47,19 +47,17 @@ public class AuthService {
         }
     }
 
-    private boolean isLoginValid(Profile profile, String password) {
+    public boolean isLoginValid(Profile profile, String password) {
         return Objects.equals(MD5Util.encode(password), profile.getPassword());
     }
 
-    private boolean isProfileActive(Profile profile) {
+    public boolean isProfileActive(Profile profile) {
         return profile.getProfileStatus().equals(ProfileStatus.ACTIVE);
     }
 
 
     public void registration(Profile profile) {
-        // check all the details
-        boolean profileExists = profileRepository.isProfileExists(profile.getLogin());
-        if (profileExists) {
+        if (profileRepository.isProfileExists(profile.getLogin())) {
             System.out.println("Such " + profile.getLogin() + " login already exists!");
             return;
         }
@@ -70,6 +68,5 @@ public class AuthService {
         if (effectedRows == 1) {
             System.out.println("Registration is completed!");
         }
-
     }
 }

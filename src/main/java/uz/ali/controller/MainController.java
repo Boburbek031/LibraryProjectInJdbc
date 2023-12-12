@@ -94,13 +94,31 @@ public class MainController {
 
     private void registration() {
         scannerStr = new Scanner(System.in);
-        String name = getNonEmptyInput("Enter name: ");
-        String surname = getNonEmptyInput("Enter surname: ");
+        String name = getNonEmptyInput("Enter name (at least 2 characters): ");
+        String surname = getNonEmptyInput("Enter surname (at least 2 characters): ");
         String phone = getValidPhoneNumber();
-        String login = getNonEmptyInput("Enter login: ");
-        String password = getNonEmptyInput("Enter password: ");
+        String login;
+        String password;
+        do {
+            login = getNonEmptyInput("Enter login (at least 5 characters): ");
+        } while (!isValidLogin(login));
+
+        do {
+            password = getNonEmptyInput("Enter password (at least 6 characters with 1 uppercase, 1 lowercase, 1 digit, and 1 special symbol): ");
+        } while (!isValidPassword(password));
+
         Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
         authService.registration(profile);
+    }
+
+    private boolean isValidLogin(String login) {
+        return login.length() >= 5;
+    }
+
+    private boolean isValidPassword(String password) {
+        // Password should be at least 6 characters long and contain at least one uppercase, one lowercase, one digit, and one special symbol
+        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{6,}$";
+        return password.matches(regex);
     }
 
     private void login() {
@@ -115,10 +133,7 @@ public class MainController {
         do {
             System.out.print(message);
             input = scannerStr.nextLine().trim();
-            if (input.length() <= 2 || input.isBlank()) {
-                System.out.println("\nInput cannot be empty and length must be over 2!");
-            }
-        } while (input.length() <= 2 || input.isBlank());
+        } while (input.length() < 2 || input.isBlank());
         return input;
     }
 

@@ -64,7 +64,7 @@ public class ProfileRepository {
         return 0;
     }
 
-    private Profile mapProfileFromResultSet(ResultSet resultSet) throws SQLException {
+    public Profile mapProfileFromResultSet(ResultSet resultSet) throws SQLException {
         return new Profile(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
