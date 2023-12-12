@@ -2,6 +2,7 @@ package uz.ali.controller;
 
 import uz.ali.model.Profile;
 import uz.ali.util.MD5Util;
+import uz.ali.util.MenuOptions;
 
 import static uz.ali.container.CompoundContainer.*;
 
@@ -25,6 +26,7 @@ public class MainController {
 
     public void start() {
 
+
         tableRepository.createTable();
         initService.initAdmin();
         initService.initStudent();
@@ -33,22 +35,22 @@ public class MainController {
         while (startLoop) {
             showMenu();
             switch (getAction()) {
-                case 1:
-
+                case MenuOptions.BOOK_LIST:
+                    System.out.println("BookList");
                     break;
-                case 2:
-
+                case MenuOptions.SEARCH:
+                    System.out.println("Search");
                     break;
-                case 3:
-
+                case MenuOptions.CATEGORIES:
+                    System.out.println("Category");
                     break;
-                case 4:
+                case MenuOptions.LOGIN:
                     login();
                     break;
-                case 5:
+                case MenuOptions.REGISTRATION:
                     registration();
                     break;
-                case 0:
+                case MenuOptions.EXIT:
                     System.out.println("Exit");
                     startLoop = false;
                     break;
@@ -56,57 +58,6 @@ public class MainController {
                     System.out.println("\n Please, choose one of the following menus below!");
             }
         }
-    }
-
-    private void registration() {
-        scannerStr = new Scanner(System.in);
-        String name = getNonEmptyInput("Enter name: ");
-        String surname = getNonEmptyInput("Enter surname: ");
-        String phone = getValidPhoneNumber();
-
-        String login = getNonEmptyInput("Enter login: ");
-        String password = getNonEmptyInput("Enter password: ");
-
-
-        Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
-        authService.registration(profile);
-    }
-
-    private void login() {
-        System.out.print("Enter login: ");
-        String login = scannerStr.next();
-        System.out.print("Enter password: ");
-        String password = scannerStr.next();
-
-        authService.login(login, password);
-
-
-    }
-
-    public String getNonEmptyInput(String message) {
-        scannerStr = new Scanner(System.in);
-        String input;
-        do {
-            System.out.print(message);
-            input = scannerStr.nextLine().trim();
-            if (input.length() <= 2 || input.isBlank()) {
-                System.out.println("\nInput cannot be empty and length must be over 2!");
-            }
-        } while (input.length() <= 2 || input.isBlank());
-        return input;
-    }
-
-    private String getValidPhoneNumber() {
-        scannerStr = new Scanner(System.in);
-        String phone_number;
-        do {
-            System.out.print("Enter phone number: ");
-            phone_number = scannerStr.nextLine();
-            if (isValidPhoneNumber(phone_number)) {
-                System.out.println("Please enter a valid phone number!");
-            }
-        } while (isValidPhoneNumber(phone_number));
-        return phone_number;
     }
 
     private void showMenu() {
@@ -134,11 +85,53 @@ public class MainController {
 
     public boolean checkIfNumber(String input) {
         try {
-            // Attempt to parse the input as an integer
             Integer.parseInt(input);
-            return true; // If successful, it's a number
+            return true;
         } catch (NumberFormatException e) {
-            return false; // If an exception occurs, it's not a number
+            return false;
         }
+    }
+
+    private void registration() {
+        scannerStr = new Scanner(System.in);
+        String name = getNonEmptyInput("Enter name: ");
+        String surname = getNonEmptyInput("Enter surname: ");
+        String phone = getValidPhoneNumber();
+        String login = getNonEmptyInput("Enter login: ");
+        String password = getNonEmptyInput("Enter password: ");
+        Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
+        authService.registration(profile);
+    }
+
+    private void login() {
+        String login = getNonEmptyInput("Enter login: ");
+        String password = getNonEmptyInput("Enter password: ");
+        authService.login(login, password);
+    }
+
+    public String getNonEmptyInput(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim();
+            if (input.length() <= 2 || input.isBlank()) {
+                System.out.println("\nInput cannot be empty and length must be over 2!");
+            }
+        } while (input.length() <= 2 || input.isBlank());
+        return input;
+    }
+
+    private String getValidPhoneNumber() {
+        scannerStr = new Scanner(System.in);
+        String phoneNumber;
+        do {
+            System.out.print("Enter phone number: ");
+            phoneNumber = scannerStr.nextLine();
+            if (isValidPhoneNumber(phoneNumber)) {
+                System.out.println("Please enter a valid phone number!");
+            }
+        } while (isValidPhoneNumber(phoneNumber));
+        return phoneNumber;
     }
 }

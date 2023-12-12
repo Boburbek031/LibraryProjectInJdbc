@@ -1,5 +1,7 @@
 package uz.ali.controller;
 
+import uz.ali.util.MenuOptions;
+
 import static uz.ali.container.CompoundContainer.scannerStr;
 
 public class AdminController {
@@ -9,18 +11,23 @@ public class AdminController {
         while (startLoop) {
             showMenu();
             switch (getAction()) {
-                case 1:
-
+                case MenuOptions.BOOK_LIST:
+                    System.out.println("BookList");
+                    // Perform actions for Book List
                     break;
-                case 2:
-
+                case MenuOptions.STUDENT:
+                    System.out.println("Category");
+                    // Perform actions for Category
                     break;
-                case 3:
-
+                case MenuOptions.CATEGORIES:
+                    System.out.println("Student");
+                    // Perform actions for Student
                     break;
-                case 4:
+                case MenuOptions.PROFILE:
+                    System.out.println("Profile");
+                    // Perform actions for Profile
                     break;
-                case 0:
+                case MenuOptions.EXIT:
                     System.out.println("Exit");
                     startLoop = false;
                     break;
@@ -34,8 +41,8 @@ public class AdminController {
     private void showMenu() {
         System.out.println("\n\t\t **************** Admin Menu ****************");
         System.out.println("1. Book List");
-        System.out.println("2. Category");
-        System.out.println("3. Student");
+        System.out.println("2. Student");
+        System.out.println("3. Categories");
         System.out.println("4. Profile");
         System.out.println("0. Exit");
     }
@@ -56,13 +63,11 @@ public class AdminController {
 
     public boolean checkIfNumber(String input) {
         try {
-            // Attempt to parse the input as an integer
             Integer.parseInt(input);
-            return true; // If successful, it's a number
+            return true;
         } catch (NumberFormatException e) {
-            return false; // If an exception occurs, it's not a number
+            return false;
         }
     }
-
 
 }

@@ -14,16 +14,21 @@ import java.util.Scanner;
 public class CompoundContainer {
 
 
-    public static TableRepository tableRepository = new TableRepository();
-    public static InitService initService = new InitService();
-    public static AuthService authService = new AuthService();
-    public static ProfileRepository profileRepository = new ProfileRepository();
+    public static Scanner scannerNum = new Scanner(System.in);
+    public static Scanner scannerStr = new Scanner(System.in);
     public static AdminController adminController = new AdminController();
     public static StudentController studentController = new StudentController();
     public static StaffController staffController = new StaffController();
     public static MainController mainController = new MainController();
-    public static Scanner scannerNum = new Scanner(System.in);
-    public static Scanner scannerStr = new Scanner(System.in);
+    public static InitService initService = new InitService();
+    public static AuthService authService = new AuthService();
+    public static ProfileRepository profileRepository = new ProfileRepository();
+    public static TableRepository tableRepository = new TableRepository();
 
+
+    public static void closeScanner() {
+        scannerStr.close();
+        scannerNum.close();
+    }
 
 }

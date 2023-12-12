@@ -1,5 +1,7 @@
 package uz.ali.controller;
 
+import uz.ali.util.MenuOptions;
+
 import static uz.ali.container.CompoundContainer.scannerStr;
 
 public class StaffController {
@@ -9,13 +11,13 @@ public class StaffController {
         while (startLoop) {
             showMenu();
             switch (getAction()) {
-                case 1:
-
+                case MenuOptions.BOOK_LIST:
+                    System.out.println("Book List");
                     break;
-                case 2:
-
+                case MenuOptions.STUDENT:
+                    System.out.println("Student");
                     break;
-                case 0:
+                case MenuOptions.EXIT:
                     System.out.println("Exit");
                     startLoop = false;
                     break;
@@ -49,11 +51,10 @@ public class StaffController {
 
     public boolean checkIfNumber(String input) {
         try {
-            // Attempt to parse the input as an integer
             Integer.parseInt(input);
-            return true; // If successful, it's a number
+            return true;
         } catch (NumberFormatException e) {
-            return false; // If an exception occurs, it's not a number
+            return false;
         }
     }
 
