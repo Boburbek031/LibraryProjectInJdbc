@@ -12,15 +12,14 @@ public class ProfileRepository {
     public boolean isProfileExists(String login) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM profile WHERE login = ?")) {
+                     "SELECT COUNT(*) FROM profile WHERE login = ?")) {
             preparedStatement.setString(1, login);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return true;
+                    return resultSet.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
-            // Consider logging the exception or throwing a custom exception for better error handling
             e.printStackTrace();
         }
         return false;
