@@ -67,12 +67,13 @@ public class ProfileRepository {
             preparedStatement.setString(2, profile.getSurname());
             preparedStatement.setString(3, profile.getLogin());
             preparedStatement.setString(4, profile.getPassword());
-            preparedStatement.setString(5, profile.getPhone());
+            preparedStatement.setString(5, profile.getPhone().replace("+", "").trim());
             preparedStatement.setString(6, profile.getProfileStatus().name());
             preparedStatement.setString(7, profile.getProfileRole().name());
             preparedStatement.setTimestamp(8, Timestamp.valueOf(profile.getCreatedDate()));
-            System.out.println("Profile inserted successfully.");
-            return preparedStatement.executeUpdate();
+            int affectedRows = preparedStatement.executeUpdate();
+            System.out.println(affectedRows);
+            return affectedRows;
         } catch (SQLException e) {
             e.printStackTrace();
         }

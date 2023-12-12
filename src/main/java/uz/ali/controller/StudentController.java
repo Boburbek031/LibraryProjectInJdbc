@@ -3,6 +3,8 @@ package uz.ali.controller;
 import java.util.Scanner;
 
 public class StudentController {
+    // password: 0203
+    // login: alish
 
     private Scanner scannerNum = new Scanner(System.in);
     private Scanner scannerStr = new Scanner(System.in);

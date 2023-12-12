@@ -9,6 +9,8 @@ import uz.ali.model.Profile;
 import uz.ali.repository.ProfileRepository;
 import uz.ali.util.MD5Util;
 
+import java.time.LocalDateTime;
+
 public class AuthService {
 
     ProfileRepository profileRepository = new ProfileRepository();
@@ -46,4 +48,20 @@ public class AuthService {
     }
 
 
+    public void registration(Profile profile) {
+        // check all the details
+        boolean profileExists = profileRepository.isProfileExists(profile.getLogin());
+        if (profileExists) {
+            System.out.println("Such " + profile.getLogin() + " login already exists!");
+            return;
+        }
+        profile.setCreatedDate(LocalDateTime.now());
+        profile.setProfileRole(ProfileRole.STUDENT);
+        profile.setProfileStatus(ProfileStatus.ACTIVE);
+        int effectedRows = profileRepository.createProfile(profile);
+        if (effectedRows == 1) {
+            System.out.println("Registration is completed!");
+        }
+
+    }
 }

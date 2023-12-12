@@ -1,8 +1,10 @@
 package uz.ali.controller;
 
+import uz.ali.model.Profile;
 import uz.ali.repository.TableRepository;
 import uz.ali.service.AuthService;
 import uz.ali.service.InitService;
+import uz.ali.util.MD5Util;
 
 import java.util.Scanner;
 
@@ -13,6 +15,20 @@ public class MainController {
     AuthService authService = new AuthService();
     private Scanner scannerNum = new Scanner(System.in);
     private Scanner scannerStr = new Scanner(System.in);
+
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        // Basic validation: Check if the phone number is not null and not empty
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
+            return false;
+        }
+
+        // Remove non-digit characters from the phone number
+        String numericPhoneNumber = phoneNumber.replaceAll("[^0-9]", "");
+        String trimPhoneNumber = numericPhoneNumber.trim();
+
+        // Check if the phone number starts with the country code 998 and has a length of 12
+        return trimPhoneNumber.startsWith("998") && trimPhoneNumber.length() == 12;
+    }
 
     public void start() {
 
@@ -50,16 +66,17 @@ public class MainController {
     }
 
     private void registration() {
-        System.out.print("Enter name: ");
-        String name = scannerStr.nextLine();
-        System.out.print("Enter surname: ");
-        String surname = scannerStr.nextLine();
-        System.out.print("Enter phone: ");
-        String phone = scannerStr.nextLine();
-        System.out.print("Enter login: ");
-        String login = scannerStr.next();
-        System.out.print("Enter password: ");
-        String password = scannerStr.next();
+        scannerStr = new Scanner(System.in);
+        String name = getNonEmptyInput("Enter name: ");
+        String surname = getNonEmptyInput("Enter surname: ");
+        String phone = getValidPhoneNumber();
+
+        String login = getNonEmptyInput("Enter login: ");
+        String password = getNonEmptyInput("Enter password: ");
+
+
+        Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
+        authService.registration(profile);
     }
 
     private void login() {
@@ -73,6 +90,31 @@ public class MainController {
 
     }
 
+    public String getNonEmptyInput(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim();
+            if (input.length() <= 2 || input.isBlank()) {
+                System.out.println("\nInput cannot be empty and length must be over 2!");
+            }
+        } while (input.length() <= 2 || input.isBlank());
+        return input;
+    }
+
+    private String getValidPhoneNumber() {
+        scannerStr = new Scanner(System.in);
+        String phone_number;
+        do {
+            System.out.print("Enter phone number: ");
+            phone_number = scannerStr.nextLine();
+            if (!isValidPhoneNumber(phone_number)) {
+                System.out.println("Please enter a valid phone number!");
+            }
+        } while (!isValidPhoneNumber(phone_number));
+        return phone_number;
+    }
 
     private void showMenu() {
         System.out.println("\n\t\t **************** Main Menu ****************");

@@ -23,6 +23,14 @@ public class Profile {
     public Profile() {
     }
 
+    public Profile(String name, String surname, String phone, String login, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.login = login;
+        this.password = password;
+    }
+
     public Profile(String name, String surname, String login, String password, String phone, ProfileStatus profileStatus, ProfileRole profileRole, LocalDateTime createdDate) {
         this.name = name;
         this.surname = surname;
