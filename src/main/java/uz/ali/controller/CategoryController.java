@@ -33,7 +33,7 @@ public class CategoryController {
     }
 
     private void addCategory() {
-        categoryService.createCategory(new Category(getNonEmptyInput("Enter category name: ")));
+        categoryService.createCategory(new Category(getNonEmptyInput("Enter category name (at least 3 characters): ")));
     }
 
     public String getNonEmptyInput(String message) {

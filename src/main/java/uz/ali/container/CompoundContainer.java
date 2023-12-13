@@ -27,10 +27,4 @@ public class CompoundContainer {
     public static CategoryRepository categoryRepository = new CategoryRepository();
     public static TableRepository tableRepository = new TableRepository();
 
-
-    public static void closeScanner() {
-        scannerStr.close();
-        scannerNum.close();
-    }
-
 }

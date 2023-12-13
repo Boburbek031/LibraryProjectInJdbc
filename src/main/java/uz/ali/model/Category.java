@@ -7,8 +7,7 @@ public class Category {
     private Integer id;
     private String name;
     private LocalDateTime createdDate;
-
-    private boolean visible = true;
+    private boolean visible;
 
     public Category() {
     }
@@ -34,6 +33,7 @@ public class Category {
         this.createdDate = createdDate;
         this.visible = visible;
     }
+
 
     public Integer getId() {
         return id;

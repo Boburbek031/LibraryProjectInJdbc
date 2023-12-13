@@ -3,10 +3,7 @@ package uz.ali.repository;
 import uz.ali.model.Category;
 import uz.ali.model.Profile;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CategoryRepository {
 
@@ -29,7 +26,7 @@ public class CategoryRepository {
     public Category getCategoryByName(String categoryName) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT  * FROM category WHERE name = ?")) {
+                     "SELECT * FROM category WHERE name = ?")) {
             preparedStatement.setString(1, categoryName);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -49,5 +46,21 @@ public class CategoryRepository {
                 resultSet.getTimestamp("created_date").toLocalDateTime(),
                 resultSet.getBoolean("visible"));
     }
+
+    public int saveCategory(Category category) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO category (name, created_date, visible) VALUES (?, ?, ?)")) {
+
+            preparedStatement.setString(1, category.getName());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(category.getCreatedDate()));
+            preparedStatement.setBoolean(3, category.isVisible());
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
 }
