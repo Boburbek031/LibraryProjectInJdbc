@@ -23,6 +23,7 @@ public class CategoryController {
                     deleteCategory();
                     break;
                 case 4:
+                    updateCategory();
                     break;
                 case 0:
                     System.out.println("Exit");
@@ -31,6 +32,21 @@ public class CategoryController {
                 default:
                     System.out.println("\n Please, choose one of the following menus below!");
             }
+        }
+    }
+
+    private void updateCategory() {
+        System.out.print("Enter category ID that you want to update: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int categoryId = scannerNum.nextInt();
+        if (categoryService.isCategoryExistsById(categoryId)) {
+            String newCategoryName = getNonEmptyInput("Enter category name (at least 3 characters) that you want to update: ");
+            categoryService.updateCategoryById(newCategoryName, categoryId);
+        } else {
+            System.out.println("Category not found!");
         }
     }
 

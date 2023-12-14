@@ -11,7 +11,7 @@ import static uz.ali.container.CompoundContainer.*;
 public class CategoryService {
 
     public void createCategory(Category category) {
-        if (categoryRepository.isCategoryExists(category.getName())) {
+        if (categoryRepository.isCategoryExistsByName(category.getName())) {
             System.out.println("There is a category with such name " + category.getName() + ". Please, add other one!");
         }
         category.setVisible(true);
@@ -26,8 +26,8 @@ public class CategoryService {
         printContactList(categoryList);
     }
 
-    public void deleteCategoryById(Integer categoryId){
-        if (categoryRepository.deleteCategoryById(categoryId) > 0){
+    public void deleteCategoryById(Integer categoryId) {
+        if (categoryRepository.deleteCategoryById(categoryId) > 0) {
             System.out.println("Category is successfully deleted!");
         } else {
             System.out.println("Category not found!");
@@ -52,6 +52,16 @@ public class CategoryService {
     }
 
 
+    public boolean isCategoryExistsById(Integer categoryId) {
+        return categoryRepository.isCategoryExistsById(categoryId);
+    }
 
+    public void updateCategoryById(String newCategoryName, Integer categoryId) {
+        if (categoryRepository.updateCategoryById(categoryId, newCategoryName) > 0) {
+            System.out.println("Category is successfully updated!");
+        } else {
+            System.out.println("Error in updating!");
+        }
+    }
 
 }

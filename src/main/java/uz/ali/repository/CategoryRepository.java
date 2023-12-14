@@ -8,11 +8,27 @@ import java.util.List;
 
 public class CategoryRepository {
 
-    public boolean isCategoryExists(String categoryName) {
+    public boolean isCategoryExistsByName(String categoryName) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT COUNT(*) FROM category WHERE name = ?")) {
             preparedStatement.setString(1, categoryName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isCategoryExistsById(Integer categoryId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT COUNT(*) FROM category WHERE id = ?")) {
+            preparedStatement.setInt(1, categoryId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1) > 0;
@@ -69,7 +85,7 @@ public class CategoryRepository {
 
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM category WHERE visible = true")) {
+                     "SELECT * FROM category WHERE visible = true order by id")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 categoryList.add(mapCategoryFromResultSet(resultSet));
@@ -87,6 +103,20 @@ public class CategoryRepository {
                      "UPDATE category SET visible = false WHERE id = ?")) {
 
             preparedStatement.setInt(1, categoryId);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int updateCategoryById(int categoryId, String newCategoryName) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE category SET name = ? WHERE id = ?")) {
+
+            preparedStatement.setString(1, newCategoryName);
+            preparedStatement.setInt(2, categoryId);
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
