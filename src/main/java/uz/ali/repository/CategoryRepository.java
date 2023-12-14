@@ -1,9 +1,10 @@
 package uz.ali.repository;
 
 import uz.ali.model.Category;
-import uz.ali.model.Profile;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CategoryRepository {
 
@@ -63,4 +64,33 @@ public class CategoryRepository {
     }
 
 
+    public List<Category> getCategoryList() {
+        List<Category> categoryList = new LinkedList<>();
+
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT * FROM category WHERE visible = true")) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                categoryList.add(mapCategoryFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categoryList;
+    }
+
+
+    public int deleteCategoryById(Integer categoryId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE category SET visible = false WHERE id = ?")) {
+
+            preparedStatement.setInt(1, categoryId);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

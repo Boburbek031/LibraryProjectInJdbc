@@ -14,11 +14,13 @@ public class CategoryController {
             showMenu();
             switch (getAction()) {
                 case 1:
+                    getCategoryList();
                     break;
                 case 2:
                     addCategory();
                     break;
                 case 3:
+                    deleteCategory();
                     break;
                 case 4:
                     break;
@@ -32,8 +34,22 @@ public class CategoryController {
         }
     }
 
+    private void getCategoryList() {
+        categoryService.getCategoryList();
+    }
+
     private void addCategory() {
         categoryService.createCategory(new Category(getNonEmptyInput("Enter category name (at least 3 characters): ")));
+    }
+
+    private void deleteCategory() {
+        System.out.print("Enter category ID that you want to delete: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int categoryId = scannerNum.nextInt();
+        categoryService.deleteCategoryById(categoryId);
     }
 
     public String getNonEmptyInput(String message) {
