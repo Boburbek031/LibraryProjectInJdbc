@@ -35,38 +35,6 @@ public class CategoryController {
         }
     }
 
-    private void updateCategory() {
-        System.out.print("Enter category ID that you want to update: ");
-        while (!scannerNum.hasNextInt()) {
-            System.out.print("Please enter a valid number: ");
-            scannerNum.next(); // Clear the invalid input
-        }
-        int categoryId = scannerNum.nextInt();
-        if (categoryService.isCategoryExistsById(categoryId)) {
-            String newCategoryName = getNonEmptyInput("Enter category name (at least 3 characters) that you want to update: ");
-            categoryService.updateCategoryById(newCategoryName, categoryId);
-        } else {
-            System.out.println("Category not found!");
-        }
-    }
-
-    private void getCategoryList() {
-        categoryService.getCategoryList();
-    }
-
-    private void addCategory() {
-        categoryService.createCategory(new Category(getNonEmptyInput("Enter category name (at least 3 characters): ")));
-    }
-
-    private void deleteCategory() {
-        System.out.print("Enter category ID that you want to delete: ");
-        while (!scannerNum.hasNextInt()) {
-            System.out.print("Please enter a valid number: ");
-            scannerNum.next(); // Clear the invalid input
-        }
-        int categoryId = scannerNum.nextInt();
-        categoryService.deleteCategoryById(categoryId);
-    }
 
     public String getNonEmptyInput(String message) {
         scannerStr = new Scanner(System.in);
@@ -110,5 +78,37 @@ public class CategoryController {
         }
     }
 
+    private void getCategoryList() {
+        categoryService.getCategoryList();
+    }
+
+    private void addCategory() {
+        categoryService.createCategory(new Category(getNonEmptyInput("Enter category name (at least 3 characters): ")));
+    }
+
+    private void deleteCategory() {
+        System.out.print("Enter category ID that you want to delete: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int categoryId = scannerNum.nextInt();
+        categoryService.deleteCategoryById(categoryId);
+    }
+
+    private void updateCategory() {
+        System.out.print("Enter category ID that you want to update: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int categoryId = scannerNum.nextInt();
+        if (categoryService.isCategoryExistsById(categoryId)) {
+            String newCategoryName = getNonEmptyInput("Enter category name (at least 3 characters) that you want to update: ");
+            categoryService.updateCategoryById(newCategoryName, categoryId);
+        } else {
+            System.out.println("Category not found!");
+        }
+    }
 
 }

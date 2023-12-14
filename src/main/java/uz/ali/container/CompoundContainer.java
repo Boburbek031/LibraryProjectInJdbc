@@ -8,6 +8,10 @@ import uz.ali.service.AuthService;
 import uz.ali.service.CategoryService;
 import uz.ali.service.InitService;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class CompoundContainer {
@@ -26,5 +30,6 @@ public class CompoundContainer {
     public static ProfileRepository profileRepository = new ProfileRepository();
     public static CategoryRepository categoryRepository = new CategoryRepository();
     public static TableRepository tableRepository = new TableRepository();
+
 
 }

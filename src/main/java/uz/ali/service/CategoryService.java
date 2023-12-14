@@ -22,8 +22,7 @@ public class CategoryService {
     }
 
     public void getCategoryList() {
-        List<Category> categoryList = categoryRepository.getCategoryList();
-        printContactList(categoryList);
+        printContactList(categoryRepository.getCategoryList());
     }
 
     public void deleteCategoryById(Integer categoryId) {
