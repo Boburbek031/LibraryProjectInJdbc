@@ -2,8 +2,7 @@ package uz.ali.controller;
 
 import uz.ali.util.MenuOptions;
 
-import static uz.ali.container.CompoundContainer.categoryController;
-import static uz.ali.container.CompoundContainer.scannerStr;
+import static uz.ali.container.CompoundContainer.*;
 
 public class AdminController {
 
@@ -12,20 +11,19 @@ public class AdminController {
         while (startLoop) {
             showMenu();
             switch (getAction()) {
-                case MenuOptions.BOOK_LIST:
-                    System.out.println("BookList");
-                    // Perform actions for Book List
+                case 1:
+                    bookController.start();
                     break;
-                case MenuOptions.STUDENT:
+                case 2:
                     break;
-                case MenuOptions.CATEGORIES:
+                case 3:
                     categoryController.start();
                     break;
-                case MenuOptions.PROFILE:
+                case 4:
                     System.out.println("Profile");
                     // Perform actions for Profile
                     break;
-                case MenuOptions.EXIT:
+                case 0:
                     System.out.println("Exit");
                     startLoop = false;
                     break;

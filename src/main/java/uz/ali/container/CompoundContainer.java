@@ -23,6 +23,7 @@ public class CompoundContainer {
     public static StudentController studentController = new StudentController();
     public static StaffController staffController = new StaffController();
     public static CategoryController categoryController = new CategoryController();
+    public static BookController bookController = new BookController();
     public static MainController mainController = new MainController();
     public static InitService initService = new InitService();
     public static AuthService authService = new AuthService();
