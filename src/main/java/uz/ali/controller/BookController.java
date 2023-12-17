@@ -20,7 +20,7 @@ public class BookController {
 
                     break;
                 case 3:
-
+                    addBook();
                     break;
                 case 4:
 
@@ -48,21 +48,11 @@ public class BookController {
     }
 
 
-    public String getNonEmptyInput(String message) {
-        scannerStr = new Scanner(System.in);
-        String input;
-        do {
-            System.out.print(message);
-            input = scannerStr.nextLine().trim();
-        } while (input.length() < 3 || input.isBlank());
-        return input;
-    }
-
     private void showMenu() {
         System.out.println("\n\t\t **************** Book Menu ****************");
         System.out.println("1. Book List");
         System.out.println("2. Search");
-        System.out.println("3. Add boo");
+        System.out.println("3. Add book");
         System.out.println("4. Delete book");
         System.out.println("5. Update book");
         System.out.println("6. Books on hand");
@@ -72,34 +62,16 @@ public class BookController {
     }
 
 
-    public int getAction() {
-        while (true) {
-            System.out.print("Choose one of the actions above: ");
-            String chosenMenu = scannerStr.next();
-            if (checkIfNumber(chosenMenu)) {
-                return Integer.parseInt(chosenMenu);
-            } else {
-                showMenu();
-                System.out.println("\n Please, choose one of the following menus above!");
-            }
-        }
-    }
-
-    public boolean checkIfNumber(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
     private void getCategoryList() {
         categoryService.getCategoryList();
     }
 
-    private void addCategory() {
-        categoryService.createCategory(new Category(getNonEmptyInput("Enter category name (at least 3 characters): ")));
+    private void addBook() {
+        String title = getNonEmptyInput("Enter title (at least 2 characters): ");
+        String author = getNonEmptyInput("Enter author (at least 2 characters): ");
+        String categoryId = getNonEmptyInputNumber("Enter Category Id: ");
+        String publishDate = getNonEmptyInput("Enter published date (yyyy-MM-dd): "); // 2024-08-31
+
     }
 
     private void deleteCategory() {
@@ -126,5 +98,49 @@ public class BookController {
             System.out.println("Category not found!");
         }
     }
+
+
+    public String getNonEmptyInput(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim();
+        } while (input.length() < 3 || input.isBlank());
+        return input;
+    }
+
+    public String getNonEmptyInputNumber(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim();
+        } while (input.isBlank() || !checkIfNumber(input));
+        return input;
+    }
+
+    public int getAction() {
+        while (true) {
+            System.out.print("Choose one of the actions above: ");
+            String chosenMenu = scannerStr.next();
+            if (checkIfNumber(chosenMenu)) {
+                return Integer.parseInt(chosenMenu);
+            } else {
+                showMenu();
+                System.out.println("\n Please, choose one of the following menus above!");
+            }
+        }
+    }
+
+    public boolean checkIfNumber(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 
 }
