@@ -1,12 +1,17 @@
 package uz.ali.controller;
 
-import uz.ali.model.Category;
+import uz.ali.model.Book;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import static uz.ali.container.CompoundContainer.*;
 
 public class BookController {
+
+    // hamma checking larni service class da qilish kere // update qilasan
 
     public void start() {
         boolean startLoop = true;
@@ -14,7 +19,7 @@ public class BookController {
             showMenu();
             switch (getAction()) {
                 case 1:
-
+                    getBookList();
                     break;
                 case 2:
 
@@ -47,6 +52,9 @@ public class BookController {
         }
     }
 
+    private void getBookList() {
+        bookService.getBookList();
+    }
 
     private void showMenu() {
         System.out.println("\n\t\t **************** Book Menu ****************");
@@ -61,17 +69,17 @@ public class BookController {
         System.out.println("0. Exit");
     }
 
-
     private void getCategoryList() {
         categoryService.getCategoryList();
     }
 
     private void addBook() {
-        String title = getNonEmptyInput("Enter title (at least 2 characters): ");
-        String author = getNonEmptyInput("Enter author (at least 2 characters): ");
-        String categoryId = getNonEmptyInputNumber("Enter Category Id: ");
-        String publishDate = getNonEmptyInput("Enter published date (yyyy-MM-dd): "); // 2024-08-31
-
+        String title = getNonEmptyInput("Enter title (at least 3 characters): ");
+        String author = getNonEmptyInput("Enter author (at least 3 characters): ");
+        int availableDay = getNonEmptyInputNumber("Enter available day: ");
+        int categoryId = getNonEmptyInputNumber("Enter Category Id: ");
+        String publishDate = getValidDateInput(); // 2024-08-31
+        bookService.addBook(new Book(title, author, categoryId, LocalDate.parse(publishDate), availableDay));
     }
 
     private void deleteCategory() {
@@ -99,7 +107,6 @@ public class BookController {
         }
     }
 
-
     public String getNonEmptyInput(String message) {
         scannerStr = new Scanner(System.in);
         String input;
@@ -110,14 +117,14 @@ public class BookController {
         return input;
     }
 
-    public String getNonEmptyInputNumber(String message) {
+    public int getNonEmptyInputNumber(String message) {
         scannerStr = new Scanner(System.in);
         String input;
         do {
             System.out.print(message);
             input = scannerStr.nextLine().trim();
         } while (input.isBlank() || !checkIfNumber(input));
-        return input;
+        return Integer.parseInt(input);
     }
 
     public int getAction() {
@@ -142,5 +149,23 @@ public class BookController {
         }
     }
 
+    public boolean isValidDateFormat(String dateToValidate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            LocalDate.parse(dateToValidate, formatter);
+            return true; // Date is in the correct format
+        } catch (DateTimeParseException e) {
+            return false; // Date format is invalid
+        }
+    }
+
+    public String getValidDateInput() {
+        String publishDate;
+        do {
+            System.out.print("Enter published date (yyyy-MM-dd): ");
+            publishDate = scannerStr.nextLine();
+        } while (publishDate.isEmpty() || !isValidDateFormat(publishDate));
+        return publishDate;
+    }
 
 }

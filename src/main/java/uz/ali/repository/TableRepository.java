@@ -34,8 +34,8 @@ public class TableRepository {
                 "title VARCHAR(25) NOT NULL," +
                 "author VARCHAR(25) NOT NULL," +
                 "category_id INT NOT NULL UNIQUE," +
-                "publish_date DATE," +
-                "available_day int," +
+                "publish_date DATE NOT NULL," +
+                "available_day int NOT NULL," +
                 "created_date TIMESTAMP DEFAULT NOW()," +
                 "visible BOOLEAN DEFAULT TRUE," +
                 "CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category (id)" +

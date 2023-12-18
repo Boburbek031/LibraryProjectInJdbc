@@ -37,6 +37,7 @@ public class MainController {
             switch (getAction()) {
                 case MenuOptions.BOOK_LIST:
                     System.out.println("BookList");
+                    bookService.getBookList();
                     break;
                 case MenuOptions.SEARCH:
                     System.out.println("Search");

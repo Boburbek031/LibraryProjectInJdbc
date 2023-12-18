@@ -29,6 +29,24 @@ public class Book {
         this.createdDate = createdDate;
     }
 
+    public Book(Integer id, String title, String author, Integer categoryId, LocalDate publishDate, Integer availableDay, LocalDateTime createdDate) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.categoryId = categoryId;
+        this.publishDate = publishDate;
+        this.availableDay = availableDay;
+        this.createdDate = createdDate;
+    }
+
+    public Book(String title, String author, Integer categoryId, LocalDate publishDate, Integer availableDay) {
+        this.title = title;
+        this.author = author;
+        this.categoryId = categoryId;
+        this.publishDate = publishDate;
+        this.availableDay = availableDay;
+    }
+
     public Integer getId() {
         return id;
     }
