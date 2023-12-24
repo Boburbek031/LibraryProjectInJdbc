@@ -11,10 +11,7 @@ public class BookRepository {
 
 
     public int saveBook(Book book) {
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO book(title, author, category_id, publish_date, available_day, created_date, visible) " +
-                             "VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO book(title, author, category_id, publish_date, available_day, created_date, visible) " + "VALUES (?, ?, ?, ?, ?, ?, ?)")) {
 
             preparedStatement.setString(1, book.getTitle());
             preparedStatement.setString(2, book.getAuthor());
@@ -33,12 +30,19 @@ public class BookRepository {
     public List<Book> getBookList() {
         List<Book> bookList = new LinkedList<>();
 
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM book WHERE visible = true order by id")) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT b.*, c.name as category_name FROM book as b " + "inner join category as c on c.id = b.category_id WHERE b.visible = true order by b.id")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                bookList.add(mapBookFromResultSet(resultSet));
+                Book book = new Book();
+                book.setId(resultSet.getInt("id"));
+                book.setTitle(resultSet.getString("title"));
+                book.setAuthor(resultSet.getString("author"));
+                book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
+                book.setAvailableDay(resultSet.getInt("available_day"));
+                book.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
+                Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
+                book.setCategory(category);
+                bookList.add(book);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,14 +50,4 @@ public class BookRepository {
         return bookList;
     }
 
-    public Book mapBookFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Book(
-                resultSet.getInt("id"),
-                resultSet.getString("title"),
-                resultSet.getString("author"),
-                resultSet.getInt("category_id"),
-                resultSet.getDate("publish_date").toLocalDate(),
-                resultSet.getInt("available_day"),
-                resultSet.getTimestamp("created_date").toLocalDateTime());
-    }
 }

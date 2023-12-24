@@ -42,17 +42,17 @@ public class BookService {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
         } else {
-            System.out.println("-----------------------------------------------------------------------------------------------------");
-            System.out.println("| Id   | Title               | Author              | Category Id | Publish Date | Available Day | Created Date              |");
-            System.out.println("-----------------------------------------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------------------------");
+            System.out.println("| Id      | Category name            | Author                   | Title               | Publish Date |");
+            System.out.println("------------------------------------------------------------------------------------------------------");
 
             for (Book book : bookList) {
-                String formattedContact = String.format("| %-5s| %-20s| %-20s| %-12s| %-13s| %-14s| %-23s|",
-                        book.getId(), book.getTitle(), book.getAuthor(), book.getCategoryId(),
-                        book.getPublishDate(), book.getAvailableDay(), book.getCreatedDate());
+                String formattedContact = String.format("| %-8s| %-25s| %-25s| %-20s| %-13s|",
+                        book.getId(), book.getTitle(), book.getAuthor(), book.getCategory().getName(),
+                        book.getPublishDate());
                 System.out.println(formattedContact);
             }
-            System.out.println("-----------------------------------------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------------------------");
         }
     }
 }

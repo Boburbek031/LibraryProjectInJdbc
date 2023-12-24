@@ -15,6 +15,8 @@ public class Book {
     private Boolean visible;
     private LocalDateTime createdDate;
 
+    private Category category;
+
     public Book() {
     }
 
@@ -37,6 +39,14 @@ public class Book {
         this.publishDate = publishDate;
         this.availableDay = availableDay;
         this.createdDate = createdDate;
+    }
+
+    public Book(Integer id, String title, String author, Integer categoryId, LocalDate publishDate) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.categoryId = categoryId;
+        this.publishDate = publishDate;
     }
 
     public Book(String title, String author, Integer categoryId, LocalDate publishDate, Integer availableDay) {
@@ -109,6 +119,14 @@ public class Book {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
