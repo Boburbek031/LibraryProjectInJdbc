@@ -21,7 +21,6 @@ public class BookService {
             }
         } else {
             System.out.println("Category not found.");
-            return;
         }
     }
 
@@ -38,6 +37,15 @@ public class BookService {
         }
     }*/
 
+    public void searchBook(String searchTerm) {
+        List<Book> bookList = bookRepository.searchBook(searchTerm);
+        if (!bookList.isEmpty()) {
+            printBookList(bookList);
+        } else {
+            System.out.println("No matching contacts found.");
+        }
+    }
+
     public void printBookList(List<Book> bookList) {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
@@ -48,7 +56,7 @@ public class BookService {
 
             for (Book book : bookList) {
                 String formattedContact = String.format("| %-8s| %-25s| %-25s| %-20s| %-13s|",
-                        book.getId(), book.getTitle(), book.getAuthor(), book.getCategory().getName(),
+                        book.getId(), book.getCategory().getName(), book.getAuthor(), book.getTitle(),
                         book.getPublishDate());
                 System.out.println(formattedContact);
             }

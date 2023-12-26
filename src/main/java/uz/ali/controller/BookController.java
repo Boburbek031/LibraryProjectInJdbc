@@ -5,6 +5,7 @@ import uz.ali.model.Book;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 import static uz.ali.container.CompoundContainer.*;
@@ -22,7 +23,7 @@ public class BookController {
                     getBookList();
                     break;
                 case 2:
-
+                    searchBook();
                     break;
                 case 3:
                     addBook();
@@ -52,10 +53,6 @@ public class BookController {
         }
     }
 
-    private void getBookList() {
-        bookService.getBookList();
-    }
-
     private void showMenu() {
         System.out.println("\n\t\t **************** Book Menu ****************");
         System.out.println("1. Book List");
@@ -69,8 +66,19 @@ public class BookController {
         System.out.println("0. Exit");
     }
 
-    private void getCategoryList() {
-        categoryService.getCategoryList();
+
+    private void getBookList() {
+        bookService.getBookList();
+    }
+
+    public void searchBook() {
+        String searchTerm;
+        do {
+            System.out.print("Enter search term (Book's title or author's name): ");
+            scannerStr = new Scanner(System.in);
+             searchTerm = scannerStr.nextLine();
+        } while (searchTerm.isBlank());
+        bookService.searchBook(searchTerm);
     }
 
     private void addBook() {

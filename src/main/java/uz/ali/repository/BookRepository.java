@@ -4,6 +4,7 @@ import uz.ali.model.Book;
 import uz.ali.model.Category;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +31,10 @@ public class BookRepository {
     public List<Book> getBookList() {
         List<Book> bookList = new LinkedList<>();
 
-        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT b.*, c.name as category_name FROM book as b " + "inner join category as c on c.id = b.category_id WHERE b.visible = true order by b.id")) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT b.*, c.name as category_name FROM book as b " + "inner join category as c " +
+                             "on c.id = b.category_id WHERE b.visible = true order by b.id")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Book book = new Book();
@@ -43,6 +47,36 @@ public class BookRepository {
                 Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
                 book.setCategory(category);
                 bookList.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
+    public List<Book> searchBook(String searchTerm) {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT b.*, c.name as category_name FROM book as b inner join category as c " +
+                "on c.id = b.category_id WHERE LOWER(title) LIKE ? " +
+                "OR LOWER(author) LIKE ? and b.visible = true order by b.id asc";
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            String likeTerm = "%" + searchTerm.toLowerCase() + "%";
+            preparedStatement.setString(1, likeTerm);
+            preparedStatement.setString(2, likeTerm);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Book book = new Book();
+                    book.setId(resultSet.getInt("id"));
+                    book.setTitle(resultSet.getString("title"));
+                    book.setAuthor(resultSet.getString("author"));
+                    book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
+                    Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
+                    book.setCategory(category);
+                    bookList.add(book);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
