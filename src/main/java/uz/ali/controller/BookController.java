@@ -5,7 +5,6 @@ import uz.ali.model.Book;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.Scanner;
 
 import static uz.ali.container.CompoundContainer.*;
@@ -29,7 +28,7 @@ public class BookController {
                     addBook();
                     break;
                 case 4:
-
+                    deleteBook();
                     break;
                 case 5:
 
@@ -90,14 +89,14 @@ public class BookController {
         bookService.addBook(new Book(title, author, categoryId, LocalDate.parse(publishDate), availableDay));
     }
 
-    private void deleteCategory() {
-        System.out.print("Enter category ID that you want to delete: ");
+    private void deleteBook() {
+        System.out.print("Enter book ID that you want to delete: ");
         while (!scannerNum.hasNextInt()) {
-            System.out.print("Please enter a valid number: ");
+            System.out.print("Please enter a valid id: ");
             scannerNum.next(); // Clear the invalid input
         }
-        int categoryId = scannerNum.nextInt();
-        categoryService.deleteCategoryById(categoryId);
+        int bookId = scannerNum.nextInt();
+        bookService.deleteBookById(bookId);
     }
 
     private void updateCategory() {

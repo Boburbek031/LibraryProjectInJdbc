@@ -54,6 +54,19 @@ public class BookRepository {
         return bookList;
     }
 
+    public int deleteBookById(Integer bookId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE book SET visible = false WHERE id = ?")) {
+
+            preparedStatement.setInt(1, bookId);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public List<Book> searchBook(String searchTerm) {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT b.*, c.name as category_name FROM book as b inner join category as c " +

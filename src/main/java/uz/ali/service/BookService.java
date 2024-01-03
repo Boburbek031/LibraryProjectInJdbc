@@ -29,20 +29,20 @@ public class BookService {
         printBookList(bookRepository.getBookList());
     }
 
-    /*public void deleteCategoryById(Integer categoryId) {
-        if (categoryRepository.deleteCategoryById(categoryId) > 0) {
-            System.out.println("Category is successfully deleted!");
-        } else {
-            System.out.println("Category not found!");
-        }
-    }*/
-
     public void searchBook(String searchTerm) {
         List<Book> bookList = bookRepository.searchBook(searchTerm);
         if (!bookList.isEmpty()) {
             printBookList(bookList);
         } else {
             System.out.println("No matching contacts found.");
+        }
+    }
+
+    public void deleteBookById(Integer bookId) {
+        if (bookRepository.deleteBookById(bookId) > 0) {
+            System.out.println("Book is successfully deleted!");
+        } else {
+            System.out.println("Book not found!");
         }
     }
 
