@@ -24,6 +24,21 @@ public class BookService {
         }
     }
 
+    public boolean isBookExistsById(Integer bookId) {
+        return bookRepository.isBookExistsById(bookId);
+    }
+
+    public void updateBook(Book bookToUpdate) {
+        if (bookRepository.updateBook(bookToUpdate) > 0) {
+            System.out.println("Book is successfully updated!");
+        } else {
+            System.out.println("Error in updating!");
+        }
+    }
+
+    public Book getBookById(int bookId) {
+        return bookRepository.getBookById(bookId);
+    }
 
     public void getBookList() {
         printBookList(bookRepository.getBookList());

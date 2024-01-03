@@ -3,6 +3,7 @@ package uz.ali.controller;
 import uz.ali.model.Book;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -31,7 +32,7 @@ public class BookController {
                     deleteBook();
                     break;
                 case 5:
-
+                    updateBook();
                     break;
                 case 6:
 
@@ -75,7 +76,7 @@ public class BookController {
         do {
             System.out.print("Enter search term (Book's title or author's name): ");
             scannerStr = new Scanner(System.in);
-             searchTerm = scannerStr.nextLine();
+            searchTerm = scannerStr.nextLine();
         } while (searchTerm.isBlank());
         bookService.searchBook(searchTerm);
     }
@@ -92,27 +93,76 @@ public class BookController {
     private void deleteBook() {
         System.out.print("Enter book ID that you want to delete: ");
         while (!scannerNum.hasNextInt()) {
-            System.out.print("Please enter a valid id: ");
+            System.out.print("Please enter a valid number: ");
             scannerNum.next(); // Clear the invalid input
         }
         int bookId = scannerNum.nextInt();
         bookService.deleteBookById(bookId);
     }
 
-    private void updateCategory() {
-        System.out.print("Enter category ID that you want to update: ");
+    private void updateBook() {
+        System.out.print("Enter book ID that you want to update: ");
         while (!scannerNum.hasNextInt()) {
             System.out.print("Please enter a valid number: ");
             scannerNum.next(); // Clear the invalid input
         }
-        int categoryId = scannerNum.nextInt();
-        if (categoryService.isCategoryExistsById(categoryId)) {
-            String newCategoryName = getNonEmptyInput("Enter category name (at least 3 characters) that you want to update: ");
-            categoryService.updateCategoryById(newCategoryName, categoryId);
+        int bookId = scannerNum.nextInt();
+
+        if (bookService.isBookExistsById(bookId)) {
+            Book bookToUpdate = bookService.getBookById(bookId);
+            displayBookDetails(bookToUpdate);
+            if (updateBookFields(bookToUpdate) != 0) {
+                bookService.updateBook(bookToUpdate);
+            }
         } else {
-            System.out.println("Category not found!");
+            System.out.println("Book not found!");
         }
     }
+
+    private void displayBookDetails(Book bookToUpdate) {
+        System.out.println("\nTitle: " + bookToUpdate.getTitle());
+        System.out.println("Author: " + bookToUpdate.getAuthor());
+        System.out.println("Publish Date: " + bookToUpdate.getPublishDate());
+        System.out.println("Available Day: " + bookToUpdate.getAvailableDay());
+    }
+
+    private int updateBookFields(Book bookToUpdate) {
+        System.out.println("\nSelect the field(s) you want to update: ");
+        System.out.println("1. Title");
+        System.out.println("2. Author");
+        System.out.println("3. Publish Date");
+        System.out.println("4. Available Day");
+        System.out.println("0. Exit");
+
+        int chosenField = getActionForUpdate(bookToUpdate); // Get the field choice
+
+        switch (chosenField) {
+            case 0:
+                System.out.println("Exiting field update...");
+                return 0;
+            case 1:
+                String newTitle = getNonEmptyInput("Enter new title (at least 3 characters): ");
+                bookToUpdate.setTitle(newTitle);
+                break;
+            case 2:
+                String newAuthor = getNonEmptyInput("Enter new author (at least 3 characters): ");
+                bookToUpdate.setAuthor(newAuthor);
+                break;
+            case 3:
+                String newPublishDate = getValidDateInput(); // Validate date format
+                bookToUpdate.setPublishDate(LocalDate.parse(newPublishDate));
+                break;
+            case 4:
+                int newAvailableDay = getNonEmptyInputNumber("Enter new available day: ");
+                bookToUpdate.setAvailableDay(newAvailableDay);
+                break;
+            default:
+                System.out.println("\nInvalid choice!");
+                return 0;
+        }
+        return 1;
+    }
+
 
     public String getNonEmptyInput(String message) {
         scannerStr = new Scanner(System.in);
@@ -132,6 +182,19 @@ public class BookController {
             input = scannerStr.nextLine().trim();
         } while (input.isBlank() || !checkIfNumber(input));
         return Integer.parseInt(input);
+    }
+
+    public int getActionForUpdate(Book bookToUpdate) {
+        while (true) {
+            System.out.print("Choose one of the actions above: ");
+            String chosenMenu = scannerStr.next();
+            if (checkIfNumber(chosenMenu)) {
+                return Integer.parseInt(chosenMenu);
+            } else {
+                updateBookFields(bookToUpdate);
+                System.out.println("\n Please, choose one of the following menus above!");
+            }
+        }
     }
 
     public int getAction() {
@@ -167,6 +230,7 @@ public class BookController {
     }
 
     public String getValidDateInput() {
+        scannerStr = new Scanner(System.in);
         String publishDate;
         do {
             System.out.print("Enter published date (yyyy-MM-dd): ");

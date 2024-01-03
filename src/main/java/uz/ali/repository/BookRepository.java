@@ -4,6 +4,7 @@ import uz.ali.model.Book;
 import uz.ali.model.Category;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +22,70 @@ public class BookRepository {
             preparedStatement.setInt(5, book.getAvailableDay());
             preparedStatement.setTimestamp(6, Timestamp.valueOf(book.getCreatedDate()));
             preparedStatement.setBoolean(7, book.getVisible());
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean isBookExistsById(Integer bookId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT COUNT(*) FROM book WHERE id = ?")) {
+            preparedStatement.setInt(1, bookId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Book getBookById(int bookId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT b.*, c.name as category_name FROM book as b " +
+                             "inner join category as c " +
+                             "on c.id = b.category_id WHERE b.id = ? AND b.visible = true")) {
+
+            preparedStatement.setInt(1, bookId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Book book = new Book();
+                    book.setId(resultSet.getInt("id"));
+                    book.setTitle(resultSet.getString("title"));
+                    book.setAuthor(resultSet.getString("author"));
+                    book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
+                    book.setAvailableDay(resultSet.getInt("available_day"));
+                    book.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
+                    Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
+                    book.setCategory(category);
+                    return book;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int updateBook(Book bookToUpdate) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE book SET title=?, author=?, publish_date=?, available_day=? WHERE id=?")) {
+
+            preparedStatement.setString(1, bookToUpdate.getTitle());
+            preparedStatement.setString(2, bookToUpdate.getAuthor());
+            preparedStatement.setDate(3, Date.valueOf(bookToUpdate.getPublishDate()));
+            preparedStatement.setInt(4, bookToUpdate.getAvailableDay());
+            preparedStatement.setInt(5, bookToUpdate.getId());
+            bookToUpdate.setCreatedDate(LocalDateTime.now());
+
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
