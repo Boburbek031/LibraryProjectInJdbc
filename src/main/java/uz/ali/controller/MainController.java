@@ -142,7 +142,7 @@ public class MainController {
         scannerStr = new Scanner(System.in);
         String phoneNumber;
         do {
-            System.out.print("Enter phone number: ");
+            System.out.print("Enter phone number (998XXX1234567): ");
             phoneNumber = scannerStr.nextLine();
             if (isValidPhoneNumber(phoneNumber)) {
                 System.out.println("Please enter a valid phone number!");

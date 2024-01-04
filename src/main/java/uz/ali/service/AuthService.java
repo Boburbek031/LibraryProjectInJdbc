@@ -64,7 +64,7 @@ public class AuthService {
         profile.setCreatedDate(LocalDateTime.now());
         profile.setProfileRole(ProfileRole.STUDENT);
         profile.setProfileStatus(ProfileStatus.ACTIVE);
-        int effectedRows = profileRepository.createProfile(profile);
+        int effectedRows = profileRepository.addProfile(profile);
         if (effectedRows == 1) {
             System.out.println("Registration is completed!");
         }

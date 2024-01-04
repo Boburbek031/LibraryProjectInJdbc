@@ -29,6 +29,15 @@ public class Profile {
         this.password = password;
     }
 
+    public Profile(String name, String surname, String phone, String login, String password, ProfileRole role) {
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.login = login;
+        this.password = password;
+        this.profileRole = role;
+    }
+
     public Profile(String name, String surname, String login, String password, String phone, ProfileStatus profileStatus, ProfileRole profileRole, LocalDateTime createdDate) {
         this.name = name;
         this.surname = surname;

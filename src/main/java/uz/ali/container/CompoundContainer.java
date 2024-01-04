@@ -5,10 +5,7 @@ import uz.ali.repository.BookRepository;
 import uz.ali.repository.CategoryRepository;
 import uz.ali.repository.ProfileRepository;
 import uz.ali.repository.TableRepository;
-import uz.ali.service.AuthService;
-import uz.ali.service.BookService;
-import uz.ali.service.CategoryService;
-import uz.ali.service.InitService;
+import uz.ali.service.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,6 +29,7 @@ public class CompoundContainer {
     public static AuthService authService = new AuthService();
     public static CategoryService categoryService = new CategoryService();
     public static BookService bookService = new BookService();
+    public static ProfileService profileService = new ProfileService();
     public static ProfileRepository profileRepository = new ProfileRepository();
     public static CategoryRepository categoryRepository = new CategoryRepository();
     public static BookRepository bookRepository = new BookRepository();

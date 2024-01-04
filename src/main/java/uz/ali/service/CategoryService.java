@@ -22,7 +22,7 @@ public class CategoryService {
     }
 
     public void getCategoryList() {
-        printContactList(categoryRepository.getCategoryList());
+        printCategoryList(categoryRepository.getCategoryList());
     }
 
     public void deleteCategoryById(Integer categoryId) {
@@ -33,9 +33,9 @@ public class CategoryService {
         }
     }
 
-    public void printContactList(List<Category> categoryList) {
+    public void printCategoryList(List<Category> categoryList) {
         if (categoryList.isEmpty()) {
-            System.out.println("No contacts available.");
+            System.out.println("No Categories available.");
         } else {
             System.out.println("------------------------------------------------------");
             System.out.println("| Id | Name           |   Created Date             |");

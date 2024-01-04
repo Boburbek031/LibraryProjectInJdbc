@@ -5,6 +5,8 @@ import uz.ali.enums.ProfileStatus;
 import uz.ali.model.Profile;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProfileRepository {
 
@@ -43,7 +45,7 @@ public class ProfileRepository {
         return null;
     }
 
-    public int createProfile(Profile profile) {
+    public int addProfile(Profile profile) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO profile(name, surname, login, password, phone, profile_status, profile_role, created_date) " +
@@ -63,6 +65,23 @@ public class ProfileRepository {
         }
         return 0;
     }
+
+    public List<Profile> getAllProfiles() {
+        List<Profile> profileList = new LinkedList<>();
+
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT * FROM profile WHERE profile_status = 'ACTIVE' and profile_role != 'STUDENT' order by id")) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                profileList.add(mapProfileFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return profileList;
+    }
+
 
     public Profile mapProfileFromResultSet(ResultSet resultSet) throws SQLException {
         return new Profile(

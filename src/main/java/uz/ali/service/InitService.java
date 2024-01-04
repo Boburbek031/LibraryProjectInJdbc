@@ -16,14 +16,14 @@ public class InitService {
         // login: adminboy, password: adminboy_0661
         if (!profileRepository.isProfileExists("adminboy")) {
             Profile admin = new Profile("admin", "adminov", "adminboy", MD5Util.encode("adminboy_0661"), "998993960661", ProfileStatus.ACTIVE, ProfileRole.ADMIN, LocalDateTime.now());
-            profileRepository.createProfile(admin);
+            profileRepository.addProfile(admin);
         }
     }
 
     public void initStudent() {
         if (!profileRepository.isProfileExists("test")) {
-            Profile student = new Profile("TEST", "TEST", "test ", MD5Util.encode("test"), "998339060661", ProfileStatus.ACTIVE, ProfileRole.STUDENT, LocalDateTime.now());
-            profileRepository.createProfile(student);
+            Profile student = new Profile("TEST", "TEST", "test_1", MD5Util.encode("test"), "998339060668", ProfileStatus.ACTIVE, ProfileRole.STUDENT, LocalDateTime.now());
+            profileRepository.addProfile(student);
         }
     }
 
