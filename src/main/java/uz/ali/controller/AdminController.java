@@ -1,7 +1,5 @@
 package uz.ali.controller;
 
-import uz.ali.util.MenuOptions;
-
 import static uz.ali.container.CompoundContainer.*;
 
 public class AdminController {
@@ -15,13 +13,13 @@ public class AdminController {
                     bookController.start();
                     break;
                 case 2:
+
                     break;
                 case 3:
                     categoryController.start();
                     break;
                 case 4:
-                    System.out.println("Profile");
-                    // Perform actions for Profile
+                    profileController.start();
                     break;
                 case 0:
                     System.out.println("Exit");
