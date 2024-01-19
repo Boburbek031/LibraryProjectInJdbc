@@ -30,10 +30,10 @@ public class ProfileController {
             showMenu();
             switch (getAction()) {
                 case 1:
-                    getProfileList();
+                    profileService.getProfileList();
                     break;
                 case 2:
-
+                    searchProfile();
                     break;
                 case 3:
                     addProfile();
@@ -107,20 +107,17 @@ public class ProfileController {
     }
 
 
-    public void getProfileList() {
-        profileService.getProfileList();
-    }
-
- /*   public void searchBook() {
+    public void searchProfile() {
         String searchTerm;
         do {
-            System.out.print("Enter search term (Book's title or author's name): ");
+            System.out.print("Enter search term (Profile's id, name, surname, login, or phone): ");
             scannerStr = new Scanner(System.in);
             searchTerm = scannerStr.nextLine();
         } while (searchTerm.isBlank());
-        bookService.searchBook(searchTerm);
+        profileService.searchProfile(searchTerm);
     }
 
+ /*
     private void addBook() {
         String title = getNonEmptyInput("Enter title (at least 3 characters): ");
         String author = getNonEmptyInput("Enter author (at least 3 characters): ");

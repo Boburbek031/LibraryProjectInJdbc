@@ -2,9 +2,12 @@ package uz.ali.repository;
 
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
+import uz.ali.model.Book;
+import uz.ali.model.Category;
 import uz.ali.model.Profile;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +37,42 @@ public class ProfileRepository {
                      "SELECT id, name, surname, login, password, phone, profile_status, profile_role, created_date " +
                              "FROM profile WHERE login = ?")) {
             preparedStatement.setString(1, login);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapProfileFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean getProfileByPhoneNumber(String phoneNumber) {
+        String selectQuery = "select * from profile where phone LIKE ?;";
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+
+            phoneNumber = "%" + phoneNumber + "%";
+            preparedStatement.setString(1, phoneNumber);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet != null && resultSet.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public Profile getProfileById(Integer id) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT * FROM profile WHERE id = ?")) {
+            preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapProfileFromResultSet(resultSet);
@@ -75,6 +114,30 @@ public class ProfileRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 profileList.add(mapProfileFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return profileList;
+    }
+
+    public List<Profile> searchProfile(String searchTerm) {
+        List<Profile> profileList = new LinkedList<>();
+        String query = "SELECT * FROM profile WHERE profile_role != 'STUDENT' AND (LOWER(name) LIKE ? " +
+                "OR LOWER(surname) LIKE ? OR LOWER(login) LIKE ? OR phone LIKE ?);";
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            String likeTerm = "%" + searchTerm.toLowerCase() + "%";
+            preparedStatement.setString(1, likeTerm);
+            preparedStatement.setString(2, likeTerm);
+            preparedStatement.setString(3, likeTerm);
+            preparedStatement.setString(4, likeTerm);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    profileList.add(mapProfileFromResultSet(resultSet));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -21,7 +21,7 @@ public class InitService {
     }
 
     public void initStudent() {
-        if (!profileRepository.isProfileExists("test")) {
+        if (!profileRepository.isProfileExists("test_1")) {
             Profile student = new Profile("TEST", "TEST", "test_1", MD5Util.encode("test"), "998339060668", ProfileStatus.ACTIVE, ProfileRole.STUDENT, LocalDateTime.now());
             profileRepository.addProfile(student);
         }
