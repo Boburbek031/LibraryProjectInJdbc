@@ -145,16 +145,6 @@ public class Profile {
 
     @Override
     public String toString() {
-        return "Profile{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", createdDate=" + createdDate +
-                ", profileStatus=" + profileStatus +
-                ", profileRole=" + profileRole +
-                '}';
+        return "Profile{" + "id=" + id + ", name='" + name + '\'' + ", surname='" + surname + '\'' + ", login='" + login + '\'' + ", password='" + password + '\'' + ", phone='" + phone + '\'' + ", createdDate=" + createdDate + ", profileStatus=" + profileStatus + ", profileRole=" + profileRole + '}';
     }
 }

@@ -34,7 +34,7 @@ public class ProfileService {
             if (!profileRepository.getProfileByPhoneNumber(searchTerm)) {
                 // No phone number matches the entered numeric search term
                 Profile profileById = profileRepository.getProfileById(Integer.parseInt(searchTerm));
-                if (profileById != null){
+                if (profileById != null) {
                     profileList.add(profileById);
                 }
             } else {

@@ -15,9 +15,7 @@ public class ProfileRepository {
 
 
     public boolean isProfileExists(String login) {
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT COUNT(*) FROM profile WHERE login = ?")) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM profile WHERE login = ?")) {
             preparedStatement.setString(1, login);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -32,10 +30,7 @@ public class ProfileRepository {
 
 
     public Profile getProfileByLogin(String login) {
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT id, name, surname, login, password, phone, profile_status, profile_role, created_date " +
-                             "FROM profile WHERE login = ?")) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, name, surname, login, password, phone, profile_status, profile_role, created_date " + "FROM profile WHERE login = ?")) {
             preparedStatement.setString(1, login);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -50,8 +45,7 @@ public class ProfileRepository {
 
     public boolean getProfileByPhoneNumber(String phoneNumber) {
         String selectQuery = "select * from profile where phone LIKE ?;";
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
 
             phoneNumber = "%" + phoneNumber + "%";
             preparedStatement.setString(1, phoneNumber);
@@ -69,9 +63,7 @@ public class ProfileRepository {
 
 
     public Profile getProfileById(Integer id) {
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM profile WHERE id = ?")) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE id = ?")) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -85,10 +77,7 @@ public class ProfileRepository {
     }
 
     public int addProfile(Profile profile) {
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO profile(name, surname, login, password, phone, profile_status, profile_role, created_date) " +
-                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO profile(name, surname, login, password, phone, profile_status, profile_role, created_date) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
 
             preparedStatement.setString(1, profile.getName());
             preparedStatement.setString(2, profile.getSurname());
@@ -108,9 +97,7 @@ public class ProfileRepository {
     public List<Profile> getAllProfiles() {
         List<Profile> profileList = new LinkedList<>();
 
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM profile WHERE profile_status = 'ACTIVE' and profile_role != 'STUDENT' order by id")) {
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE profile_status = 'ACTIVE' and profile_role != 'STUDENT' order by id")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 profileList.add(mapProfileFromResultSet(resultSet));
@@ -123,10 +110,8 @@ public class ProfileRepository {
 
     public List<Profile> searchProfile(String searchTerm) {
         List<Profile> profileList = new LinkedList<>();
-        String query = "SELECT * FROM profile WHERE profile_role != 'STUDENT' AND (LOWER(name) LIKE ? " +
-                "OR LOWER(surname) LIKE ? OR LOWER(login) LIKE ? OR phone LIKE ?);";
-        try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        String query = "SELECT * FROM profile WHERE profile_role != 'STUDENT' AND (LOWER(name) LIKE ? " + "OR LOWER(surname) LIKE ? OR LOWER(login) LIKE ? OR phone LIKE ?);";
+        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             String likeTerm = "%" + searchTerm.toLowerCase() + "%";
             preparedStatement.setString(1, likeTerm);
@@ -147,17 +132,7 @@ public class ProfileRepository {
 
 
     public Profile mapProfileFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Profile(
-                resultSet.getInt("id"),
-                resultSet.getString("name"),
-                resultSet.getString("surname"),
-                resultSet.getString("login"),
-                resultSet.getString("password"),
-                resultSet.getString("phone"),
-                resultSet.getTimestamp("created_date").toLocalDateTime(),
-                ProfileStatus.valueOf(resultSet.getString("profile_status")),
-                ProfileRole.valueOf(resultSet.getString("profile_role"))
-        );
+        return new Profile(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("surname"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("phone"), resultSet.getTimestamp("created_date").toLocalDateTime(), ProfileStatus.valueOf(resultSet.getString("profile_status")), ProfileRole.valueOf(resultSet.getString("profile_role")));
     }
 
 }
