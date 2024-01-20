@@ -80,4 +80,25 @@ public class ProfileService {
     }
 
 
+    public void changeStatus(int profileId) {
+        Profile profile = profileRepository.getProfileById(profileId);
+        if (profile == null) {
+            System.out.println("Profile not found!");
+            return;
+        }
+        int effectedRows;
+        if (profile.getProfileStatus().equals(ProfileStatus.ACTIVE)) {
+            effectedRows = profileRepository.updateProfileStatus(profileId, ProfileStatus.BLOCK);
+        } else {
+            effectedRows = profileRepository.updateProfileStatus(profileId, ProfileStatus.ACTIVE);
+        }
+
+        if (effectedRows == 1) {
+            System.out.println("Status successfully changed!");
+        } else {
+            System.out.println("Status is not changed!");
+        }
+    }
+
+
 }

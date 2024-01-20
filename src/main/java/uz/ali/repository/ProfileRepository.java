@@ -97,7 +97,8 @@ public class ProfileRepository {
     public List<Profile> getAllProfiles() {
         List<Profile> profileList = new LinkedList<>();
 
-        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE profile_status = 'ACTIVE' and profile_role != 'STUDENT' order by id")) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE profile_role != 'STUDENT' order by id")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 profileList.add(mapProfileFromResultSet(resultSet));
@@ -128,6 +129,19 @@ public class ProfileRepository {
             e.printStackTrace();
         }
         return profileList;
+    }
+
+    public int updateProfileStatus(Integer id, ProfileStatus profileStatus) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE profile SET profile_status=? WHERE id =?")) {
+
+            preparedStatement.setString(1, profileStatus.name());
+            preparedStatement.setInt(2, id);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 

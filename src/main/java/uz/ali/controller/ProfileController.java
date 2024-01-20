@@ -39,7 +39,7 @@ public class ProfileController {
                     addProfile();
                     break;
                 case 4:
-
+                    changeStatus();
                     break;
                 case 0:
                     System.out.println("Exit");
@@ -49,6 +49,16 @@ public class ProfileController {
                     System.out.println("\n Please, choose one of the following menus below!");
             }
         }
+    }
+
+    private void changeStatus() {
+        System.out.print("Enter profile ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int profileId = scannerNum.nextInt();
+        profileService.changeStatus(profileId);
     }
 
     public void addProfile() {
@@ -116,27 +126,6 @@ public class ProfileController {
         } while (searchTerm.isBlank());
         profileService.searchProfile(searchTerm);
     }
-
- /*
-    private void addBook() {
-        String title = getNonEmptyInput("Enter title (at least 3 characters): ");
-        String author = getNonEmptyInput("Enter author (at least 3 characters): ");
-        int availableDay = getNonEmptyInputNumber("Enter available day: ");
-        int categoryId = getNonEmptyInputNumber("Enter Category Id: ");
-        String publishDate = getValidDateInput(); // 2024-08-31
-        bookService.addBook(new Book(title, author, categoryId, LocalDate.parse(publishDate), availableDay));
-    }
-
-    private void deleteBook() {
-        System.out.print("Enter book ID that you want to delete: ");
-        while (!scannerNum.hasNextInt()) {
-            System.out.print("Please enter a valid number: ");
-            scannerNum.next(); // Clear the invalid input
-        }
-        int bookId = scannerNum.nextInt();
-        bookService.deleteBookById(bookId);
-    }
-     */
 
     public String getNonEmptyInput(String message) {
         scannerStr = new Scanner(System.in);
