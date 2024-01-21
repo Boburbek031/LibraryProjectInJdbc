@@ -1,7 +1,5 @@
 package uz.ali.controller;
 
-import uz.ali.util.MenuOptions;
-
 import static uz.ali.container.CompoundContainer.scannerStr;
 
 public class StaffController {
@@ -11,13 +9,13 @@ public class StaffController {
         while (startLoop) {
             showMenu();
             switch (getAction()) {
-                case MenuOptions.BOOK_LIST:
+                case 1:
                     System.out.println("Book List");
                     break;
-                case MenuOptions.STUDENT:
+                case 2:
                     System.out.println("Student");
                     break;
-                case MenuOptions.EXIT:
+                case 0:
                     System.out.println("Exit");
                     startLoop = false;
                     break;

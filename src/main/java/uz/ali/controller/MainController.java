@@ -2,7 +2,6 @@ package uz.ali.controller;
 
 import uz.ali.model.Profile;
 import uz.ali.util.MD5Util;
-import uz.ali.util.MenuOptions;
 
 import static uz.ali.container.CompoundContainer.*;
 
@@ -35,23 +34,23 @@ public class MainController {
         while (startLoop) {
             showMenu();
             switch (getAction()) {
-                case MenuOptions.BOOK_LIST:
+                case 1:
                     System.out.println("BookList");
                     bookService.getBookList();
                     break;
-                case MenuOptions.SEARCH:
+                case 2:
                     System.out.println("Search");
                     break;
-                case MenuOptions.CATEGORIES:
+                case 3:
                     System.out.println("Category");
                     break;
-                case MenuOptions.LOGIN:
+                case 4:
                     login();
                     break;
-                case MenuOptions.REGISTRATION:
+                case 5:
                     registration();
                     break;
-                case MenuOptions.EXIT:
+                case 0:
                     System.out.println("Exit");
                     startLoop = false;
                     break;

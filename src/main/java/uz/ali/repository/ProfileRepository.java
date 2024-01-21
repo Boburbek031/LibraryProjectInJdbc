@@ -98,7 +98,7 @@ public class ProfileRepository {
         List<Profile> profileList = new LinkedList<>();
 
         try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE profile_role != 'STUDENT' order by id")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE profile_role != 'STUDENT' order by created_date")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 profileList.add(mapProfileFromResultSet(resultSet));
