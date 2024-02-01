@@ -1,5 +1,6 @@
 package uz.ali.service;
 
+import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
 import uz.ali.model.Profile;
 
@@ -57,8 +58,12 @@ public class ProfileService {
     }
 
 
+    public void getStudentProfileList() {
+        printProfileList(profileRepository.getAllProfiles(ProfileRole.STUDENT));
+    }
+
     public void getProfileList() {
-        printProfileList(profileRepository.getAllProfiles());
+        printProfileList(profileRepository.getAllProfiles(ProfileRole.ADMIN, ProfileRole.STAFF));
     }
 
     public void printProfileList(List<Profile> profileList) {

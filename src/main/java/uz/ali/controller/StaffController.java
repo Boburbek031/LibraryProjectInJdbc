@@ -1,6 +1,6 @@
 package uz.ali.controller;
 
-import static uz.ali.container.CompoundContainer.scannerStr;
+import static uz.ali.container.CompoundContainer.*;
 
 public class StaffController {
 
@@ -10,10 +10,10 @@ public class StaffController {
             showMenu();
             switch (getAction()) {
                 case 1:
-                    System.out.println("Book List");
+                    bookController.start();
                     break;
                 case 2:
-                    System.out.println("Student");
+                    studentProfileController.start();
                     break;
                 case 0:
                     System.out.println("Exit");

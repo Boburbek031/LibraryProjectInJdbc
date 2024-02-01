@@ -94,11 +94,17 @@ public class ProfileRepository {
         return 0;
     }
 
-    public List<Profile> getAllProfiles() {
+    public List<Profile> getAllProfiles(ProfileRole... roles) { // ProfileRole[] roles (... [] array)
         List<Profile> profileList = new LinkedList<>();
-
         try (Connection connection = ConnectionRepository.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE profile_role != 'STUDENT' order by created_date")) {
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM profile WHERE profile_role in (?, ?) order by created_date")) {
+            preparedStatement.setString(1, String.valueOf(roles[0]));
+            if (roles.length >= 2) {
+                preparedStatement.setString(2, String.valueOf(roles[1]));
+            } else {
+                preparedStatement.setString(2, "");
+            }
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 profileList.add(mapProfileFromResultSet(resultSet));

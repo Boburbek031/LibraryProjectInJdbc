@@ -1,8 +1,10 @@
 package uz.ali.controller;
 
+import uz.ali.enums.ProfileRole;
+
 import static uz.ali.container.CompoundContainer.*;
 
-public class AdminController {
+public class StudentProfileController {
 
     public void start() {
         boolean startLoop = true;
@@ -10,16 +12,19 @@ public class AdminController {
             showMenu();
             switch (getAction()) {
                 case 1:
-                    bookController.start();
+                    profileService.getStudentProfileList();
                     break;
                 case 2:
-                    studentProfileController.start();
+
                     break;
                 case 3:
-                    categoryController.start();
+
                     break;
                 case 4:
-                    profileController.start();
+
+                    break;
+                case 5:
+
                     break;
                 case 0:
                     System.out.println("Exit");
@@ -33,11 +38,12 @@ public class AdminController {
 
 
     private void showMenu() {
-        System.out.println("\n\t\t **************** Admin Menu ****************");
-        System.out.println("1. Book List");
-        System.out.println("2. Student");
-        System.out.println("3. Categories");
-        System.out.println("4. Profile");
+        System.out.println("\n\t\t **************** Student Menu ****************");
+        System.out.println("1. Student list");
+        System.out.println("2. Search student");
+        System.out.println("3. Block student");
+        System.out.println("4. Activate student");
+        System.out.println("5. Student by Book");
         System.out.println("0. Exit");
     }
 
@@ -57,11 +63,13 @@ public class AdminController {
 
     public boolean checkIfNumber(String input) {
         try {
+            // Attempt to parse the input as an integer
             Integer.parseInt(input);
-            return true;
+            return true; // If successful, it's a number
         } catch (NumberFormatException e) {
-            return false;
+            return false; // If an exception occurs, it's not a number
         }
     }
+
 
 }
