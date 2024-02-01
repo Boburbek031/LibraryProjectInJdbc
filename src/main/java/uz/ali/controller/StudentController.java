@@ -1,6 +1,7 @@
 package uz.ali.controller;
 
-import static uz.ali.container.CompoundContainer.scannerStr;
+import static uz.ali.util.ScannerUtil.getAction;
+
 
 public class StudentController {
     // password: 0203
@@ -50,30 +51,5 @@ public class StudentController {
         System.out.println("6. Get history of books");
         System.out.println("0. Exit");
     }
-
-
-    public int getAction() {
-        while (true) {
-            System.out.print("Choose one of the actions above: ");
-            String chosenMenu = scannerStr.next();
-            if (checkIfNumber(chosenMenu)) {
-                return Integer.parseInt(chosenMenu);
-            } else {
-                showMenu();
-                System.out.println("\n Please, choose one of the following menus above!");
-            }
-        }
-    }
-
-    public boolean checkIfNumber(String input) {
-        try {
-            // Attempt to parse the input as an integer
-            Integer.parseInt(input);
-            return true; // If successful, it's a number
-        } catch (NumberFormatException e) {
-            return false; // If an exception occurs, it's not a number
-        }
-    }
-
 
 }

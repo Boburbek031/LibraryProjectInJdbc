@@ -3,6 +3,8 @@ package uz.ali.controller;
 import uz.ali.model.Profile;
 import uz.ali.util.MD5Util;
 
+import static uz.ali.util.ScannerUtil.getAction;
+
 import static uz.ali.container.CompoundContainer.*;
 
 import java.util.Scanner;
@@ -68,28 +70,6 @@ public class MainController {
         System.out.println("4. Login");
         System.out.println("5. Registration");
         System.out.println("0. Exit");
-    }
-
-    public int getAction() {
-        while (true) {
-            System.out.print("Choose one of the actions above: ");
-            String chosenMenu = scannerStr.next();
-            if (checkIfNumber(chosenMenu)) {
-                return Integer.parseInt(chosenMenu);
-            } else {
-                showMenu();
-                System.out.println("\n Please, choose one of the following menus above!");
-            }
-        }
-    }
-
-    public boolean checkIfNumber(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 
     private void registration() {

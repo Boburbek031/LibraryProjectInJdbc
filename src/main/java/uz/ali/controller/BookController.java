@@ -3,7 +3,9 @@ package uz.ali.controller;
 import uz.ali.model.Book;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import static uz.ali.util.ScannerUtil.getAction;
+
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -192,19 +194,6 @@ public class BookController {
                 return Integer.parseInt(chosenMenu);
             } else {
                 updateBookFields(bookToUpdate);
-                System.out.println("\n Please, choose one of the following menus above!");
-            }
-        }
-    }
-
-    public int getAction() {
-        while (true) {
-            System.out.print("Choose one of the actions above: ");
-            String chosenMenu = scannerStr.next();
-            if (checkIfNumber(chosenMenu)) {
-                return Integer.parseInt(chosenMenu);
-            } else {
-                showMenu();
                 System.out.println("\n Please, choose one of the following menus above!");
             }
         }

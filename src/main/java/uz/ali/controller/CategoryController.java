@@ -4,6 +4,9 @@ import uz.ali.model.Category;
 
 import java.util.Scanner;
 
+import static uz.ali.util.ScannerUtil.getAction;
+
+
 import static uz.ali.container.CompoundContainer.*;
 
 public class CategoryController {
@@ -55,28 +58,6 @@ public class CategoryController {
         System.out.println("0. Exit");
     }
 
-
-    public int getAction() {
-        while (true) {
-            System.out.print("Choose one of the actions above: ");
-            String chosenMenu = scannerStr.next();
-            if (checkIfNumber(chosenMenu)) {
-                return Integer.parseInt(chosenMenu);
-            } else {
-                showMenu();
-                System.out.println("\n Please, choose one of the following menus above!");
-            }
-        }
-    }
-
-    public boolean checkIfNumber(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 
     private void getCategoryList() {
         categoryService.getCategoryList();

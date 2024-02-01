@@ -3,6 +3,8 @@ package uz.ali.controller;
 import uz.ali.enums.ProfileRole;
 import uz.ali.model.Profile;
 import uz.ali.util.MD5Util;
+import static uz.ali.util.ScannerUtil.getAction;
+
 
 import java.util.Scanner;
 
@@ -148,28 +150,6 @@ public class ProfileController {
                 return input;
             }
             System.out.println("Invalid input. Please enter STAFF or ADMIN.");  // Provide clearer error message
-        }
-    }
-
-    public boolean checkIfNumber(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public int getAction() {
-        while (true) {
-            System.out.print("Choose one of the actions above: ");
-            String chosenMenu = scannerStr.next();
-            if (checkIfNumber(chosenMenu)) {
-                return Integer.parseInt(chosenMenu);
-            } else {
-                showMenu();
-                System.out.println("\n Please, choose one of the following menus above!");
-            }
         }
     }
 }
