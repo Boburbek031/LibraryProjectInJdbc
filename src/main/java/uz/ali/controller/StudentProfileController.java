@@ -2,6 +2,8 @@ package uz.ali.controller;
 
 import uz.ali.enums.ProfileRole;
 
+import java.util.Scanner;
+
 import static uz.ali.container.CompoundContainer.*;
 
 public class StudentProfileController {
@@ -15,7 +17,7 @@ public class StudentProfileController {
                     profileService.getStudentProfileList();
                     break;
                 case 2:
-
+                    search();
                     break;
                 case 3:
 
@@ -34,6 +36,16 @@ public class StudentProfileController {
                     System.out.println("\n Please, choose one of the following menus below!");
             }
         }
+    }
+
+    public void search() {
+        String searchTerm;
+        do {
+            System.out.print("Enter search term (Student profile's id, name, surname, login, or phone): ");
+            scannerStr = new Scanner(System.in);
+            searchTerm = scannerStr.nextLine();
+        } while (searchTerm.isBlank());
+        profileService.search(searchTerm, ProfileRole.STUDENT);
     }
 
 

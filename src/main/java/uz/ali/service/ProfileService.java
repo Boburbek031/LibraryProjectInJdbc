@@ -28,7 +28,7 @@ public class ProfileService {
     }
 
 
-    public void searchProfile(String searchTerm) {
+    public void search(String searchTerm, ProfileRole... roles) {
         List<Profile> profileList = new LinkedList<>();
 
         if (isNumeric(searchTerm)) {
@@ -40,10 +40,10 @@ public class ProfileService {
                 }
             } else {
                 // The entered numeric search term matches a phone number
-                profileList = profileRepository.searchProfile(searchTerm);
+                profileList = profileRepository.search(searchTerm, roles);
             }
         } else {
-            profileList = profileRepository.searchProfile(searchTerm);
+            profileList = profileRepository.search(searchTerm, roles);
         }
 
         if (!profileList.isEmpty()) {
@@ -59,7 +59,7 @@ public class ProfileService {
 
 
     public void getStudentProfileList() {
-        printProfileList(profileRepository.getAllProfiles(ProfileRole.STUDENT));
+        printStudentProfileList(profileRepository.getAllProfiles(ProfileRole.STUDENT));
     }
 
     public void getProfileList() {
@@ -78,6 +78,24 @@ public class ProfileService {
                 String formattedProfile = String.format("| %-3d| %-15s| %-15s| %-15s| %-13s| %-13s| %-13s| %-27s|",
                         profile.getId(), profile.getName(), profile.getSurname(), profile.getLogin(),
                         profile.getPhone(), profile.getProfileStatus(), profile.getProfileRole(), profile.getCreatedDate());
+                System.out.println(formattedProfile);
+            }
+            System.out.println("---------------------------------------------------------------------------------");
+        }
+    }
+
+    public void printStudentProfileList(List<Profile> profileList) {
+        if (profileList.isEmpty()) {
+            System.out.println("No Profiles available.");
+        } else {
+            System.out.println("---------------------------------------------------------------------------------");
+            System.out.println("| Id | Name           | Surname        | Login          | Phone        | Role         | Created Date               |");
+            System.out.println("---------------------------------------------------------------------------------");
+
+            for (Profile profile : profileList) {
+                String formattedProfile = String.format("| %-3d| %-15s| %-15s| %-15s| %-13s| %-13s| %-27s|",
+                        profile.getId(), profile.getName(), profile.getSurname(), profile.getLogin(),
+                        profile.getPhone(), profile.getProfileRole(), profile.getCreatedDate());
                 System.out.println(formattedProfile);
             }
             System.out.println("---------------------------------------------------------------------------------");

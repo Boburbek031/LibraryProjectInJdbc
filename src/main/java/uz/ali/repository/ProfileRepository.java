@@ -2,12 +2,9 @@ package uz.ali.repository;
 
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
-import uz.ali.model.Book;
-import uz.ali.model.Category;
 import uz.ali.model.Profile;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -94,7 +91,8 @@ public class ProfileRepository {
         return 0;
     }
 
-    public List<Profile> getAllProfiles(ProfileRole... roles) { // ProfileRole[] roles (... [] array)
+    // select queryni optimize qil
+  /*  public List<Profile> getAllProfiles(ProfileRole... roles) { // ProfileRole[] roles (... [] array)
         List<Profile> profileList = new LinkedList<>();
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement =
@@ -113,18 +111,39 @@ public class ProfileRepository {
             e.printStackTrace();
         }
         return profileList;
+    }*/
+
+    public List<Profile> getAllProfiles(ProfileRole... roles) { // ProfileRole[] roles (... [] array)
+        List<Profile> profileList = new LinkedList<>();
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM profile WHERE profile_role = ANY (?) order by created_date")) {
+            preparedStatement.setArray(1, connection.createArrayOf("VARCHAR", roles)); //  {'ADMIN', 'STUFF'}
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                profileList.add(mapProfileFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return profileList;
     }
 
-    public List<Profile> searchProfile(String searchTerm) {
+
+    public List<Profile> search(String searchTerm, ProfileRole... roles) {
         List<Profile> profileList = new LinkedList<>();
-        String query = "SELECT * FROM profile WHERE profile_role != 'STUDENT' AND (LOWER(name) LIKE ? " + "OR LOWER(surname) LIKE ? OR LOWER(login) LIKE ? OR phone LIKE ?);";
-        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM profile WHERE profile_role = ANY (?) " +
+                             "AND (LOWER(name) LIKE ? " + "OR LOWER(surname) " +
+                             "LIKE ? OR LOWER(login) LIKE ? OR phone LIKE ?);")) {
 
             String likeTerm = "%" + searchTerm.toLowerCase() + "%";
-            preparedStatement.setString(1, likeTerm);
+            preparedStatement.setArray(1, connection.createArrayOf("VARCHAR", roles));
             preparedStatement.setString(2, likeTerm);
             preparedStatement.setString(3, likeTerm);
             preparedStatement.setString(4, likeTerm);
+            preparedStatement.setString(5, likeTerm);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {

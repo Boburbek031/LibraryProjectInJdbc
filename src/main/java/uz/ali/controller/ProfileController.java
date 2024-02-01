@@ -124,7 +124,7 @@ public class ProfileController {
             scannerStr = new Scanner(System.in);
             searchTerm = scannerStr.nextLine();
         } while (searchTerm.isBlank());
-        profileService.searchProfile(searchTerm);
+        profileService.search(searchTerm, ProfileRole.ADMIN, ProfileRole.STAFF);
     }
 
     public String getNonEmptyInput(String message) {
