@@ -111,10 +111,29 @@ public class ProfileService {
         }
         int effectedRows;
         if (profile.getProfileStatus().equals(ProfileStatus.ACTIVE)) {
-            effectedRows = profileRepository.updateProfileStatus(profileId, ProfileStatus.BLOCK);
+            effectedRows = profileRepository.updateStatus(profileId, ProfileStatus.BLOCK);
         } else {
-            effectedRows = profileRepository.updateProfileStatus(profileId, ProfileStatus.ACTIVE);
+            effectedRows = profileRepository.updateStatus(profileId, ProfileStatus.ACTIVE);
         }
+
+        if (effectedRows == 1) {
+            System.out.println("Status successfully changed!");
+        } else {
+            System.out.println("Status is not changed!");
+        }
+    }
+
+    public void changeStudentProfileStatus(int id, ProfileStatus status) {
+        Profile profile = profileRepository.getProfileById(id);
+        if (profile == null) {
+            System.out.println("Student Profile not found!");
+            return;
+        }
+        if (!profile.getProfileRole().equals(ProfileRole.STUDENT)) {
+            System.out.println("Only Student Profile ID can be entered!");
+            return;
+        }
+        int effectedRows = profileRepository.updateStatus(id, status);
 
         if (effectedRows == 1) {
             System.out.println("Status successfully changed!");

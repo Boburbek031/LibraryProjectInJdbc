@@ -156,7 +156,7 @@ public class ProfileRepository {
         return profileList;
     }
 
-    public int updateProfileStatus(Integer id, ProfileStatus profileStatus) {
+    public int updateStatus(Integer id, ProfileStatus profileStatus) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("UPDATE profile SET profile_status=? WHERE id =?")) {
 

@@ -1,6 +1,7 @@
 package uz.ali.controller;
 
 import uz.ali.enums.ProfileRole;
+import uz.ali.enums.ProfileStatus;
 
 import java.util.Scanner;
 
@@ -20,10 +21,10 @@ public class StudentProfileController {
                     search();
                     break;
                 case 3:
-
+                    blockStudentProfile();
                     break;
                 case 4:
-
+                    activateStudentProfile();
                     break;
                 case 5:
 
@@ -36,6 +37,26 @@ public class StudentProfileController {
                     System.out.println("\n Please, choose one of the following menus below!");
             }
         }
+    }
+
+    private void blockStudentProfile() {
+        System.out.print("Enter Student Profile ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int id = scannerNum.nextInt();
+        profileService.changeStudentProfileStatus(id, ProfileStatus.BLOCK);
+    }
+
+    private void activateStudentProfile() {
+        System.out.print("Enter Student Profile ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int id = scannerNum.nextInt();
+        profileService.changeStudentProfileStatus(id, ProfileStatus.ACTIVE);
     }
 
     public void search() {
