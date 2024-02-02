@@ -1,10 +1,7 @@
 package uz.ali.container;
 
 import uz.ali.controller.*;
-import uz.ali.repository.BookRepository;
-import uz.ali.repository.CategoryRepository;
-import uz.ali.repository.ProfileRepository;
-import uz.ali.repository.TableRepository;
+import uz.ali.repository.*;
 import uz.ali.service.*;
 
 import java.sql.Connection;
@@ -31,9 +28,11 @@ public class CompoundContainer {
     public static CategoryService categoryService = new CategoryService();
     public static BookService bookService = new BookService();
     public static ProfileService profileService = new ProfileService();
+    public static StudentBookService studentBookService = new StudentBookService();
     public static ProfileRepository profileRepository = new ProfileRepository();
     public static CategoryRepository categoryRepository = new CategoryRepository();
     public static BookRepository bookRepository = new BookRepository();
+    public static StudentBookRepository studentBookRepository = new StudentBookRepository();
     public static TableRepository tableRepository = new TableRepository();
 
 
