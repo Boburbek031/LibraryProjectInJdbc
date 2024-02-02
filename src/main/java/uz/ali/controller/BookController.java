@@ -22,7 +22,7 @@ public class BookController {
             showMenu();
             switch (getAction()) {
                 case 1:
-                    getBookList();
+                    bookService.getBookList();
                     break;
                 case 2:
                     searchBook();
@@ -66,11 +66,6 @@ public class BookController {
         System.out.println("7. Book history");
         System.out.println("8. Best books");
         System.out.println("0. Exit");
-    }
-
-
-    private void getBookList() {
-        bookService.getBookList();
     }
 
     public void searchBook() {

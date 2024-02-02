@@ -1,10 +1,13 @@
 package uz.ali.controller;
 
+import java.util.Scanner;
+
 import static uz.ali.util.ScannerUtil.getAction;
+import static uz.ali.container.CompoundContainer.*;
 
 
 public class StudentController {
-    // password: 0203
+    // password: Alish0661##
     // login: alish
 
     public void start() {
@@ -13,10 +16,10 @@ public class StudentController {
             showMenu();
             switch (getAction()) {
                 case 1:
-
+                    bookService.getBookList();
                     break;
                 case 2:
-
+                    searchBook();
                     break;
                 case 3:
 
@@ -50,6 +53,16 @@ public class StudentController {
         System.out.println("5. Books on hand");
         System.out.println("6. Get history of books");
         System.out.println("0. Exit");
+    }
+
+    public void searchBook() {
+        String searchTerm;
+        do {
+            System.out.print("Enter search term (Book's title or author's name): ");
+            scannerStr = new Scanner(System.in);
+            searchTerm = scannerStr.nextLine();
+        } while (searchTerm.isBlank());
+        bookService.searchBook(searchTerm);
     }
 
 }
