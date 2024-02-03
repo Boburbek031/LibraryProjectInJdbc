@@ -2,7 +2,9 @@ package uz.ali.model;
 
 import uz.ali.enums.StudentBookStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class StudentBook {
 
@@ -12,6 +14,7 @@ public class StudentBook {
     private Integer bookId;
     private LocalDateTime createdDate;
     private LocalDateTime returnedDate;
+    private LocalDate deadlineDate;
     private StudentBookStatus status;
     private Book book;
 
@@ -27,11 +30,12 @@ public class StudentBook {
         this.status = status;
     }
 
-    public StudentBook(Integer studentId, Integer bookId, LocalDateTime createdDate, StudentBookStatus status) {
+    public StudentBook(Integer studentId, Integer bookId, LocalDateTime createdDate, StudentBookStatus status, LocalDate deadlineDate) {
         this.studentId = studentId;
         this.bookId = bookId;
         this.createdDate = createdDate;
         this.status = status;
+        this.deadlineDate = deadlineDate;
     }
 
     public Integer getId() {
@@ -88,6 +92,14 @@ public class StudentBook {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public LocalDate getDeadlineDate() {
+        return deadlineDate;
+    }
+
+    public void setDeadlineDate(LocalDate deadlineDate) {
+        this.deadlineDate = deadlineDate;
     }
 
     @Override

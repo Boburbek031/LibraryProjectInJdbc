@@ -49,6 +49,7 @@ public class TableRepository {
                 "status VARCHAR(10) NOT NULL," +
                 "created_date TIMESTAMP DEFAULT NOW()," +
                 "returned_date TIMESTAMP," +
+                "deadline_date DATE," +
                 "CONSTRAINT fk_profile_id FOREIGN KEY (profile_id) REFERENCES profile (id)," +
                 "CONSTRAINT fk_book_id FOREIGN KEY (book_id) REFERENCES book (id)" +
                 ")";

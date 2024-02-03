@@ -15,12 +15,13 @@ public class StudentBookRepository {
     public int save(StudentBook studentBook) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement("INSERT INTO student_book(profile_id, book_id, status, created_date) " + "VALUES (?, ?, ?, ?)")) {
+                     connection.prepareStatement("INSERT INTO student_book(profile_id, book_id, status, created_date, deadline_date) " + "VALUES (?, ?, ?, ?, ?)")) {
 
             preparedStatement.setInt(1, studentBook.getStudentId());
             preparedStatement.setInt(2, studentBook.getBookId());
             preparedStatement.setString(3, studentBook.getStatus().name());
             preparedStatement.setTimestamp(4, Timestamp.valueOf(studentBook.getCreatedDate()));
+            preparedStatement.setDate(5, Date.valueOf(studentBook.getDeadlineDate()));
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
