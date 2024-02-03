@@ -55,6 +55,7 @@ public class StudentBookRepository {
 
     public List<StudentBook> studentBookOnHand(Integer studentId) {
 
+
         List<StudentBook> bookList = new LinkedList<>();
         try (Connection connection = ConnectionRepository.getConnection();
              // b.id as bookId  ===> as qilib bookId qilib column ni nomlab javadan o'sha column name qilib chaqirib olamiz.
