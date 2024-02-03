@@ -4,14 +4,10 @@ import uz.ali.enums.StudentBookStatus;
 import uz.ali.model.Book;
 import uz.ali.model.Category;
 import uz.ali.model.StudentBook;
-import uz.ali.service.StudentBookService;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import static uz.ali.container.CompoundContainer.*;
 
 public class StudentBookRepository {
 
@@ -55,4 +51,43 @@ public class StudentBookRepository {
         }
         return studentBooksList;
     }
+
+
+    public List<StudentBook> studentBookOnHand(Integer studentId) {
+
+        List<StudentBook> bookList = new LinkedList<>();
+        try (Connection connection = ConnectionRepository.getConnection();
+             // b.id as bookId  ===> as qilib bookId qilib column ni nomlab javadan o'sha column name qilib chaqirib olamiz.
+             // agar alias bermasak javada xatolik boladi yani 2 ta id keladi shunda confuse bo'ladi.
+             // shuning uchun ham column larning name lari unique bo'lishi kerak.
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT sb.id, sb.created_date, b.id as bookId, b.title, b.author, b.category_id as categoryId, c.name as categoryName FROM student_book as sb "
+                             + "inner join book as b on b.id = sb.book_id "
+                             + "inner join category as c on c.id = b.category_id WHERE sb.profile_id = ? order by sb.id")) {
+            preparedStatement.setInt(1, studentId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                StudentBook studentBook = new StudentBook();
+                studentBook.setId(resultSet.getInt("id"));
+                studentBook.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
+                studentBook.setBookId(resultSet.getInt("bookId"));
+
+                Book book = new Book();
+                book.setId(resultSet.getInt("bookId"));
+                book.setTitle(resultSet.getString("title"));
+                book.setAuthor(resultSet.getString("author"));
+
+                Category category = new Category(resultSet.getInt("categoryId"), resultSet.getString("categoryName"));
+                book.setCategory(category);
+                studentBook.setBook(book);
+                bookList.add(studentBook);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+
+    }
+
+
 }

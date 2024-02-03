@@ -15,7 +15,7 @@
 	hozirda studentlar qo'lidagi kitoblar,berilgan kitobni kimlar olgan va shu kabi ma'lumotlarni ko'rish imkoni bo'lsin.
 9. Password lar MD5 algoritmga asoslanib shifirlanib saqlanishi kerak.
 10. Student sistemaga kirganidan keyin unga darhol qaytarishi kerak bo'lgan kitoblari ro'yhati ko'rsatilsin.
-11. Student  bir vaqtni o'zida 5dan ortiq kitob ola-olmaydi.
+11. Student  bir vaqtni o'zida 5 dan ortiq kitob ola-olmaydi.
 - Menu quyidagicha bo'lishi kerak.
 
 Book

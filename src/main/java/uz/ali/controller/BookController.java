@@ -57,7 +57,7 @@ public class BookController {
 
     private void showMenu() {
         System.out.println("\n\t\t **************** Book Menu ****************");
-        System.out.println("1. Book List");
+        System.out.println("1. Book list");
         System.out.println("2. Search");
         System.out.println("3. Add book");
         System.out.println("4. Delete book");

@@ -13,6 +13,7 @@ public class StudentBook {
     private LocalDateTime createdDate;
     private LocalDateTime returnedDate;
     private StudentBookStatus status;
+    private Book book;
 
     public StudentBook() {
     }
@@ -79,6 +80,14 @@ public class StudentBook {
 
     public void setStatus(StudentBookStatus status) {
         this.status = status;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override

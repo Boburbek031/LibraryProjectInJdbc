@@ -28,7 +28,7 @@ public class StudentController {
 
                     break;
                 case 5:
-
+                    studentBookService.booksOnHand();
                     break;
                 case 6:
 

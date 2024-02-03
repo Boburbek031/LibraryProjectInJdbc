@@ -33,7 +33,7 @@ public class TableRepository {
                 "id SERIAL PRIMARY KEY," +
                 "title VARCHAR(25) NOT NULL," +
                 "author VARCHAR(25) NOT NULL," +
-                "category_id INT NOT NULL UNIQUE," +
+                "category_id INT NOT NULL," +
                 "publish_date DATE NOT NULL," +
                 "available_day int NOT NULL," +
                 "created_date TIMESTAMP DEFAULT NOW()," +

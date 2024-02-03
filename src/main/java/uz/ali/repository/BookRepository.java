@@ -13,7 +13,8 @@ public class BookRepository {
 
 
     public int saveBook(Book book) {
-        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO book(title, author, category_id, publish_date, available_day, created_date, visible) " + "VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO book(title, author, category_id, publish_date, available_day, created_date, visible) " + "VALUES (?, ?, ?, ?, ?, ?, ?)")) {
 
             preparedStatement.setString(1, book.getTitle());
             preparedStatement.setString(2, book.getAuthor());
