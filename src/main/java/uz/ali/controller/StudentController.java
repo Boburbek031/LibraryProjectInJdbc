@@ -22,7 +22,7 @@ public class StudentController {
                     searchBook();
                     break;
                 case 3:
-
+                    takeBook();
                     break;
                 case 4:
 
@@ -41,6 +41,16 @@ public class StudentController {
                     System.out.println("\n Please, choose one of the following menus below!");
             }
         }
+    }
+
+    private void takeBook() {
+        System.out.print("Enter book ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        Integer bookId = scannerNum.nextInt();
+        studentBookService.takeBook(bookId);
     }
 
 

@@ -26,6 +26,13 @@ public class StudentBook {
         this.status = status;
     }
 
+    public StudentBook(Integer studentId, Integer bookId, LocalDateTime createdDate, StudentBookStatus status) {
+        this.studentId = studentId;
+        this.bookId = bookId;
+        this.createdDate = createdDate;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }

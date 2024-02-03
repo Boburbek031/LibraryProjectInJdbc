@@ -64,7 +64,7 @@ Enter Action:
 4. Return book:
 		Enter Id:
 5. Books on hand:
-		title, author, category, takenDate, deadlineDate
+		id, title, author, category, takenDate, deadlineDate
 6. Take book history: (print taken book list:)
 		id, title, author, category, takenDate, returnDate
 0.exit

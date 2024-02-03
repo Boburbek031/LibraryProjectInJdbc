@@ -1,6 +1,7 @@
 package uz.ali.container;
 
 import uz.ali.controller.*;
+import uz.ali.model.Profile;
 import uz.ali.repository.*;
 import uz.ali.service.*;
 
@@ -35,5 +36,7 @@ public class CompoundContainer {
     public static StudentBookRepository studentBookRepository = new StudentBookRepository();
     public static TableRepository tableRepository = new TableRepository();
 
-
+    // bu project da bitta odam ishlatgani uchun buni static qilib ishlatsek bolaveradi, lekin real project larda
+    // bunday bo'lmaydi, ularda bir vaqtni o'zida bir nechta user kirib ishlatadi
+    public static Profile currentProfile;
 }

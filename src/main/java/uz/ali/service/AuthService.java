@@ -27,6 +27,7 @@ public class AuthService {
 
         System.out.println("\n\t\t********** Welcome to Library Project **********");
         // Redirect
+        currentProfile = profile;
         redirectToRole(profile);
     }
 
