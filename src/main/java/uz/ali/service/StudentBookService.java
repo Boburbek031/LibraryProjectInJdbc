@@ -4,6 +4,7 @@ import uz.ali.enums.StudentBookStatus;
 import uz.ali.model.StudentBook;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static uz.ali.container.CompoundContainer.*;
@@ -45,18 +46,28 @@ public class StudentBookService {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
         } else {
-            System.out.println("------------------------------------------------------------------------------------------------------");
-            System.out.println("| Id        | Category Id  | Category name       | Book Id   | Author                   | Title               | Created Date              |");
-            System.out.println("------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("| Id        | Category Id  | Category name       | Book Id   | Author                   | Title               | Taken Date                 | Deadline Date|");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             for (StudentBook studentBook : bookList) {
-                String formattedContact = String.format("| %-10s| %-13s| %-20s| %-10s| %-25s| %-20s| %-13s|",
+                Integer availableDay = studentBook.getBook().getAvailableDay();
+                LocalDateTime takenDate = studentBook.getCreatedDate();
+                LocalDateTime deadLine = takenDate.plusDays(availableDay);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+
+                // Parse the date string
+                LocalDateTime dateTime = LocalDateTime.parse(deadLine.toString(), formatter);
+
+                // Extract the date
+                String extractedDate = dateTime.toLocalDate().toString();
+                String formattedContact = String.format("| %-10s| %-13s| %-20s| %-10s| %-25s| %-20s| %-14s | %-13s|",
                         studentBook.getId(), studentBook.getBook().getCategory().getId(), studentBook.getBook().getCategory().getName(),
                         studentBook.getBookId(), studentBook.getBook().getAuthor(), studentBook.getBook().getTitle(),
-                        studentBook.getCreatedDate());
+                        studentBook.getCreatedDate(), extractedDate);
                 System.out.println(formattedContact);
             }
-            System.out.println("------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 

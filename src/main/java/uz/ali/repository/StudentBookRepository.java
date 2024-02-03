@@ -61,9 +61,9 @@ public class StudentBookRepository {
              // agar alias bermasak javada xatolik boladi yani 2 ta id keladi shunda confuse bo'ladi.
              // shuning uchun ham column larning name lari unique bo'lishi kerak.
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT sb.id, sb.created_date, b.id as bookId, b.title, b.author, b.category_id as categoryId, c.name as categoryName FROM student_book as sb "
+                     "SELECT sb.id, sb.created_date, b.id as bookId, b.title, b.author, b.category_id as categoryId, b.available_day, c.name as categoryName FROM student_book as sb "
                              + "inner join book as b on b.id = sb.book_id "
-                             + "inner join category as c on c.id = b.category_id WHERE sb.profile_id = ? order by sb.id")) {
+                             + "inner join category as c on c.id = b.category_id WHERE sb.profile_id = ? order by sb.created_date desc")) {
             preparedStatement.setInt(1, studentId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -76,6 +76,7 @@ public class StudentBookRepository {
                 book.setId(resultSet.getInt("bookId"));
                 book.setTitle(resultSet.getString("title"));
                 book.setAuthor(resultSet.getString("author"));
+                book.setAvailableDay(resultSet.getInt("available_day"));
 
                 Category category = new Category(resultSet.getInt("categoryId"), resultSet.getString("categoryName"));
                 book.setCategory(category);
