@@ -37,10 +37,10 @@ public class BookController {
                     updateBook();
                     break;
                 case 6:
-
+                    studentBookService.allBooksOnHandsOfStudents();
                     break;
                 case 7:
-
+                    bookHistoryById();
                     break;
                 case 8:
 
@@ -95,6 +95,16 @@ public class BookController {
         }
         int bookId = scannerNum.nextInt();
         bookService.deleteBookById(bookId);
+    }
+
+    private void bookHistoryById() {
+        System.out.print("Enter book ID that you want to see the history: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int bookId = scannerNum.nextInt();
+        bookService.bookHistoryById(bookId);
     }
 
     private void updateBook() {

@@ -3,6 +3,7 @@ package uz.ali.repository;
 import uz.ali.enums.StudentBookStatus;
 import uz.ali.model.Book;
 import uz.ali.model.Category;
+import uz.ali.model.Profile;
 import uz.ali.model.StudentBook;
 
 import java.sql.*;
@@ -100,6 +101,82 @@ public class StudentBookRepository {
         return bookList;
     }
 
+    public List<StudentBook> allBooksOnHand() {
+        List<StudentBook> bookList = new LinkedList<>();
+        String query = "SELECT b.id as bookId, b.category_id as categoryId, c.name as categoryName, b.title, b.author, " +
+                "sb.created_date as takenDate, sb.deadline_date, p.id as profileId, " +
+                "p.name as profileName, p.surname as profileSurname, p.phone FROM student_book as sb " +
+                "inner join book as b on b.id = sb.book_id " +
+                "inner join category as c on c.id = b.category_id " +
+                "inner join profile as p on p.id = sb.profile_id " +
+                "where sb.status = 'TAKEN' order by sb.created_date desc;";
+
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                StudentBook studentBook = new StudentBook();
+                studentBook.setStudentId(resultSet.getInt("profileId"));
+                studentBook.setCreatedDate(resultSet.getTimestamp("takenDate").toLocalDateTime());
+                studentBook.setDeadlineDate(resultSet.getDate("deadline_date").toLocalDate());
+
+                Book book = new Book();
+                book.setId(resultSet.getInt("bookId"));
+                book.setTitle(resultSet.getString("title"));
+                book.setAuthor(resultSet.getString("author"));
+
+                Category category = new Category(resultSet.getInt("categoryId"), resultSet.getString("categoryName"));
+                book.setCategory(category);
+                studentBook.setBook(book);
+
+                Profile studentProfile = new Profile();
+                studentProfile.setId(resultSet.getInt("profileId"));
+                studentProfile.setName(resultSet.getString("profileName"));
+                studentProfile.setSurname(resultSet.getString("profileSurname"));
+                studentProfile.setPhone(resultSet.getString("phone"));
+                studentBook.setStudentProfile(studentProfile);
+                bookList.add(studentBook);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
+    public List<StudentBook> BookHistoryById(Integer bookId) {
+        List<StudentBook> bookHistory = new LinkedList<>();
+        String query = "SELECT sb.status, sb.created_date as takenDate, sb.returned_date, p.id as profileId, " +
+                "p.name as profileName, p.surname as profileSurname, p.phone FROM student_book as sb " +
+                "inner join profile as p on p.id = sb.profile_id " +
+                "where sb.book_id = ? order by sb.created_date desc;";
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, bookId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                StudentBook studentBook = new StudentBook();
+                studentBook.setStatus(StudentBookStatus.valueOf(resultSet.getString("status")));
+                studentBook.setStudentId(resultSet.getInt("profileId"));
+                studentBook.setCreatedDate(resultSet.getTimestamp("takenDate").toLocalDateTime());
+                Timestamp returnedDate = resultSet.getTimestamp("returned_date");
+                if (returnedDate != null) {
+                    studentBook.setReturnedDate(returnedDate.toLocalDateTime());
+                }
+
+                Profile studentProfile = new Profile();
+                studentProfile.setId(resultSet.getInt("profileId"));
+                studentProfile.setName(resultSet.getString("profileName"));
+                studentProfile.setSurname(resultSet.getString("profileSurname"));
+                studentProfile.setPhone(resultSet.getString("phone"));
+                studentBook.setStudentProfile(studentProfile);
+                bookHistory.add(studentBook);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookHistory;
+    }
+
 
    /* public StudentBook getStudentBook(Integer bookId, Integer studentId) {
         try (Connection connection = ConnectionRepository.getConnection();
@@ -139,7 +216,7 @@ public class StudentBookRepository {
     public int returnStudentBook(Integer bookId, Integer studentId) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "UPDATE student_book SET status = 'RETURNED', returned_date = CURRENT_TIMESTAMP" +
+                     "UPDATE student_book SET status = 'RETURNED', returned_date = now()" +
                              " where book_id = ? and profile_id = ? and status = 'TAKEN';")) {
             preparedStatement.setInt(1, bookId);
             preparedStatement.setInt(2, studentId);

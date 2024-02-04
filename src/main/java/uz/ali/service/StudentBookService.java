@@ -63,6 +63,12 @@ public class StudentBookService {
         printStudentBooksOnHand(studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), StudentBookStatus.TAKEN), StudentBookStatus.TAKEN);
     }
 
+
+    public void allBooksOnHandsOfStudents() {
+        printAllBooksOnHandOfStudents(studentBookRepository.allBooksOnHand());
+    }
+
+
     public void takenBooksHistory() {
         printStudentBooksOnHand(studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), null), null);
     }
@@ -75,9 +81,39 @@ public class StudentBookService {
         }
     }
 
+    public void printAllBooksOnHandOfStudents(List<StudentBook> bookList) {
+        if (bookList.isEmpty()) {
+            System.out.println("No books available on hands.");
+        } else {
+            System.out.println("------------------------------------------------------------------------" +
+                    "------------------------------------------------------------------------------------" +
+                    "----------------------------------------------------------------");
+            System.out.println("| Book Id  | Category Id  | Category name       | Author                   | Title               " +
+                    "| Taken Date                 | Deadline Date |  Student Id    |  Student name   " +
+                    "    |  Student surname    | Student phone |");
+            System.out.println("--------------------------------------------------------------------------------" +
+                    "-------------------------------------------------------------------------------------------" +
+                    "-------------------------------------------------");
+
+            for (StudentBook studentBook : bookList) {
+                String formattedContact = String.format("| %-9s| %-13s| %-20s| %-25s| %-20s| %-14s | %-14s| %-15s| %-20s| %-20s| %-14s|",
+                        studentBook.getBook().getId(), studentBook.getBook().getCategory().getId(),
+                        studentBook.getBook().getCategory().getName(), studentBook.getBook().getAuthor(),
+                        studentBook.getBook().getTitle(), studentBook.getCreatedDate(), studentBook.getDeadlineDate(),
+                        studentBook.getStudentProfile().getId(), studentBook.getStudentProfile().getName(),
+                        studentBook.getStudentProfile().getSurname(), studentBook.getStudentProfile().getPhone());
+                System.out.println(formattedContact);
+            }
+            System.out.println("---------------------------------------------------------" +
+                    "--------------------------------------------------------------------" +
+                    "-----------------------------------------------------------------------------------------------");
+        }
+    }
+
+
     public void printStudentBooksOnHand(List<StudentBook> bookList, StudentBookStatus status) {
         if (bookList.isEmpty()) {
-            System.out.println("No books available.");
+            System.out.println("No books available on hands.");
         } else if (status != null) {
             System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("| Category Id  | Category name       | Book Id   | Author                   | Title               | Taken Date                 | Deadline Date|");
@@ -107,16 +143,6 @@ public class StudentBookService {
             System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             for (StudentBook studentBook : bookList) {
-                /*Integer availableDay = studentBook.getBook().getAvailableDay();
-                LocalDateTime takenDate = studentBook.getCreatedDate();
-                LocalDateTime deadLine = takenDate.plusDays(availableDay);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
-
-                // Parse the date string
-                LocalDateTime dateTime = LocalDateTime.parse(deadLine.toString(), formatter);
-
-                // Extract the date
-                String extractedDate = dateTime.toLocalDate().toString();*/
                 String formattedContact = String.format("| %-13s| %-20s| %-10s| %-25s| %-20s| %-14s| %-27s| %-13s|",
                         studentBook.getBook().getCategory().getId(), studentBook.getBook().getCategory().getName(),
                         studentBook.getBookId(), studentBook.getBook().getAuthor(), studentBook.getBook().getTitle(),

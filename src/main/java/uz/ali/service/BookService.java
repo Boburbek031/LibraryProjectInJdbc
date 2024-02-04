@@ -1,6 +1,7 @@
 package uz.ali.service;
 
 import uz.ali.model.Book;
+import uz.ali.model.StudentBook;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -61,6 +62,14 @@ public class BookService {
         }
     }
 
+    public void bookHistoryById(int bookId) {
+        if (!isBookExistsById(bookId)) {
+            System.out.println("There is no book with such ID: " + bookId);
+        } else {
+            printBookHistory(studentBookRepository.BookHistoryById(bookId));
+        }
+    }
+
     public void printBookList(List<Book> bookList) {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
@@ -78,4 +87,25 @@ public class BookService {
             System.out.println("------------------------------------------------------------------------------------------------------");
         }
     }
+
+    public void printBookHistory(List<StudentBook> bookHistoryList) {
+        if (bookHistoryList.isEmpty()) {
+            System.out.println("No book's history available.");
+        } else {
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("| Status    | Taken Date                 |  Returned Date             |  Student Id    |  Student name       |  Student surname    | Student phone |");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            for (StudentBook studentBook : bookHistoryList) {
+                String formattedContact = String.format("| %-10s| %-27s| %-27s| %-15s| %-20s| %-20s| %-14s|",
+                        studentBook.getStatus(), studentBook.getCreatedDate(), studentBook.getReturnedDate(),
+                        studentBook.getStudentProfile().getId(), studentBook.getStudentProfile().getName(),
+                        studentBook.getStudentProfile().getSurname(), studentBook.getStudentProfile().getPhone());
+                System.out.println(formattedContact);
+            }
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+    }
+
+
 }

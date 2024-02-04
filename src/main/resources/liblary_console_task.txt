@@ -95,7 +95,7 @@ Enter Action:
 		id, title, author, category, takenDate, deadlineDate, student name, student surname, student phone
 6. Book history:
 		Enter book id: 
-		takenDate, returnDate, student name, student surname, student phone, note
+		takenDate, returnDate, student name, student surname, student phone
 7. Best books: (eng ko'p olingan 10 kitob, taken count desc)
 	   	id, title, author, category, taken count	
 
@@ -128,10 +128,10 @@ Enter Action:
 *** Profile *** (only for admin)
 1. Profile list:
 		id, name, surname, login, phone, status, role, createdDate 
-2. Search profile
+2. Search studentProfile
 		Enter query: (id,name,surname,login,phone)
 		id, name, surname, login, phone, status, createdDate 
-3. Change profile status:
+3. Change studentProfile status:
 		Enter id;
 4. Profile add:
         Enter name:

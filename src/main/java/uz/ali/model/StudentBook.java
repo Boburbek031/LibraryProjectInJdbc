@@ -4,7 +4,6 @@ import uz.ali.enums.StudentBookStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class StudentBook {
 
@@ -17,6 +16,8 @@ public class StudentBook {
     private LocalDate deadlineDate;
     private StudentBookStatus status;
     private Book book;
+
+    private Profile studentProfile;
 
     public StudentBook() {
     }
@@ -100,6 +101,14 @@ public class StudentBook {
 
     public void setDeadlineDate(LocalDate deadlineDate) {
         this.deadlineDate = deadlineDate;
+    }
+
+    public Profile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(Profile studentProfile) {
+        this.studentProfile = studentProfile;
     }
 
     @Override
