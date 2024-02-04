@@ -66,7 +66,7 @@ public class BookService {
         if (!isBookExistsById(bookId)) {
             System.out.println("There is no book with such ID: " + bookId);
         } else {
-            printBookHistory(studentBookRepository.BookHistoryById(bookId));
+            printBookHistory(studentBookRepository.bookHistoryById(bookId));
         }
     }
 

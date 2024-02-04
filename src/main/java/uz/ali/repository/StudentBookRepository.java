@@ -36,7 +36,7 @@ public class StudentBookRepository {
         List<StudentBook> studentBooksList = new LinkedList<>();
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement("SELECT * FROM student_book WHERE profile_id = ?")) {
+                     connection.prepareStatement("SELECT * FROM student_book WHERE profile_id = ? and status = 'TAKEN'")) {
 
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -143,7 +143,7 @@ public class StudentBookRepository {
         return bookList;
     }
 
-    public List<StudentBook> BookHistoryById(Integer bookId) {
+    public List<StudentBook> bookHistoryById(Integer bookId) {
         List<StudentBook> bookHistory = new LinkedList<>();
         String query = "SELECT sb.status, sb.created_date as takenDate, sb.returned_date, p.id as profileId, " +
                 "p.name as profileName, p.surname as profileSurname, p.phone FROM student_book as sb " +
@@ -175,6 +175,36 @@ public class StudentBookRepository {
             e.printStackTrace();
         }
         return bookHistory;
+    }
+
+    public List<StudentBook> bestBooks() {
+        List<StudentBook> bestBooks = new LinkedList<>();
+        String query = "select c.id as categoryId, c.name as categoryName, " +
+                "b.id as bookId, b.title, b.author, tempTable.takenBookCounts from (select book_id, count(book_id) as takenBookCounts " +
+                "from student_book group by book_id) as tempTable " +
+                "inner join book as b on b.id = tempTable.book_id " +
+                "inner join category as c on c.id = b.category_id order by takenBookCounts desc limit 10;";
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                StudentBook studentBook = new StudentBook();
+                studentBook.setTakenCount(resultSet.getInt("takenBookCounts"));
+
+                Book book = new Book();
+                book.setId(resultSet.getInt("bookId"));
+                book.setTitle(resultSet.getString("title"));
+                book.setAuthor(resultSet.getString("author"));
+
+                Category category = new Category(resultSet.getInt("categoryId"), resultSet.getString("categoryName"));
+                book.setCategory(category);
+                studentBook.setBook(book);
+                bestBooks.add(studentBook);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bestBooks;
     }
 
 

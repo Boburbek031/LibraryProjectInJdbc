@@ -19,6 +19,9 @@ public class StudentBook {
 
     private Profile studentProfile;
 
+    private Integer takenCount;
+
+
     public StudentBook() {
     }
 
@@ -109,6 +112,14 @@ public class StudentBook {
 
     public void setStudentProfile(Profile studentProfile) {
         this.studentProfile = studentProfile;
+    }
+
+    public Integer getTakenCount() {
+        return takenCount;
+    }
+
+    public void setTakenCount(Integer takenCount) {
+        this.takenCount = takenCount;
     }
 
     @Override

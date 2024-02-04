@@ -43,7 +43,7 @@ public class BookController {
                     bookHistoryById();
                     break;
                 case 8:
-
+                    studentBookService.bestBooks();
                     break;
                 case 0:
                     System.out.println("Exit");

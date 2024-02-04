@@ -19,6 +19,10 @@ public class StudentBookService {
             return;
         }
         Book bookById = bookService.getBookById(bookId);
+        if (bookById == null){
+            System.out.println("Enter a valid book ID!");
+            return;
+        }
 
         List<StudentBook> studentBooks = studentBookRepository.checkStudentBookAlreadyTakenOrNot(currentProfile.getId());
         if (studentBooks.size() >= 5) {
@@ -32,7 +36,14 @@ public class StudentBookService {
             }
         }
 
-        StudentBook studentBook = new StudentBook(currentProfile.getId(), bookId, LocalDateTime.now(), StudentBookStatus.TAKEN, LocalDate.now().plusDays(bookById.getAvailableDay()));
+        StudentBook studentBook = new StudentBook();
+        studentBook.setStudentId(currentProfile.getId());
+        studentBook.setBookId(bookId);
+        studentBook.setCreatedDate(LocalDateTime.now());
+        studentBook.setStatus(StudentBookStatus.TAKEN);
+        studentBook.setDeadlineDate(LocalDate.now().plusDays(bookById.getAvailableDay()));
+
+
         if ((studentBookRepository.save(studentBook) == 1)) {
             System.out.println("Student Book is successfully taken.");
         } else {
@@ -73,11 +84,33 @@ public class StudentBookService {
         printStudentBooksOnHand(studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), null), null);
     }
 
+    public void bestBooks() {
+        printBestBooks(studentBookRepository.bestBooks());
+    }
+
     public void alertStudentToReturnTakenBooks() {
         List<StudentBook> studentBooks = studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), StudentBookStatus.TAKEN);
         if (!studentBooks.isEmpty()) {
             System.out.println("Please provide the books you have borrowed within the specified deadlines.\n");
             printStudentBooksOnHand(studentBooks, StudentBookStatus.TAKEN);
+        }
+    }
+
+    public void printBestBooks(List<StudentBook> bestBooks) {
+        if (bestBooks.isEmpty()) {
+            System.out.println("No book's history available.");
+        } else {
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("| Category ID   | Category Name              |  Book ID      |  Book's Title                 |  Book's author                | Taken Book Counts  |");
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            for (StudentBook studentBook : bestBooks) {
+                String formattedContact = String.format("| %-14s| %-27s| %-14s| %-30s| %-30s| %-19s|",
+                        studentBook.getBook().getCategory().getId(), studentBook.getBook().getCategory().getName(),
+                        studentBook.getBook().getId(), studentBook.getBook().getTitle(), studentBook.getBook().getAuthor(), studentBook.getTakenCount());
+                System.out.println(formattedContact);
+            }
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
