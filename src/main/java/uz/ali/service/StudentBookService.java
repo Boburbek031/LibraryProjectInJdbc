@@ -42,7 +42,8 @@ public class StudentBookService {
     }
 
     public void returnBook(Integer bookId) {
-        StudentBook studentBook = studentBookRepository.getStudentBook(bookId, currentProfile.getId());
+       /*  // bu yerda hozi biz ikkita ish qilyapmiz, yani database ga 2 martta so'rov jo'natyapmiz, shuni bittada qilsa ham bo'ladi
+       StudentBook studentBook = studentBookRepository.getStudentBook(bookId, currentProfile.getId());
         if (studentBook != null) {
             if (studentBookRepository.returnStudentBook(studentBook.getId()) != 0) {
                 System.out.println("Student Book is successfully returned.");
@@ -51,6 +52,11 @@ public class StudentBookService {
             }
         } else {
             System.out.println("Student did not take the book with such ID: " + bookId + ". ERROR!!!");
+        }*/
+        if (studentBookRepository.returnStudentBook(bookId, currentProfile.getId()) != 0) {
+            System.out.println("Student Book is successfully returned.");
+        } else {
+            System.out.println("Error in returning Student book or Student did not take the book with such ID: " + bookId);
         }
     }
 

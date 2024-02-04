@@ -93,7 +93,7 @@ public class StudentBookRepository {
 
     }
 
-    public StudentBook getStudentBook(Integer bookId, Integer studentId) {
+   /* public StudentBook getStudentBook(Integer bookId, Integer studentId) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "select * from student_book where book_id = ? and profile_id = ? and status = 'TAKEN';")) {
@@ -121,6 +121,20 @@ public class StudentBookRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE student_book SET status = 'RETURNED', returned_date = CURRENT_TIMESTAMP where id = ?")) {
             preparedStatement.setInt(1, studentBookId);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }*/
+
+    public int returnStudentBook(Integer bookId, Integer studentId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE student_book SET status = 'RETURNED', returned_date = CURRENT_TIMESTAMP" +
+                             " where book_id = ? and profile_id = ? and status = 'TAKEN';")) {
+            preparedStatement.setInt(1, bookId);
+            preparedStatement.setInt(2, studentId);
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
