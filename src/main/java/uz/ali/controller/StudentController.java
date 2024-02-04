@@ -31,7 +31,7 @@ public class StudentController {
                     studentBookService.booksOnHand();
                     break;
                 case 6:
-
+                    studentBookService.takenBooksHistory();
                     break;
                 case 0:
                     System.out.println("Exit");
@@ -62,7 +62,6 @@ public class StudentController {
         Integer bookId = scannerNum.nextInt();
         studentBookService.returnBook(bookId);
     }
-
 
     private void showMenu() {
         System.out.println("\n\t\t **************** Student Menu ****************");

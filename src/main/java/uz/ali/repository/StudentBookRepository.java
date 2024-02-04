@@ -6,7 +6,6 @@ import uz.ali.model.Category;
 import uz.ali.model.StudentBook;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,19 +53,24 @@ public class StudentBookRepository {
         return studentBooksList;
     }
 
-
-    public List<StudentBook> studentBookOnHand(Integer studentId) {
-
+    public List<StudentBook> studentBookOnHandAndBookHistory(Integer studentId, StudentBookStatus statusFilter) {
         List<StudentBook> bookList = new LinkedList<>();
+        String query = "SELECT sb.id, sb.created_date, sb.deadline_date, sb.returned_date, b.id as bookId, b.title, " +
+                "b.author, b.category_id as categoryId, b.available_day, c.name as categoryName FROM student_book as sb "
+                + "inner join book as b on b.id = sb.book_id "
+                + "inner join category as c on c.id = b.category_id WHERE sb.profile_id = ?";
+
+        if (statusFilter != null) {
+            query += " and sb.status = ? ";
+        }
+        query += " order by sb.created_date desc";
+
         try (Connection connection = ConnectionRepository.getConnection();
-             // b.id as bookId  ===> as qilib bookId qilib column ni nomlab javadan o'sha column name qilib chaqirib olamiz.
-             // agar alias bermasak javada xatolik boladi yani 2 ta id keladi shunda confuse bo'ladi.
-             // shuning uchun ham column larning name lari unique bo'lishi kerak.
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT sb.id, sb.created_date, sb.deadline_date, b.id as bookId, b.title, b.author, b.category_id as categoryId, b.available_day, c.name as categoryName FROM student_book as sb "
-                             + "inner join book as b on b.id = sb.book_id "
-                             + "inner join category as c on c.id = b.category_id WHERE sb.profile_id = ? and sb.status = 'TAKEN' order by sb.created_date desc")) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, studentId);
+            if (statusFilter != null) {
+                preparedStatement.setString(2, statusFilter.name());
+            }
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 StudentBook studentBook = new StudentBook();
@@ -74,6 +78,10 @@ public class StudentBookRepository {
                 studentBook.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
                 studentBook.setBookId(resultSet.getInt("bookId"));
                 studentBook.setDeadlineDate(resultSet.getDate("deadline_date").toLocalDate());
+                Timestamp returnedDate = resultSet.getTimestamp("returned_date");
+                if (returnedDate != null) {
+                    studentBook.setReturnedDate(returnedDate.toLocalDateTime());
+                }
 
                 Book book = new Book();
                 book.setId(resultSet.getInt("bookId"));
@@ -90,8 +98,8 @@ public class StudentBookRepository {
             e.printStackTrace();
         }
         return bookList;
-
     }
+
 
    /* public StudentBook getStudentBook(Integer bookId, Integer studentId) {
         try (Connection connection = ConnectionRepository.getConnection();

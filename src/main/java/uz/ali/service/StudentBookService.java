@@ -6,7 +6,6 @@ import uz.ali.model.StudentBook;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static uz.ali.container.CompoundContainer.*;
@@ -61,13 +60,17 @@ public class StudentBookService {
     }
 
     public void booksOnHand() {
-        printStudentBooksOnHand(studentBookRepository.studentBookOnHand(currentProfile.getId()));
+        printStudentBooksOnHand(studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), StudentBookStatus.TAKEN), StudentBookStatus.TAKEN);
     }
 
-    public void printStudentBooksOnHand(List<StudentBook> bookList) {
+    public void takenBooksHistory() {
+        printStudentBooksOnHand(studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), null), null);
+    }
+
+    public void printStudentBooksOnHand(List<StudentBook> bookList, StudentBookStatus status) {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
-        } else {
+        } else if (status != null) {
             System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("| Category Id  | Category name       | Book Id   | Author                   | Title               | Taken Date                 | Deadline Date|");
             System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
@@ -89,7 +92,30 @@ public class StudentBookService {
                         studentBook.getCreatedDate(), studentBook.getDeadlineDate());
                 System.out.println(formattedContact);
             }
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------");
+        } else {
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("| Category Id  | Category name       | Book Id   | Author                   | Title               | Taken Date                | Returned Date              | Deadline Date|");
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            for (StudentBook studentBook : bookList) {
+                /*Integer availableDay = studentBook.getBook().getAvailableDay();
+                LocalDateTime takenDate = studentBook.getCreatedDate();
+                LocalDateTime deadLine = takenDate.plusDays(availableDay);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+
+                // Parse the date string
+                LocalDateTime dateTime = LocalDateTime.parse(deadLine.toString(), formatter);
+
+                // Extract the date
+                String extractedDate = dateTime.toLocalDate().toString();*/
+                String formattedContact = String.format("| %-13s| %-20s| %-10s| %-25s| %-20s| %-14s| %-27s| %-13s|",
+                        studentBook.getBook().getCategory().getId(), studentBook.getBook().getCategory().getName(),
+                        studentBook.getBookId(), studentBook.getBook().getAuthor(), studentBook.getBook().getTitle(),
+                        studentBook.getCreatedDate(), studentBook.getReturnedDate(), studentBook.getDeadlineDate());
+                System.out.println(formattedContact);
+            }
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
