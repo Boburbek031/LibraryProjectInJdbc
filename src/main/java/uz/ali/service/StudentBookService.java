@@ -67,6 +67,14 @@ public class StudentBookService {
         printStudentBooksOnHand(studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), null), null);
     }
 
+    public void alertStudentToReturnTakenBooks() {
+        List<StudentBook> studentBooks = studentBookRepository.studentBookOnHandAndBookHistory(currentProfile.getId(), StudentBookStatus.TAKEN);
+        if (!studentBooks.isEmpty()) {
+            System.out.println("Please provide the books you have borrowed within the specified deadlines.\n");
+            printStudentBooksOnHand(studentBooks, StudentBookStatus.TAKEN);
+        }
+    }
+
     public void printStudentBooksOnHand(List<StudentBook> bookList, StudentBookStatus status) {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");

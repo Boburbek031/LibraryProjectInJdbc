@@ -11,6 +11,7 @@ public class StudentController {
     // login: alish
 
     public void start() {
+        studentBookService.alertStudentToReturnTakenBooks();
         boolean startLoop = true;
         while (startLoop) {
             showMenu();
