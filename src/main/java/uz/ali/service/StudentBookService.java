@@ -41,6 +41,19 @@ public class StudentBookService {
         }
     }
 
+    public void returnBook(Integer bookId) {
+        StudentBook studentBook = studentBookRepository.getStudentBook(bookId, currentProfile.getId());
+        if (studentBook != null) {
+            if (studentBookRepository.returnStudentBook(studentBook.getId()) != 0) {
+                System.out.println("Student Book is successfully returned.");
+            } else {
+                System.out.println("Error in returning Student book.");
+            }
+        } else {
+            System.out.println("Student did not take the book with such ID: " + bookId + ". ERROR!!!");
+        }
+    }
+
     public void booksOnHand() {
         printStudentBooksOnHand(studentBookRepository.studentBookOnHand(currentProfile.getId()));
     }
@@ -49,9 +62,9 @@ public class StudentBookService {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
         } else {
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
-            System.out.println("| Id        | Category Id  | Category name       | Book Id   | Author                   | Title               | Taken Date                 | Deadline Date|");
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("| Category Id  | Category name       | Book Id   | Author                   | Title               | Taken Date                 | Deadline Date|");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
 
             for (StudentBook studentBook : bookList) {
                 /*Integer availableDay = studentBook.getBook().getAvailableDay();
@@ -64,13 +77,13 @@ public class StudentBookService {
 
                 // Extract the date
                 String extractedDate = dateTime.toLocalDate().toString();*/
-                String formattedContact = String.format("| %-10s| %-13s| %-20s| %-10s| %-25s| %-20s| %-14s | %-13s|",
-                        studentBook.getId(), studentBook.getBook().getCategory().getId(), studentBook.getBook().getCategory().getName(),
+                String formattedContact = String.format("| %-13s| %-20s| %-10s| %-25s| %-20s| %-14s | %-13s|",
+                        studentBook.getBook().getCategory().getId(), studentBook.getBook().getCategory().getName(),
                         studentBook.getBookId(), studentBook.getBook().getAuthor(), studentBook.getBook().getTitle(),
                         studentBook.getCreatedDate(), studentBook.getDeadlineDate());
                 System.out.println(formattedContact);
             }
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 

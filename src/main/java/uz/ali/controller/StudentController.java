@@ -25,7 +25,7 @@ public class StudentController {
                     takeBook();
                     break;
                 case 4:
-
+                    returnBook();
                     break;
                 case 5:
                     studentBookService.booksOnHand();
@@ -51,6 +51,16 @@ public class StudentController {
         }
         Integer bookId = scannerNum.nextInt();
         studentBookService.takeBook(bookId);
+    }
+
+    private void returnBook() {
+        System.out.print("Enter book ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        Integer bookId = scannerNum.nextInt();
+        studentBookService.returnBook(bookId);
     }
 
 

@@ -6,6 +6,7 @@ import uz.ali.model.Category;
 import uz.ali.model.StudentBook;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,16 +57,15 @@ public class StudentBookRepository {
 
     public List<StudentBook> studentBookOnHand(Integer studentId) {
 
-
         List<StudentBook> bookList = new LinkedList<>();
         try (Connection connection = ConnectionRepository.getConnection();
              // b.id as bookId  ===> as qilib bookId qilib column ni nomlab javadan o'sha column name qilib chaqirib olamiz.
              // agar alias bermasak javada xatolik boladi yani 2 ta id keladi shunda confuse bo'ladi.
              // shuning uchun ham column larning name lari unique bo'lishi kerak.
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT sb.id, sb.created_date, b.id as bookId, b.title, b.author, b.category_id as categoryId, b.available_day, c.name as categoryName FROM student_book as sb "
+                     "SELECT sb.id, sb.created_date, sb.deadline_date, b.id as bookId, b.title, b.author, b.category_id as categoryId, b.available_day, c.name as categoryName FROM student_book as sb "
                              + "inner join book as b on b.id = sb.book_id "
-                             + "inner join category as c on c.id = b.category_id WHERE sb.profile_id = ? order by sb.created_date desc")) {
+                             + "inner join category as c on c.id = b.category_id WHERE sb.profile_id = ? and sb.status = 'TAKEN' order by sb.created_date desc")) {
             preparedStatement.setInt(1, studentId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -73,6 +73,7 @@ public class StudentBookRepository {
                 studentBook.setId(resultSet.getInt("id"));
                 studentBook.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
                 studentBook.setBookId(resultSet.getInt("bookId"));
+                studentBook.setDeadlineDate(resultSet.getDate("deadline_date").toLocalDate());
 
                 Book book = new Book();
                 book.setId(resultSet.getInt("bookId"));
@@ -90,6 +91,41 @@ public class StudentBookRepository {
         }
         return bookList;
 
+    }
+
+    public StudentBook getStudentBook(Integer bookId, Integer studentId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "select * from student_book where book_id = ? and profile_id = ? and status = 'TAKEN';")) {
+            preparedStatement.setInt(1, bookId);
+            preparedStatement.setInt(2, studentId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                StudentBook studentBook = new StudentBook();
+                studentBook.setId(resultSet.getInt("id"));
+                studentBook.setStudentId(resultSet.getInt("profile_id"));
+                studentBook.setBookId(resultSet.getInt("book_id"));
+                studentBook.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
+                studentBook.setDeadlineDate(resultSet.getDate("deadline_date").toLocalDate());
+                studentBook.setStatus(StudentBookStatus.valueOf(resultSet.getString("status")));
+                return studentBook;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int returnStudentBook(Integer studentBookId) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE student_book SET status = 'RETURNED', returned_date = CURRENT_TIMESTAMP where id = ?")) {
+            preparedStatement.setInt(1, studentBookId);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 
