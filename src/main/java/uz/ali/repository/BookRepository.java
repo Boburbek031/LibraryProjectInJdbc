@@ -49,7 +49,7 @@ public class BookRepository {
     public Book getBookById(int bookId) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT b.*, c.name as category_name FROM book as b " +
+                     "SELECT b.*, c.name as categoryName FROM book as b " +
                              "inner join category as c " +
                              "on c.id = b.category_id WHERE b.id = ? AND b.visible = true")) {
 
@@ -64,7 +64,7 @@ public class BookRepository {
                     book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
                     book.setAvailableDay(resultSet.getInt("available_day"));
                     book.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
-                    Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
+                    Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("categoryName"));
                     book.setCategory(category);
                     return book;
                 }
@@ -99,7 +99,7 @@ public class BookRepository {
 
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT b.*, c.name as category_name FROM book as b " + "inner join category as c " +
+                     "SELECT b.*, c.name as categoryName FROM book as b " + "inner join category as c " +
                              "on c.id = b.category_id WHERE b.visible = true order by b.id")) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -110,8 +110,31 @@ public class BookRepository {
                 book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
                 book.setAvailableDay(resultSet.getInt("available_day"));
                 book.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
-                Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
+                Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("categoryName"));
                 book.setCategory(category);
+                bookList.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
+    public List<Book> getAllBooksByCategoryId(Integer categoryId) {
+        List<Book> bookList = new LinkedList<>();
+
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT b.id, b.title, b.author, b.publish_date FROM book as b " +
+                             "where b.category_id = ? order by b.id")) {
+            preparedStatement.setInt(1, categoryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Book book = new Book();
+                book.setId(resultSet.getInt("id"));
+                book.setTitle(resultSet.getString("title"));
+                book.setAuthor(resultSet.getString("author"));
+                book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
                 bookList.add(book);
             }
         } catch (SQLException e) {
@@ -135,7 +158,7 @@ public class BookRepository {
 
     public List<Book> searchBook(String searchTerm) {
         List<Book> bookList = new ArrayList<>();
-        String query = "SELECT b.*, c.name as category_name FROM book as b inner join category as c " +
+        String query = "SELECT b.*, c.name as categoryName FROM book as b inner join category as c " +
                 "on c.id = b.category_id WHERE LOWER(title) LIKE ? " +
                 "OR LOWER(author) LIKE ? and b.visible = true order by b.id asc";
         try (Connection connection = ConnectionRepository.getConnection();
@@ -152,7 +175,7 @@ public class BookRepository {
                     book.setTitle(resultSet.getString("title"));
                     book.setAuthor(resultSet.getString("author"));
                     book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
-                    Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("category_name"));
+                    Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("categoryName"));
                     book.setCategory(category);
                     bookList.add(book);
                 }

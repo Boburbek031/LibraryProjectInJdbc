@@ -41,10 +41,10 @@ public class MainController {
                     bookService.getBookList();
                     break;
                 case 2:
-                    System.out.println("Search");
+                    searchBook();
                     break;
                 case 3:
-                    System.out.println("Category");
+                    booksByCategories();
                     break;
                 case 4:
                     login();
@@ -89,6 +89,27 @@ public class MainController {
 
         Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
         authService.registration(profile);
+    }
+
+    public void searchBook() {
+        String searchTerm;
+        do {
+            System.out.print("Enter search term (Book's title or author's name): ");
+            scannerStr = new Scanner(System.in);
+            searchTerm = scannerStr.nextLine();
+        } while (searchTerm.isBlank());
+        bookService.searchBook(searchTerm);
+    }
+
+    public void booksByCategories() {
+        categoryService.getCategoryList();
+        System.out.print("Enter category ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int categoryId = scannerNum.nextInt();
+        bookService.booksByCategoryId(categoryId);
     }
 
     private boolean isValidLogin(String login) {

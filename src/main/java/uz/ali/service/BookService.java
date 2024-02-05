@@ -70,6 +70,37 @@ public class BookService {
         }
     }
 
+    public void booksByCategoryId(Integer categoryId) {
+        while (!categoryService.isCategoryExistsById(categoryId)) {
+            System.out.print("Please enter a valid category ID: ");
+            while (!scannerNum.hasNextInt()) {
+                System.out.print("Please enter a valid number: ");
+                scannerNum.next(); // Clear the invalid input
+            }
+            categoryId = scannerNum.nextInt();
+        }
+        printBookByCategoryId(bookRepository.getAllBooksByCategoryId(categoryId));
+    }
+
+
+    public void printBookByCategoryId(List<Book> bookList) {
+        if (bookList.isEmpty()) {
+            System.out.println("No books available.");
+        } else {
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("| Book Id | Author                   | Title               | Publish Date |");
+            System.out.println("---------------------------------------------------------------------------");
+
+            for (Book book : bookList) {
+                String formattedContact = String.format("| %-8s| %-25s| %-20s| %-13s|",
+                        book.getId(), book.getAuthor(), book.getTitle(),
+                        book.getPublishDate());
+                System.out.println(formattedContact);
+            }
+            System.out.println("---------------------------------------------------------------------------");
+        }
+    }
+
     public void printBookList(List<Book> bookList) {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
