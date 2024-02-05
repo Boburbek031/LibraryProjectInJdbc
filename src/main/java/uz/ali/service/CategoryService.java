@@ -21,8 +21,8 @@ public class CategoryService {
         }
     }
 
-    public void getCategoryList() {
-        printCategoryList(categoryRepository.getCategoryList());
+    public void getCategoryList(boolean getCategoriesWithoutCreatedTime) {
+        printCategoryList(categoryRepository.getCategoryList(), getCategoriesWithoutCreatedTime);
     }
 
     public void deleteCategoryById(Integer categoryId) {
@@ -33,23 +33,31 @@ public class CategoryService {
         }
     }
 
-    public void printCategoryList(List<Category> categoryList) {
+    public void printCategoryList(List<Category> categoryList, boolean getCatWithoutCreatedDate) {
         if (categoryList.isEmpty()) {
             System.out.println("No Categories available.");
-        } else {
-            System.out.println("------------------------------------------------------");
-            System.out.println("| Id | Name           |   Created Date             |");
-            System.out.println("------------------------------------------------------");
+        } else if (getCatWithoutCreatedDate) {
+            System.out.println("-----------------------");
+            System.out.println("| Id | Name           |");
+            System.out.println("-----------------------");
 
             for (Category category : categoryList) {
-                String formattedContact = String.format("| %-3s| %-15s| %-27s|",
-                        category.getId(), category.getName(), category.getCreatedDate());
+                String formattedContact = String.format("| %-3s| %-15s|", category.getId(), category.getName());
                 System.out.println(formattedContact);
             }
-            System.out.println("------------------------------------------------------");
+            System.out.println("-----------------------");
+        } else {
+            System.out.println("----------------------------------------------------");
+            System.out.println("| Id | Name           |   Created Date             |");
+            System.out.println("----------------------------------------------------");
+
+            for (Category category : categoryList) {
+                String formattedContact = String.format("| %-3s| %-15s| %-27s|", category.getId(), category.getName(), category.getCreatedDate());
+                System.out.println(formattedContact);
+            }
+            System.out.println("----------------------------------------------------");
         }
     }
-
 
     public boolean isCategoryExistsById(Integer categoryId) {
         return categoryRepository.isCategoryExistsById(categoryId);

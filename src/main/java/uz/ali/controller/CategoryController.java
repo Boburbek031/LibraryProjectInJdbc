@@ -60,7 +60,7 @@ public class CategoryController {
 
 
     private void getCategoryList() {
-        categoryService.getCategoryList();
+        categoryService.getCategoryList(false);
     }
 
     private void addCategory() {

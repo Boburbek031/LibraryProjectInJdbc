@@ -1,0 +1,147 @@
+****************************** Library & Library ****************** ***********
+Build software to manage the library.
+The following requirements must be met in the program:
+
+1. Students must log in and get the books they need.
+Also, a list of books that students have received after logging in
+and the list of books to be submitted.
+2. It should be possible to register for new students. Only students can register.
+3. Make it possible to block students who break the rules from entering the system.
+4. Make it possible for students to search for books before they register.
+5. Library staff can search for books, add new books, and edit existing ones.
+6. Be able to add new employees to the system.
+7. Staff should be able to see information such as all students and books in the system.
+8. In the statistics section: which student received how many books, which books received, currently students
+be able to see the books in hand, who received the given book, and similar information.
+9. Passwords should be encrypted based on the MD5 algorithm.
+10. After logging in, the student should be shown a list of books that he or she needs to return immediately.
+11. A student cannot take more than five books at the same time.
+
+-------------------------- The menu should be as follows: --------------------------
+
+Book
+id, title, author, category_id, publishedDate, availableDay, visible, createdDate;
+
+Category
+ID, name (unique), created date, visible
+TakenBook
+id, studentId, bookId, createdDate, Status(TOOK,RETURNED);
+Profile
+ID, name, surname, login (unique), password, phone, status (ACTIVE,BLOCK), role, createdDate
+Profile Roles
+STUDENT, STAFF, ADMIN
+
+
+*** Main Menu ***
+1. BookList: id, category name, author, title, publication date;
+
+2. Search:
+Enter query: (search by title or author)
+id, category name, author, title, publication date;
+
+3. By category:
+(Print all categories for the user to choose one of them.) id, name
+Enter category ID:
+
+4. Login
+Enter Login:
+Enter Password:
+
+5. Registration
+Enter Name:
+Enter Surname:
+Enter Phone:
+Enter Login:
+Enter Password:
+
+0. Exit
+
+Enter Action:
+
+
+-------------------- Student Menu --------------------
+*** Student Menu ***
+1. BookList:
+id, category name, author, title, createdDate
+2. Search:
+Enter query: (search by title or author):
+id, category name, author, title, createdDate
+3. Take a book.
+Enter id:
+4. Return book:
+Enter Id:
+5. Books on hand:
+category id, category name, book id, author, title, taken date, deadline date
+6. Take book history: (print-taken book list)
+category id, category name, book id, author, title, taken date, return date, deadline date
+0.exit
+
+--------------------------------- Staff and admin -------------- --------------------
+*** Menu ***
+1. Book
+2. Category (only for admins)
+3. Student
+4. Profile (only for admins)
+0. Exit
+
+
+*** Book ***
+1. Book list: ID, category name, author, title, created date
+2. Search:
+Enter query: (search by title or author)
+id, category name, author, title, createdDate
+3. Add book ->
+Enter title:
+Enter author:
+Enter category:
+Enter available days:
+Enter the book publish date:
+4. Remove the book.
+Enter id:
+5. Books on hand:
+book id, category id, category name, author, title, takenDate, deadlineDate, student id, student name, student surname, student phone
+6. Book history:
+Enter book ID:
+status, taken date, return date, student ID, student name, student surname, student phone
+7. Best books: (10 most downloaded books)
+category id, category name, book id, title, taken book counts
+
+
+*** Category ***
+1. Category list:
+id, name, createdDate,
+2. Delete category:
+Enter id:
+3. Add category:
+Enter name:
+0. Exit
+
+
+*** Student Profile ***
+1. Student list:
+ID, name, surname, login, phone, status, created date
+2. Search students
+Enter query: (id,name,surname,login,phone)
+ID, name, surname, login, phone, status, role, created date
+3. Block students:
+Enter id;
+4. Unblock students:
+Enter id:
+
+
+*** Profile *** (only for admin)
+1. Profile list:
+ID, name, surname, login, phone, status, role, createdDate
+2. Search student profile
+Enter query: (id,name,surname,login,phone)
+ID, name, surname, login, phone, status, createdDate
+3. Change student profile status:
+Enter id;
+4. Profile add:
+Enter name:
+Enter surname;
+Enter login:
+Enter password:
+Enter phone:
+Enter role:
+0. Exists

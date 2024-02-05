@@ -102,7 +102,7 @@ public class MainController {
     }
 
     public void booksByCategories() {
-        categoryService.getCategoryList();
+        categoryService.getCategoryList(true);
         System.out.print("Enter category ID: ");
         while (!scannerNum.hasNextInt()) {
             System.out.print("Please enter a valid number: ");

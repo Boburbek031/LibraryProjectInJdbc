@@ -60,7 +60,8 @@ public class ProfileRepository {
 
 
     public Profile getProfileById(Integer id) {
-        try (Connection connection = ConnectionRepository.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE id = ?")) {
+        try (Connection connection = ConnectionRepository.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM profile WHERE id = ?")) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {

@@ -27,9 +27,6 @@ public class StudentProfileController {
                 case 4:
                     activateStudentProfile();
                     break;
-                case 5:
-
-                    break;
                 case 0:
                     System.out.println("Exit");
                     startLoop = false;
@@ -77,7 +74,6 @@ public class StudentProfileController {
         System.out.println("2. Search student");
         System.out.println("3. Block student");
         System.out.println("4. Activate student");
-        System.out.println("5. Student by Book");
         System.out.println("0. Exit");
     }
 

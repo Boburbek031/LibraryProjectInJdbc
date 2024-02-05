@@ -36,7 +36,7 @@ public class AdminController {
     private void showMenu() {
         System.out.println("\n\t\t **************** Admin Menu ****************");
         System.out.println("1. Book");
-        System.out.println("2. Student");
+        System.out.println("2. Student Profile");
         System.out.println("3. Categories");
         System.out.println("4. Profile");
         System.out.println("0. Exit");

@@ -174,6 +174,7 @@ public class BookRepository {
                     book.setId(resultSet.getInt("id"));
                     book.setTitle(resultSet.getString("title"));
                     book.setAuthor(resultSet.getString("author"));
+                    book.setCreatedDate(resultSet.getTimestamp("created_date").toLocalDateTime());
                     book.setPublishDate(resultSet.getDate("publish_date").toLocalDate());
                     Category category = new Category(resultSet.getInt("category_id"), resultSet.getString("categoryName"));
                     book.setCategory(category);
