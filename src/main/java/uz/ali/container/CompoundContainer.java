@@ -4,6 +4,7 @@ import uz.ali.controller.*;
 import uz.ali.model.Profile;
 import uz.ali.repository.*;
 import uz.ali.service.*;
+import uz.ali.util.Menus;
 
 import java.util.Scanner;
 
@@ -42,5 +43,4 @@ public class CompoundContainer {
      bunday bo'lmaydi, ularda bir vaqtni o'zida bir nechta user kirib ishlatadi*/
     // User
     public static Profile currentProfile;
-
 }

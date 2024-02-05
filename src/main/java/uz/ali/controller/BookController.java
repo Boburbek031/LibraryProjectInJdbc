@@ -14,8 +14,6 @@ import static uz.ali.container.CompoundContainer.*;
 
 public class BookController {
 
-    // hamma checking larni service class da qilish kere // update qilasan
-
     public void start() {
         boolean startLoop = true;
         while (startLoop) {
@@ -46,7 +44,7 @@ public class BookController {
                     studentBookService.bestBooks();
                     break;
                 case 0:
-                    System.out.println("Exit");
+                    System.out.println("Exit...");
                     startLoop = false;
                     break;
                 default:
@@ -58,14 +56,14 @@ public class BookController {
     private void showMenu() {
         System.out.println("\n\t\t **************** Book Menu ****************");
         System.out.println("1. Book list");
-        System.out.println("2. Search");
-        System.out.println("3. Add book");
-        System.out.println("4. Delete book");
-        System.out.println("5. Update book");
+        System.out.println("2. Search a book");
+        System.out.println("3. Add a new book");
+        System.out.println("4. Delete a book");
+        System.out.println("5. Update a book");
         System.out.println("6. Books on hand");
         System.out.println("7. Book history");
         System.out.println("8. Best books");
-        System.out.println("0. Exit");
+        System.out.println("0. Exit...");
     }
 
     public void searchBook() {

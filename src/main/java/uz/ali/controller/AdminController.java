@@ -1,5 +1,7 @@
 package uz.ali.controller;
 
+import uz.ali.util.Menus;
+
 import static uz.ali.container.CompoundContainer.*;
 import static uz.ali.util.ScannerUtil.getAction;
 
@@ -8,7 +10,7 @@ public class AdminController {
     public void start() {
         boolean startLoop = true;
         while (startLoop) {
-            showMenu();
+            Menus.showAdminMenu();
             switch (getAction()) {
                 case 1:
                     bookController.start();
@@ -23,7 +25,7 @@ public class AdminController {
                     profileController.start();
                     break;
                 case 0:
-                    System.out.println("Exit");
+                    System.out.println("Exit...");
                     startLoop = false;
                     break;
                 default:
@@ -31,15 +33,4 @@ public class AdminController {
             }
         }
     }
-
-
-    private void showMenu() {
-        System.out.println("\n\t\t **************** Admin Menu ****************");
-        System.out.println("1. Book");
-        System.out.println("2. Student Profile");
-        System.out.println("3. Categories");
-        System.out.println("4. Profile");
-        System.out.println("0. Exit");
-    }
-
 }
