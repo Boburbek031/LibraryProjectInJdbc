@@ -71,7 +71,7 @@ public class Menus {
     }
 
     public static void displayStudentProfileMenu() {
-        System.out.println("\n\t\t **************** Student Menu ****************");
+        System.out.println("\n\t\t **************** Student Profile Menu ****************");
         System.out.println("1. Student list");
         System.out.println("2. Search student");
         System.out.println("3. Block student");
