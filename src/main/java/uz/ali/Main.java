@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
 
         mainController.start();
-        System.out.println("Program is stopped!");
+        System.out.println("Program has been stopped!");
 
     }
 }

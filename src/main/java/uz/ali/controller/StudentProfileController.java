@@ -19,7 +19,7 @@ public class StudentProfileController {
                     profileService.getStudentProfileList();
                     break;
                 case 2:
-                    search();
+                    profileService.search();
                     break;
                 case 3:
                     blockStudentProfile();
@@ -55,16 +55,6 @@ public class StudentProfileController {
         }
         int id = scannerNum.nextInt();
         profileService.changeStudentProfileStatus(id, ProfileStatus.ACTIVE);
-    }
-
-    public void search() {
-        String searchTerm;
-        do {
-            System.out.print("Enter search term (Student profile's id, name, surname, login, or phone): ");
-            scannerStr = new Scanner(System.in);
-            searchTerm = scannerStr.nextLine();
-        } while (searchTerm.isBlank());
-        profileService.search(searchTerm, ProfileRole.STUDENT);
     }
 
 

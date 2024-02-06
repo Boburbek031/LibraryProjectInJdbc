@@ -3,16 +3,37 @@ package uz.ali.service;
 import uz.ali.enums.ProfileRole;
 import uz.ali.enums.ProfileStatus;
 import uz.ali.model.Profile;
+import uz.ali.util.MD5Util;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
-import static uz.ali.container.CompoundContainer.profileRepository;
+import static uz.ali.container.CompoundContainer.*;
+import static uz.ali.container.CompoundContainer.scannerNum;
+import static uz.ali.util.ValidateInputs.*;
 
 public class ProfileService {
 
-    public void addProfile(Profile profile) {
+    public void addProfile() {
+        String name = getNonEmptyInput("Enter name (at least 2 characters): ");
+        String surname = getNonEmptyInput("Enter surname (at least 2 characters): ");
+        String phone = getValidPhoneNumber();
+        String login;
+        String password;
+        do {
+            login = getNonEmptyInput("Enter login (at least 5 characters): ");
+        } while (!isValidLogin(login));
+
+        do {
+            password = getNonEmptyInput("Enter password (at least 6 characters with 1 uppercase, 1 lowercase, 1 digit, and 1 special symbol): ");
+        } while (!isValidPassword(password));
+
+        String role = roleChecker("Enter role (STAFF OR ADMIN): ");
+        Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password), ProfileRole.valueOf(role));
+
+
         if (profileRepository.isProfileExists(profile.getLogin())) {
             System.out.println("Such " + profile.getLogin() + " login already exists!");
             return;
@@ -28,7 +49,14 @@ public class ProfileService {
     }
 
 
-    public void search(String searchTerm, ProfileRole... roles) {
+    public void search() {
+        String searchTerm;
+        do {
+            System.out.print("Enter search term (Profile's id, name, surname, login, or phone): ");
+            scannerStr = new Scanner(System.in);
+            searchTerm = scannerStr.nextLine();
+        } while (searchTerm.isBlank());
+
         List<Profile> profileList = new LinkedList<>();
 
         if (isNumeric(searchTerm)) {
@@ -40,10 +68,10 @@ public class ProfileService {
                 }
             } else {
                 // The entered numeric search term matches a phone number
-                profileList = profileRepository.search(searchTerm, roles);
+                profileList = profileRepository.search(searchTerm, ProfileRole.ADMIN, ProfileRole.STAFF);
             }
         } else {
-            profileList = profileRepository.search(searchTerm, roles);
+            profileList = profileRepository.search(searchTerm, ProfileRole.ADMIN, ProfileRole.STAFF);
         }
 
         if (!profileList.isEmpty()) {
@@ -115,7 +143,14 @@ public class ProfileService {
     }
 
 
-    public void changeStatus(int profileId) {
+    public void changeStatus() {
+        System.out.print("Enter profile ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int profileId = scannerNum.nextInt();
+
         Profile profile = profileRepository.getProfileById(profileId);
         if (profile == null) {
             System.out.println("Profile not found!");

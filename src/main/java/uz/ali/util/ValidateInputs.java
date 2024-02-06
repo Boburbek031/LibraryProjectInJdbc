@@ -83,6 +83,21 @@ public class ValidateInputs {
         return !trimPhoneNumber.startsWith("998") || trimPhoneNumber.length() != 12;
     }
 
+
+    public static String roleChecker(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        while (true) {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim().toUpperCase();
+
+            if (input.length() >= 5 && (input.equals("STAFF") || input.equals("ADMIN"))) {
+                return input;
+            }
+            System.out.println("Invalid input. Please enter STAFF or ADMIN.");  // Provide clearer error message
+        }
+    }
+
     public static String getValidPhoneNumber() {
         scannerStr = new Scanner(System.in);
         String phoneNumber;

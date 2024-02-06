@@ -43,6 +43,15 @@ public class Menus {
         System.out.println("0. Exit...");
     }
 
+    public static void displayProfileMenu() {
+        System.out.println("\n\t\t **************** Profile Menu ****************");
+        System.out.println("1. Profile List");
+        System.out.println("2. Search Profile");
+        System.out.println("3. Add Profile");
+        System.out.println("4. Change Profile status");
+        System.out.println("0. Exit...");
+    }
+
 
     public static void displayUpdateBookFieldsMenu() {
         System.out.println("\nSelect the field(s) you want to update: ");
