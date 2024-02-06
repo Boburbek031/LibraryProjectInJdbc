@@ -33,6 +33,16 @@ public class Menus {
         System.out.println("0. Exit...");
     }
 
+    public static void displayMainMenu() {
+        System.out.println("\n\t\t **************** Main Menu ****************");
+        System.out.println("1. Book List");
+        System.out.println("2. Search");
+        System.out.println("3. Categories");
+        System.out.println("4. Login");
+        System.out.println("5. Registration");
+        System.out.println("0. Exit...");
+    }
+
 
     public static void displayUpdateBookFieldsMenu() {
         System.out.println("\nSelect the field(s) you want to update: ");

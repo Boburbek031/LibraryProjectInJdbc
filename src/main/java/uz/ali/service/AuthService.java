@@ -7,12 +7,16 @@ import uz.ali.util.MD5Util;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Scanner;
 
 import static uz.ali.container.CompoundContainer.*;
+import static uz.ali.util.ValidateInputs.*;
 
 public class AuthService {
 
-    public void login(String login, String password) {
+    public void login() {
+        String login = getNonEmptyInput("Enter login: ");
+        String password = getNonEmptyInput("Enter password: ");
         Profile profile = profileRepository.getProfileByLogin(login);
 
         if (profile == null || !isLoginValid(profile, password)) {
@@ -56,8 +60,22 @@ public class AuthService {
         return profile.getProfileStatus().equals(ProfileStatus.ACTIVE);
     }
 
+    public void registration() {
+        scannerStr = new Scanner(System.in);
+        String name = getNonEmptyInput("Enter name (at least 2 characters): ");
+        String surname = getNonEmptyInput("Enter surname (at least 2 characters): ");
+        String phone = getValidPhoneNumber();
+        String login;
+        String password;
+        do {
+            login = getNonEmptyInput("Enter login (at least 5 characters): ");
+        } while (!isValidLogin(login));
 
-    public void registration(Profile profile) {
+        do {
+            password = getNonEmptyInput("Enter password (at least 6 characters with 1 uppercase, 1 lowercase, 1 digit, and 1 special symbol): ");
+        } while (!isValidPassword(password));
+
+        Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
         if (profileRepository.isProfileExists(profile.getLogin())) {
             System.out.println("Such " + profile.getLogin() + " login already exists!");
             return;

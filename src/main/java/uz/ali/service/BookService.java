@@ -114,7 +114,14 @@ public class BookService {
         }
     }
 
-    public void booksByCategoryId(Integer categoryId) {
+    public void booksByCategoryId() {
+        categoryService.getCategoryList(true);
+        System.out.print("Enter category ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int categoryId = scannerNum.nextInt();
         while (!categoryService.isCategoryExistsById(categoryId)) {
             System.out.print("Please enter a valid category ID: ");
             while (!scannerNum.hasNextInt()) {
@@ -202,17 +209,17 @@ public class BookService {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
         } else {
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
-            System.out.println("| Id      | Category name            | Author                   | Title                            | Created Date              |");
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("| Id      | Category name            | Author                   | Title                            | Created Date               |");
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
 
             for (Book book : bookList) {
-                String formattedContact = String.format("| %-8s| %-25s| %-25s| %-33s| %-15s|",
+                String formattedContact = String.format("| %-8s| %-25s| %-25s| %-33s| %-27s|",
                         book.getId(), book.getCategory().getName(), book.getAuthor(), book.getTitle(),
                         book.getCreatedDate());
                 System.out.println(formattedContact);
             }
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
@@ -234,8 +241,6 @@ public class BookService {
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
-
-
 
 
 }
