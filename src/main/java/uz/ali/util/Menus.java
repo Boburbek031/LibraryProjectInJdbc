@@ -52,6 +52,13 @@ public class Menus {
         System.out.println("0. Exit...");
     }
 
+    public static void displayStaffMenu() {
+        System.out.println("\n\t\t **************** Staff Menu ****************");
+        System.out.println("1. Book List");
+        System.out.println("2. Student");
+        System.out.println("0. Exit...");
+    }
+
 
     public static void displayUpdateBookFieldsMenu() {
         System.out.println("\nSelect the field(s) you want to update: ");
