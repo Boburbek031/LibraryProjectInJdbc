@@ -13,13 +13,19 @@ import static uz.ali.container.CompoundContainer.*;
 public class StudentBookService {
 
 
-    public void takeBook(Integer bookId) {
+    public void takeBook() {
+        System.out.print("Enter book ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        Integer bookId = scannerNum.nextInt();
         if (!bookService.isBookExistsById(bookId)) {
             System.out.println("Enter a valid book ID!");
             return;
         }
         Book bookById = bookService.getBookById(bookId);
-        if (bookById == null){
+        if (bookById == null) {
             System.out.println("Enter a valid book ID!");
             return;
         }
@@ -51,7 +57,7 @@ public class StudentBookService {
         }
     }
 
-    public void returnBook(Integer bookId) {
+    public void returnBook() {
        /*  // bu yerda hozi biz ikkita ish qilyapmiz, yani database ga 2 martta so'rov jo'natyapmiz, shuni bittada qilsa ham bo'ladi
        StudentBook studentBook = studentBookRepository.getStudentBook(bookId, currentProfile.getId());
         if (studentBook != null) {
@@ -63,6 +69,12 @@ public class StudentBookService {
         } else {
             System.out.println("Student did not take the book with such ID: " + bookId + ". ERROR!!!");
         }*/
+        System.out.print("Enter book ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        Integer bookId = scannerNum.nextInt();
         if (studentBookRepository.returnStudentBook(bookId, currentProfile.getId()) != 0) {
             System.out.println("Student Book is successfully returned.");
         } else {
