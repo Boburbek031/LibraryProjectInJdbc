@@ -7,6 +7,9 @@ import static uz.ali.util.ScannerUtil.getAction;
 
 public class StaffController {
 
+    // staff
+    // Staff00!!
+
     public void start() {
         boolean startLoop = true;
         while (startLoop) {

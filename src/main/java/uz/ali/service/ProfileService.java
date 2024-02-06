@@ -170,7 +170,13 @@ public class ProfileService {
         }
     }
 
-    public void changeStudentProfileStatus(int id, ProfileStatus status) {
+    public void changeStudentProfileStatus(ProfileStatus status) {
+        System.out.print("Enter Student Profile ID: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int id = scannerNum.nextInt();
         Profile profile = profileRepository.getProfileById(id);
         if (profile == null) {
             System.out.println("Student Profile not found!");
