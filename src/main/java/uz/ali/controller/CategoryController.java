@@ -1,94 +1,34 @@
 package uz.ali.controller;
 
-import uz.ali.model.Category;
-
-import java.util.Scanner;
-
+import static uz.ali.container.CompoundContainer.categoryService;
+import static uz.ali.util.Menus.displayCategoryMenu;
 import static uz.ali.util.ScannerUtil.getAction;
-
-
-import static uz.ali.container.CompoundContainer.*;
 
 public class CategoryController {
 
     public void start() {
         boolean startLoop = true;
         while (startLoop) {
-            showMenu();
+            displayCategoryMenu();
             switch (getAction()) {
                 case 1:
-                    getCategoryList();
+                    categoryService.getCategoryList(false);
                     break;
                 case 2:
-                    addCategory();
+                    categoryService.createCategory();
                     break;
                 case 3:
-                    deleteCategory();
+                    categoryService.deleteCategoryById();
                     break;
                 case 4:
-                    updateCategory();
+                    categoryService.updateCategoryById();
                     break;
                 case 0:
-                    System.out.println("Exit");
                     startLoop = false;
                     break;
                 default:
                     System.out.println("\n Please, choose one of the following menus below!");
             }
-        }
-    }
-
-
-    public String getNonEmptyInput(String message) {
-        scannerStr = new Scanner(System.in);
-        String input;
-        do {
-            System.out.print(message);
-            input = scannerStr.nextLine().trim();
-        } while (input.length() < 3 || input.isBlank());
-        return input;
-    }
-
-    private void showMenu() {
-        System.out.println("\n\t\t **************** Category Menu ****************");
-        System.out.println("1. Category List");
-        System.out.println("2. Add category");
-        System.out.println("3. Delete category");
-        System.out.println("4. Update category ");
-        System.out.println("0. Exit");
-    }
-
-
-    private void getCategoryList() {
-        categoryService.getCategoryList(false);
-    }
-
-    private void addCategory() {
-        categoryService.createCategory(new Category(getNonEmptyInput("Enter category name (at least 3 characters): ")));
-    }
-
-    private void deleteCategory() {
-        System.out.print("Enter category ID that you want to delete: ");
-        while (!scannerNum.hasNextInt()) {
-            System.out.print("Please enter a valid number: ");
-            scannerNum.next(); // Clear the invalid input
-        }
-        int categoryId = scannerNum.nextInt();
-        categoryService.deleteCategoryById(categoryId);
-    }
-
-    private void updateCategory() {
-        System.out.print("Enter category ID that you want to update: ");
-        while (!scannerNum.hasNextInt()) {
-            System.out.print("Please enter a valid number: ");
-            scannerNum.next(); // Clear the invalid input
-        }
-        int categoryId = scannerNum.nextInt();
-        if (categoryService.isCategoryExistsById(categoryId)) {
-            String newCategoryName = getNonEmptyInput("Enter category name (at least 3 characters) that you want to update: ");
-            categoryService.updateCategoryById(newCategoryName, categoryId);
-        } else {
-            System.out.println("Category not found!");
         }
     }
 

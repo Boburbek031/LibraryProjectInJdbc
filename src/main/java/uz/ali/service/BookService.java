@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import static uz.ali.container.CompoundContainer.*;
-import static uz.ali.util.Menus.updateBookFieldsMenu;
+import static uz.ali.util.Menus.displayUpdateBookFieldsMenu;
+import static uz.ali.util.ValidateInputs.*;
 
 public class BookService {
 
@@ -134,7 +135,7 @@ public class BookService {
     }
 
     private int updateBookFields(Book bookToUpdate) {
-        updateBookFieldsMenu();
+        displayUpdateBookFieldsMenu();
         int chosenField = getActionForUpdate(bookToUpdate); // Get the field choice
 
         switch (chosenField) {
@@ -234,54 +235,7 @@ public class BookService {
         }
     }
 
-    public String getNonEmptyInput(String message) {
-        scannerStr = new Scanner(System.in);
-        String input;
-        do {
-            System.out.print(message);
-            input = scannerStr.nextLine().trim();
-        } while (input.length() < 3 || input.isBlank());
-        return input;
-    }
 
-    public int getNonEmptyInputNumber(String message) {
-        scannerStr = new Scanner(System.in);
-        String input;
-        do {
-            System.out.print(message);
-            input = scannerStr.nextLine().trim();
-        } while (input.isBlank() || !checkIfNumber(input));
-        return Integer.parseInt(input);
-    }
-
-    public String getValidDateInput() {
-        scannerStr = new Scanner(System.in);
-        String publishDate;
-        do {
-            System.out.print("Enter published date (yyyy-MM-dd): ");
-            publishDate = scannerStr.nextLine();
-        } while (publishDate.isEmpty() || !isValidDateFormat(publishDate));
-        return publishDate;
-    }
-
-    public boolean checkIfNumber(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public boolean isValidDateFormat(String dateToValidate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        try {
-            LocalDate.parse(dateToValidate, formatter);
-            return true; // Date is in the correct format
-        } catch (DateTimeParseException e) {
-            return false; // Date format is invalid
-        }
-    }
 
 
 }

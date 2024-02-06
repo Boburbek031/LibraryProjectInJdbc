@@ -53,7 +53,6 @@ public class MainController {
                     registration();
                     break;
                 case 0:
-                    System.out.println("Exit");
                     startLoop = false;
                     break;
                 default:
@@ -69,7 +68,7 @@ public class MainController {
         System.out.println("3. Categories");
         System.out.println("4. Login");
         System.out.println("5. Registration");
-        System.out.println("0. Exit");
+        System.out.println("0. Exit...");
     }
 
     private void registration() {

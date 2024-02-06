@@ -2,7 +2,7 @@ package uz.ali.util;
 
 public class Menus {
 
-    public static void showAdminMenu() {
+    public static void displayAdminMenu() {
         System.out.println("\n\t\t **************** Admin Menu ****************");
         System.out.println("1. Books");
         System.out.println("2. Student Profiles");
@@ -11,7 +11,7 @@ public class Menus {
         System.out.println("0. Exit...");
     }
 
-    public static void showBookMenu() {
+    public static void displayBookMenu() {
         System.out.println("\n\t\t **************** Book Menu ****************");
         System.out.println("1. Book list");
         System.out.println("2. Search a book");
@@ -24,8 +24,17 @@ public class Menus {
         System.out.println("0. Exit...");
     }
 
+    public static void displayCategoryMenu() {
+        System.out.println("\n\t\t **************** Category Menu ****************");
+        System.out.println("1. Category List");
+        System.out.println("2. Add category");
+        System.out.println("3. Delete category");
+        System.out.println("4. Update category ");
+        System.out.println("0. Exit...");
+    }
 
-    public static void updateBookFieldsMenu() {
+
+    public static void displayUpdateBookFieldsMenu() {
         System.out.println("\nSelect the field(s) you want to update: ");
         System.out.println("1. Title");
         System.out.println("2. Author");
