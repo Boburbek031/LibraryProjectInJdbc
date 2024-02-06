@@ -92,13 +92,7 @@ public class MainController {
     }
 
     public void searchBook() {
-        String searchTerm;
-        do {
-            System.out.print("Enter search term (Book's title or author's name): ");
-            scannerStr = new Scanner(System.in);
-            searchTerm = scannerStr.nextLine();
-        } while (searchTerm.isBlank());
-        bookService.searchBook(searchTerm);
+        bookService.searchBook();
     }
 
     public void booksByCategories() {

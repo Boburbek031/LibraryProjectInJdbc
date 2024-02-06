@@ -1,16 +1,16 @@
 package uz.ali.controller;
 
-import uz.ali.util.Menus;
-
 import static uz.ali.container.CompoundContainer.*;
+import static uz.ali.util.Menus.showAdminMenu;
 import static uz.ali.util.ScannerUtil.getAction;
+
 
 public class AdminController {
 
     public void start() {
         boolean startLoop = true;
         while (startLoop) {
-            Menus.showAdminMenu();
+            showAdminMenu();
             switch (getAction()) {
                 case 1:
                     bookController.start();

@@ -3,15 +3,26 @@ package uz.ali.service;
 import uz.ali.model.Book;
 import uz.ali.model.StudentBook;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Scanner;
 
 import static uz.ali.container.CompoundContainer.*;
+import static uz.ali.util.Menus.updateBookFieldsMenu;
 
 public class BookService {
 
 
-    public void addBook(Book book) {
+    public void addBook() {
+        String title = getNonEmptyInput("Enter title (at least 3 characters): ");
+        String author = getNonEmptyInput("Enter author (at least 3 characters): ");
+        int availableDay = getNonEmptyInputNumber("Enter available day: ");
+        int categoryId = getNonEmptyInputNumber("Enter Category Id: ");
+        String publishDate = getValidDateInput(); // 2024-08-31
+        Book book = new Book(title, author, categoryId, LocalDate.parse(publishDate), availableDay);
         if (categoryRepository.isCategoryExistsById(book.getCategoryId())) {
             book.setCreatedDate(LocalDateTime.now());
             book.setVisible(true);
@@ -29,11 +40,25 @@ public class BookService {
         return bookRepository.isBookExistsById(bookId);
     }
 
-    public void updateBook(Book bookToUpdate) {
-        if (bookRepository.updateBook(bookToUpdate) > 0) {
-            System.out.println("Book is successfully updated!");
+    public void updateBook() {
+        System.out.print("Enter book ID that you want to update: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int bookId = scannerNum.nextInt();
+        if (isBookExistsById(bookId)) {
+            Book bookToUpdate = getBookById(bookId);
+            displayBookDetails(bookToUpdate);
+            if (updateBookFields(bookToUpdate) != 0) {
+                if (bookRepository.updateBook(bookToUpdate) > 0) {
+                    System.out.println("Book is successfully updated!");
+                } else {
+                    System.out.println("Error in updating!");
+                }
+            }
         } else {
-            System.out.println("Error in updating!");
+            System.out.println("Book not found!");
         }
     }
 
@@ -45,16 +70,28 @@ public class BookService {
         printBookList(bookRepository.getBookList());
     }
 
-    public void searchBook(String searchTerm) {
+    public void searchBook() {
+        String searchTerm;
+        do {
+            System.out.print("Enter search term (Book's title or author's name): ");
+            scannerStr = new Scanner(System.in);
+            searchTerm = scannerStr.nextLine();
+        } while (searchTerm.isBlank());
         List<Book> bookList = bookRepository.searchBook(searchTerm);
         if (!bookList.isEmpty()) {
             printBookList(bookList);
         } else {
-            System.out.println("No matching contacts found.");
+            System.out.println("No matching books are found.");
         }
     }
 
-    public void deleteBookById(Integer bookId) {
+    public void deleteBookById() {
+        System.out.print("Enter book ID that you want to delete: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int bookId = scannerNum.nextInt();
         if (bookRepository.deleteBookById(bookId) > 0) {
             System.out.println("Book is successfully deleted!");
         } else {
@@ -62,7 +99,13 @@ public class BookService {
         }
     }
 
-    public void bookHistoryById(int bookId) {
+    public void bookHistoryById() {
+        System.out.print("Enter book ID that you want to see the history: ");
+        while (!scannerNum.hasNextInt()) {
+            System.out.print("Please enter a valid number: ");
+            scannerNum.next(); // Clear the invalid input
+        }
+        int bookId = scannerNum.nextInt();
         if (!isBookExistsById(bookId)) {
             System.out.println("There is no book with such ID: " + bookId);
         } else {
@@ -80,6 +123,59 @@ public class BookService {
             categoryId = scannerNum.nextInt();
         }
         printBookByCategoryId(bookRepository.getAllBooksByCategoryId(categoryId));
+    }
+
+
+    private void displayBookDetails(Book bookToUpdate) {
+        System.out.println("\nTitle: " + bookToUpdate.getTitle());
+        System.out.println("Author: " + bookToUpdate.getAuthor());
+        System.out.println("Publish Date: " + bookToUpdate.getPublishDate());
+        System.out.println("Available Day: " + bookToUpdate.getAvailableDay());
+    }
+
+    private int updateBookFields(Book bookToUpdate) {
+        updateBookFieldsMenu();
+        int chosenField = getActionForUpdate(bookToUpdate); // Get the field choice
+
+        switch (chosenField) {
+            case 0:
+                System.out.println("Exiting field update...");
+                return 0;
+            case 1:
+                String newTitle = getNonEmptyInput("Enter new title (at least 3 characters): ");
+                bookToUpdate.setTitle(newTitle);
+                break;
+            case 2:
+                String newAuthor = getNonEmptyInput("Enter new author (at least 3 characters): ");
+                bookToUpdate.setAuthor(newAuthor);
+                break;
+            case 3:
+                String newPublishDate = getValidDateInput(); // Validate date format
+                bookToUpdate.setPublishDate(LocalDate.parse(newPublishDate));
+                break;
+            case 4:
+                int newAvailableDay = getNonEmptyInputNumber("Enter new available day: ");
+                bookToUpdate.setAvailableDay(newAvailableDay);
+                break;
+            default:
+                System.out.println("\nInvalid choice!");
+                return 0;
+        }
+        return 1;
+    }
+
+
+    public int getActionForUpdate(Book bookToUpdate) {
+        while (true) {
+            System.out.print("Choose one of the actions above: ");
+            String chosenMenu = scannerStr.next();
+            if (checkIfNumber(chosenMenu)) {
+                return Integer.parseInt(chosenMenu);
+            } else {
+                updateBookFields(bookToUpdate);
+                System.out.println("\n Please, choose one of the following menus above!");
+            }
+        }
     }
 
 
@@ -105,17 +201,17 @@ public class BookService {
         if (bookList.isEmpty()) {
             System.out.println("No books available.");
         } else {
-            System.out.println("-------------------------------------------------------------------------------------------------------------------");
-            System.out.println("| Id      | Category name            | Author                   | Title               | Created Date              |");
-            System.out.println("-------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("| Id      | Category name            | Author                   | Title                            | Created Date              |");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
 
             for (Book book : bookList) {
-                String formattedContact = String.format("| %-8s| %-25s| %-25s| %-20s| %-15s|",
+                String formattedContact = String.format("| %-8s| %-25s| %-25s| %-33s| %-15s|",
                         book.getId(), book.getCategory().getName(), book.getAuthor(), book.getTitle(),
                         book.getCreatedDate());
                 System.out.println(formattedContact);
             }
-            System.out.println("-------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
@@ -135,6 +231,55 @@ public class BookService {
                 System.out.println(formattedContact);
             }
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+    }
+
+    public String getNonEmptyInput(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim();
+        } while (input.length() < 3 || input.isBlank());
+        return input;
+    }
+
+    public int getNonEmptyInputNumber(String message) {
+        scannerStr = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print(message);
+            input = scannerStr.nextLine().trim();
+        } while (input.isBlank() || !checkIfNumber(input));
+        return Integer.parseInt(input);
+    }
+
+    public String getValidDateInput() {
+        scannerStr = new Scanner(System.in);
+        String publishDate;
+        do {
+            System.out.print("Enter published date (yyyy-MM-dd): ");
+            publishDate = scannerStr.nextLine();
+        } while (publishDate.isEmpty() || !isValidDateFormat(publishDate));
+        return publishDate;
+    }
+
+    public boolean checkIfNumber(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public boolean isValidDateFormat(String dateToValidate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            LocalDate.parse(dateToValidate, formatter);
+            return true; // Date is in the correct format
+        } catch (DateTimeParseException e) {
+            return false; // Date format is invalid
         }
     }
 
