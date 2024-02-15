@@ -145,3 +145,14 @@ Enter password:
 Enter phone:
 Enter role:
 0. Exists
+
+
+
+How is the code above written?  If there are any better improvements that you can do, please optimize and enhance the code above.
+
+1. Kitob ni Publish date ni ham check qil. bungungi sanadan oldingi sanani kirita olmasin.
+2. Delete book qilinganda usha kitobni statusi TAKEN bo'lsa ochira olmasin. userga qandayni message print qilinsin
+3. Profile change status menu ni ham optimize qilib, shu menu ni tanlaganda usha id lik profileni statusni ko'rsatib,
+block qilasanmi yoki active qilasanmi deb soraydigan qil.
+4. Student Menu ning Get history of books bo'limida book ni id sini kiritgandan keyin print qilishda student_book ni statusini ham chiqar.
+5. Studnet Profile search ishlamayapti kor

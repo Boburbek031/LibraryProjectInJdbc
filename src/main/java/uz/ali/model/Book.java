@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 public class Book {
 
-
     private Integer id;
     private String title;
     private String author;
@@ -20,8 +19,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Integer id, String title, String author, Integer categoryId, LocalDate publishDate, Integer availableDay, Boolean visible, LocalDateTime createdDate) {
-        this.id = id;
+    public Book(String title, String author, Integer categoryId, LocalDate publishDate, Integer availableDay, Boolean visible, LocalDateTime createdDate) {
         this.title = title;
         this.author = author;
         this.categoryId = categoryId;

@@ -14,6 +14,35 @@ import static uz.ali.util.ValidateInputs.*;
 
 public class AuthService {
 
+    public void registration() {
+        scannerStr = new Scanner(System.in);
+        String name = getNonEmptyInput("Enter name (at least 2 characters): ");
+        String surname = getNonEmptyInput("Enter surname (at least 2 characters): ");
+        String phone = getValidPhoneNumber();
+        String login;
+        String password;
+        do {
+            login = getNonEmptyInput("Enter login (at least 5 characters): ");
+        } while (!isValidLogin(login));
+
+        do {
+            password = getNonEmptyInput("Enter password (at least 6 characters with 1 uppercase, 1 lowercase, 1 digit, and 1 special symbol): ");
+        } while (!isValidPassword(password));
+
+        Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
+        if (profileRepository.isProfileExists(profile.getLogin())) {
+            System.out.println("Such " + profile.getLogin() + " login already exists!");
+            return;
+        }
+        profile.setCreatedDate(LocalDateTime.now());
+        profile.setProfileRole(ProfileRole.STUDENT);
+        profile.setProfileStatus(ProfileStatus.ACTIVE);
+        int effectedRows = profileRepository.addProfile(profile);
+        if (effectedRows == 1) {
+            System.out.println("Registration is completed!");
+        }
+    }
+
     public void login() {
         String login = getNonEmptyInput("Enter login: ");
         String password = getNonEmptyInput("Enter password: ");
@@ -60,32 +89,5 @@ public class AuthService {
         return profile.getProfileStatus().equals(ProfileStatus.ACTIVE);
     }
 
-    public void registration() {
-        scannerStr = new Scanner(System.in);
-        String name = getNonEmptyInput("Enter name (at least 2 characters): ");
-        String surname = getNonEmptyInput("Enter surname (at least 2 characters): ");
-        String phone = getValidPhoneNumber();
-        String login;
-        String password;
-        do {
-            login = getNonEmptyInput("Enter login (at least 5 characters): ");
-        } while (!isValidLogin(login));
 
-        do {
-            password = getNonEmptyInput("Enter password (at least 6 characters with 1 uppercase, 1 lowercase, 1 digit, and 1 special symbol): ");
-        } while (!isValidPassword(password));
-
-        Profile profile = new Profile(name, surname, phone, login, MD5Util.encode(password));
-        if (profileRepository.isProfileExists(profile.getLogin())) {
-            System.out.println("Such " + profile.getLogin() + " login already exists!");
-            return;
-        }
-        profile.setCreatedDate(LocalDateTime.now());
-        profile.setProfileRole(ProfileRole.STUDENT);
-        profile.setProfileStatus(ProfileStatus.ACTIVE);
-        int effectedRows = profileRepository.addProfile(profile);
-        if (effectedRows == 1) {
-            System.out.println("Registration is completed!");
-        }
-    }
 }

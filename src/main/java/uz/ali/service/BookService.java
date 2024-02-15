@@ -5,8 +5,6 @@ import uz.ali.model.StudentBook;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,24 +15,45 @@ import static uz.ali.util.ValidateInputs.*;
 public class BookService {
 
 
-    public void addBook() {
+    // shatta qoldim 
+    public void saveBook() {
         String title = getNonEmptyInput("Enter title (at least 3 characters): ");
         String author = getNonEmptyInput("Enter author (at least 3 characters): ");
         int availableDay = getNonEmptyInputNumber("Enter available day: ");
-        int categoryId = getNonEmptyInputNumber("Enter Category Id: ");
-        String publishDate = getValidDateInput(); // 2024-08-31
-        Book book = new Book(title, author, categoryId, LocalDate.parse(publishDate), availableDay);
-        if (categoryRepository.isCategoryExistsById(book.getCategoryId())) {
-            book.setCreatedDate(LocalDateTime.now());
-            book.setVisible(true);
-            if (bookRepository.saveBook(book) == 1) {
-                System.out.println("Book is successfully saved.");
-            } else {
-                System.out.println("Error in saving Book!");
-            }
-        } else {
+       /* int categoryId = getNonEmptyInputNumber("Enter Category Id: ");
+        if (!categoryRepository.isCategoryExistsById(categoryId)) {
             System.out.println("Category not found.");
+            return;
         }
+        String publishDate = getValidDateInput(); // 2024-08-31
+        if (!isPublishDateValid(publishDate)) {
+            System.out.println("Error: Publish date cannot be in the future.");
+            return;
+        }*/
+
+        int categoryId;
+        do {
+            categoryId = getNonEmptyInputNumber("Enter Category Id: ");
+            if (!categoryRepository.isCategoryExistsById(categoryId)) {
+                System.out.println("Category not found. Please enter a valid category id.");
+            }
+        } while (!categoryRepository.isCategoryExistsById(categoryId));
+
+        String publishDate;
+        do {
+            publishDate = getValidDateInput();
+            if (!isPublishDateValid(publishDate)) {
+                System.out.println("Error: Publish date cannot be in the future. Please enter a valid date.");
+            }
+        } while (!isPublishDateValid(publishDate));
+
+        Book book = new Book(title, author, categoryId, LocalDate.parse(publishDate), availableDay, true, LocalDateTime.now());
+        if (bookRepository.saveBook(book) == 1) {
+            System.out.println("Book is successfully saved.");
+        } else {
+            System.out.println("Error in saving Book!");
+        }
+
     }
 
     public boolean isBookExistsById(Integer bookId) {

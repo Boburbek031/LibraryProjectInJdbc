@@ -83,7 +83,6 @@ public class ValidateInputs {
         return !trimPhoneNumber.startsWith("998") || trimPhoneNumber.length() != 12;
     }
 
-
     public static String roleChecker(String message) {
         scannerStr = new Scanner(System.in);
         String input;
@@ -109,6 +108,14 @@ public class ValidateInputs {
             }
         } while (isValidPhoneNumber(phoneNumber));
         return phoneNumber;
+    }
+
+    public static boolean isPublishDateValid(String publishDate) {
+        // Check if the publish date is not in the future
+        if (LocalDate.parse(publishDate).isAfter(LocalDate.now())) {
+            return false;
+        }
+        return true;
     }
 
 }

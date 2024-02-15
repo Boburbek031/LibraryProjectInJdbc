@@ -19,7 +19,7 @@ public class BookController {
                     bookService.searchBook();
                     break;
                 case 3:
-                    bookService.addBook();
+                    bookService.saveBook();
                     break;
                 case 4:
                     bookService.deleteBookById();

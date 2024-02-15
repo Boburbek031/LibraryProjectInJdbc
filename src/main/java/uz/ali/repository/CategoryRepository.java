@@ -27,11 +27,11 @@ public class CategoryRepository {
     public boolean isCategoryExistsById(Integer categoryId) {
         try (Connection connection = ConnectionRepository.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT COUNT(*) FROM category WHERE id = ?")) {
+                     "SELECT EXISTS(SELECT 1 FROM category WHERE id = ?);")) {
             preparedStatement.setInt(1, categoryId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
+                    return resultSet.getBoolean(1);
                 }
             }
         } catch (SQLException e) {
